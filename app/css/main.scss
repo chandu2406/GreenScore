@@ -1,0 +1,106 @@
+/** @file main.scss
+ *
+ *  @brief Main css file for the app.
+ *  @author Lucas Ray (ltray)
+ *  @author Kenneth Murphy (kmmurphy)
+ */
+
+// imports
+@import "./jquery-ui.css";
+
+// variables
+$green: #99c76f;
+$darkGreen: #68874B;
+$gray: #42473D;
+$lightGray: #C1D0B2;
+
+@mixin roundEdges($weight) {
+  border-radius: $weight;
+  -mox-border-radius: $weight;
+  -webkit-border-radius: $weight;
+  -o-border-radius: $weight;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-image: url("../assets/green.jpg");
+  background-repeat: repeat;
+}
+
+
+.contentBubble {
+  @include roundEdges(10px);
+
+  background-image: url("../assets/debut_light.png");
+  background-repeat: repeat;
+
+  width: 70%;
+  height: 250px;
+  margin: 0px 15% 15% 15%;
+  text-align: center;
+
+  box-shadow: 0 0 8px #111;
+  -moz-box-shadow: 0 0 8px #111;
+  -webkit-box-shadow: 0 0 8px #111;
+
+  input {
+    @include roundEdges(5px);
+    margin-left: 10%;
+    width: 80%;
+    height: 25px;
+
+    box-shadow: 0 0 2px #111;
+    -moz-box-shadow: 0 0 2px #111;
+    -webkit-box-shadow: 0 0 2px #111;
+  }
+}
+
+.navBar {
+  position: relative;
+  width: 70%;
+  text-align:right;
+  margin: 20px 0px 30px 15%;
+  h2 {
+    font-size: 16px;
+    margin-right: 14%;
+    display: inline;
+    color: $gray;
+    cursor: pointer;
+  }
+  h2:hover{
+    color: black;
+    cursor: pointer;
+  }
+  img {
+    bottom: -37px;
+    position: absolute;
+  }
+}
+
+h1 {
+  font-size: 300%;
+  color: $darkGreen;
+  span {
+    color: $gray;
+  }
+}
+
+
+#map_canvas {
+  height: 100%;
+  width: 100%;
+}
+
+#mapView {
+  height: 100%;
+}
+

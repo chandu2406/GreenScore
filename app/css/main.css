@@ -1,0 +1,76 @@
+@import url(./jquery-ui.css);
+/** @file main.scss
+ *
+ *  @brief Main css file for the app.
+ *  @author Lucas Ray (ltray)
+ *  @author Kenneth Murphy (kmmurphy)
+ */
+html {
+  height: 100%;
+  width: 100%; }
+
+body {
+  font-family: Helvetica, sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-image: url("../assets/green.jpg");
+  background-repeat: repeat; }
+
+.contentBubble {
+  border-radius: 10px;
+  -mox-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  background-image: url("../assets/debut_light.png");
+  background-repeat: repeat;
+  width: 70%;
+  height: 250px;
+  margin: 0px 15% 15% 15%;
+  text-align: center;
+  box-shadow: 0 0 8px #111;
+  -moz-box-shadow: 0 0 8px #111;
+  -webkit-box-shadow: 0 0 8px #111; }
+  .contentBubble input {
+    border-radius: 5px;
+    -mox-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    margin-left: 10%;
+    width: 80%;
+    height: 25px;
+    box-shadow: 0 0 2px #111;
+    -moz-box-shadow: 0 0 2px #111;
+    -webkit-box-shadow: 0 0 2px #111; }
+
+.navBar {
+  position: relative;
+  width: 70%;
+  text-align: right;
+  margin: 20px 0px 30px 15%; }
+  .navBar h2 {
+    font-size: 16px;
+    margin-right: 14%;
+    display: inline;
+    color: #42473d;
+    cursor: pointer; }
+  .navBar h2:hover {
+    color: black;
+    cursor: pointer; }
+  .navBar img {
+    bottom: -37px;
+    position: absolute; }
+
+h1 {
+  font-size: 300%;
+  color: #68874b; }
+  h1 span {
+    color: #42473d; }
+
+#map_canvas {
+  height: 100%;
+  width: 100%; }
+
+#mapView {
+  height: 100%; }

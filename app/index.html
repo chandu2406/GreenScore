@@ -8,9 +8,9 @@
 
   <!-- STYLESHEETS -->
   <link href="./css/jquery.mobile-unthemed.min.css" rel="stylesheet">
- 	<link href="./css/jquery-ui.js" rel="stylesheet">
+   <link href="./css/jquery-ui.js" rel="stylesheet">
   <link href="./css/main.css" rel="stylesheet">
-  
+
   <!-- SCRIPTS -->
   <!-- external scripts -->
   <!-- Google Maps API -->
@@ -18,18 +18,21 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHuRsJH37S3hiW7ig9SJBnCJQ_1H3Zf_w&sensor=false">
       </script>
 
-  
+
   <!-- lib scripts -->
   <!-- jquery -->
   <script src="./scripts/lib/jquery-1.8.3.min.js" type="text/javascript"></script>
   <script src="./scripts/lib/jquery-ui.js" type="text/javascript"></script>
-	<script src="./scripts/lib/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>
+  <script src="./scripts/lib/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>
   <script src="./scripts/lib/jquery.watermark.min.js" type="text/javascript"></script>
- 
+
   <!-- backbone -->
 <!--  <script src="./scripts/lib/backbone-min.js" type="text/javascript"></script> -->
   <!-- socket.io -->
   <script src="http://localhost:3000/socket.io/socket.io.js" type="text/javascript"></script>
+
+  <!-- crypto.js -->
+  <script src="./scripts/lib/sha256.js" type="text/javascript"></script>
 
   <!-- MVC scripts -->
   <!-- models -->
@@ -41,83 +44,83 @@
   <script src="./scripts/controllers/mapHandler.js" type="text/javascript"></script>
 </head>
 <body>
-	<div data-role="page" data-fullscreen="true" id="landingPage">
-    <div data-role="header">		
-    	<div class="navBar">
-      	<h2 class="searchBtn">Search</h2>
-      	<h2 class="loginBtn">Login</h2>
+  <div data-role="page" data-fullscreen="true" id="landingPage">
+    <div data-role="header">
+      <div class="navBar">
+        <h2 class="searchBtn">Search</h2>
+        <h2 class="loginBtn">Login</h2>
         <img src="./assets/selection.png"  style="right: 36%;"/>
       </div>
     </div>
     <div data-role="content" class="contentBubble">
-      <h1>Green<span>score</span></h1>     
+      <h1>Green<span>score</span></h1>
       <label for="searchBar"></label>
         <input id="searchBar" type="text" />
     </div>
     <div data-role="footer"></div>
-	</div>
+  </div>
 
-	<!-- The login screen -->
+  <!-- The login screen -->
   <div data-role="page" data-fullscreen="true" id="loginPage">
-  	<div data-role="header">
-    	<div class="navBar">
-      	<h2 class="searchBtn">Search</h2>
-      	<h2>Login</h2>
+    <div data-role="header">
+      <div class="navBar">
+        <h2 class="searchBtn">Search</h2>
+        <h2>Login</h2>
         <img src="./assets/selection.png"  style="right: 15%;"/>
       </div>
     </div>
-  	<div data-role="content" class="contentBubble">
-    		<h1>Green<span>score</span></h1>
-	  		<label for="username"></label>
-	        <input id="username" type="text" />
+    <div data-role="content" class="contentBubble">
+        <h1>Green<span>score</span></h1>
+        <label for="username"></label>
+          <input id="username" type="text" />
         <label for="password"></label>
-	        <input id="password" type="password" />
-           
+          <input id="password" type="password" />
+
     </div>
     <div data-role="footer"></div>
   </div>
 
-	<!-- New User Page -->
+  <!-- New User Page -->
   <div data-role="page" data-fullscreen="true" id="newUserPage">
-  	<div data-role="header">
-    	<div class="navBar">
-      	<h2 class="searchBtn">Search</h2>
-      	<h2>Profile</h2>
+    <div data-role="header">
+      <div class="navBar">
+        <h2 class="searchBtn">Search</h2>
+        <h2>Profile</h2>
         <img src="./assets/selection.png"  style="right: 15%;"/>
-  		</div>
+      </div>
     </div>
-  	<div data-role="content" class="contentBubble">
-	  		<h1>Green<span>score</span></h1>
+    <div data-role="content" class="contentBubble">
+        <h1>Green<span>score</span></h1>
         <h2>Welcome to Greenscore!</h2>
         <h3>Please enter your information below</h3>
         <label for="fullName"></label>
-        	<input id="fullName" type="text" />
+          <input id="fullName" type="text" />
         <label for="newAddr"></label>
-        	<input id="newAddr" type="text" />
+          <input id="newAddr" type="text" />
         <div id="newUserData"></div>
     </div>
     <div data-role="footer"></div>
   </div>
-  
+
   <!-- A User's Profile Page -->
   <div data-role="page" data-fullscreen="true" id="profilePage">
-  	<div data-role="header">
-    	<div class="navBar">
-      	<h2 class="searchBtn">Search</h2>
-      	<h2>Profile</h2>
+    <div data-role="header">
+      <div class="navBar">
+        <h2 class="searchBtn">Search</h2>
+        <h2>Profile</h2>
         <img src="./assets/selection.png"  style="right: 15%;"/>
-    	</div>
+      </div>
     </div>
-  	<div data-role="content" class="contentBubble">
-	  			<h2>A users profile information</h2>
+    <div data-role="content" class="contentBubble">
+          <h2>A users profile information</h2>
     </div>
     <div data-role="footer"></div>
   </div>
 
   <!-- Page where the user can view a map with search results -->
   <div data-role="page" data-fullscreen="true" id="mapView">
-  	<div data-role="header">
-			<div class="navBar">
+    <div data-role="header">
+      <div class="navBar">
         <h2 class="searchBtn">Search</h2>
         <h2 class="profileBtn">Profile</h2>
         <h2>Map</h2>
@@ -125,24 +128,24 @@
       </div>
     </div>
 
-  	<div data-role="content" class="contentBubble">
-	  	<div id="map_canvas"></div>
+    <div data-role="content" class="contentBubble">
+      <div id="map_canvas"></div>
     </div>
     <div data-role="footer"></div>
   </div>
-  
+
   <!-- Page the user can filter results through -->
   <div data-role="page" data-fullscreen="true" id="filterPage">
-  	<div data-role="header">
-			<div class="navBar">
+    <div data-role="header">
+      <div class="navBar">
         <h2 class="searchBtn">Search</h2>
         <h2 class="profileBtn">Profile</h2>
         <h2>Filter</h2>
         <img src="./assets/selection.png"  style="right: 15%;"/>
       </div>
     </div>
-  	<div data-role="content" class="contentBubble">
-	  	
+    <div data-role="content" class="contentBubble">
+
     </div>
     <div data-role="footer"></div>
   </div>

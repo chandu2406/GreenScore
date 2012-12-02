@@ -14,6 +14,7 @@ class SocketServer
 
     @param port The port we're listening on.
     ###
+    return
 
   listen: () ->
     ###
@@ -21,6 +22,7 @@ class SocketServer
     ###
     io = require('socket.io').listen(@port)
     http = require "http"
+
     # Listen for client connection event
     io.sockets.on 'connection', ((socket) ->
       # make an HTTP request to a URL sent by the client and send back the xml
@@ -33,6 +35,7 @@ class SocketServer
           path: data.path,
           method: 'GET'
         }
+
         processZillowData = ((res) ->
           zillowXML = ''
           # keep track of data received

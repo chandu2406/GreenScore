@@ -22,6 +22,7 @@
           @param port The port we're listening on.
       */
 
+      return;
     }
 
     SocketServer.prototype.listen = function() {

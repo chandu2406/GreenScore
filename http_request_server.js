@@ -6,6 +6,7 @@
 @brief HTTP request server, spits back text/json. Used to query
        our db from the client.
 @author Lucas Ray (ltray)
+@author Nick LaGrow (nlagrow)
 */
 
 
@@ -213,16 +214,41 @@
       this.app.get('/auth/facebook', passport.authenticate('facebook'));
       this.app.get('/auth/facebook/callback', passport.authenticate('facebook', {
         successRedirect: '/',
-        failureRedirect: '/login'
+        failureRedirect: '/failuretemp'
+      }));
+      this.app.post('/login', (function(req, res, next) {
+        console.log("received /login post");
+        return passport.authenticate('local', (function(error, user, info) {
+          console.log('authentication callback');
+          if (error) {
+            console.log("auth error");
+            return next(error);
+          }
+          if (!user) {
+            console.log("no user");
+            return res.redirect('/failure');
+          }
+          console.log("success");
+          return res.redirect('/');
+        }))(req, res, next);
       }));
       passport.use(new PassportLocalStrategy(function(username, password, done) {
-        return done(null, false, {
-          message: 'unimp'
-        });
-      }));
-      this.app.post('/login', passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login'
+        var user;
+        console.log("authenticating with local strategy");
+        user = username;
+        if (user !== 'nick') {
+          console.log("bad username");
+          return done(null, false, {
+            message: 'Unknown user ' + username
+          });
+        }
+        if (password !== 'word') {
+          console.log("bad pw");
+          return done(null, false, {
+            message: 'invalid password'
+          });
+        }
+        return done(null, user);
       }));
       this.app.listen(this.port);
       process.on("uncaughtException", this.onUncaughtException);

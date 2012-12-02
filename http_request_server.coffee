@@ -4,6 +4,7 @@
 @brief HTTP request server, spits back text/json. Used to query
        our db from the client.
 @author Lucas Ray (ltray)
+@author Nick LaGrow (nlagrow)
 ###
 
 #################################################################
@@ -218,16 +219,47 @@ class HTTPRequestServer
     @app.get('/auth/facebook', passport.authenticate('facebook'))
     @app.get('/auth/facebook/callback',
       passport.authenticate('facebook', { successRedirect: '/',\
-                                      failureRedirect: '/login' }))
+                                      failureRedirect: '/failuretemp' }))
+
+
+    @app.post('/login', ((req, res, next) ->
+      console.log("received /login post")
+      passport.authenticate('local', ((error, user, info) ->
+        console.log('authentication callback')
+        if (error)
+          console.log("auth error")
+          return next(error)
+
+        if (!user)
+          console.log("no user")
+          return res.redirect('/failure')
+
+        console.log("success")
+        #TODO this doesn't redirect right w JQM
+        res.redirect('/')
+      ))(req,res,next)
+    ))
 
     # define methods for local authentication
+    # TODO make this a real function
     passport.use(new PassportLocalStrategy(
-      (username,password,done) -> done(null, false, { message: 'unimp' })))
+      (username,password,done) ->
+        console.log("authenticating with local strategy")
+        user = username
 
-    @app.post('/login', passport.authenticate('local', {\
-      successRedirect: '/',\
-      failureRedirect: '/login' }))
+        # verify valid username
+        if (user != 'nick')
+          console.log("bad username")
+          return done(null, false, {message: 'Unknown user '+username})
 
+        # verify valid password
+        if (password != 'word')
+          console.log("bad pw")
+          return done(null, false, {message: 'invalid password'})
+
+        # return success
+        done(null, user)
+    ))
 
     @app.listen @port
     process.on "uncaughtException", @onUncaughtException

@@ -19,6 +19,6 @@ task 'local', 'deploy locally (runs the node server)', ->
       throw err
     else
       console.log stdout + stderr if stdout or stderr
-      node = spawn 'node', ['./server/main.js']
+      node = spawn 'node', ['./main.js']
       node.stdout.on 'data', (data) -> console.log data.toString().trim()
       node.stderr.on 'data', (data) -> console.log data.toString().trim()

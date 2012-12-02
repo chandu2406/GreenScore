@@ -6,6 +6,11 @@
 
 $(document).ready(function(e) {
 
+  // click event handler for facebook login
+  $("#fb_button").on("click", function() {
+    window.open("/auth/facebook","_self");
+  });
+
   var geocoder, addrComponents, addrLat, addrLong;
   //watermarks for text input fields
   $("#searchBar").watermark("Please enter an address");

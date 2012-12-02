@@ -225,7 +225,7 @@
             return res.redirect('/failure');
           }
           console.log("success");
-          return $.mobile.changePage('#landingPage');
+          return res.redirect('/');
         }))(req, res, next);
       }));
       passport.use(new PassportLocalStrategy(function(username, password, done) {

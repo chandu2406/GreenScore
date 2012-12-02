@@ -21,7 +21,7 @@
 
   express = require('express');
 
-  flash = require("connect-flash");
+  flash = require('connect-flash');
 
   q = require('q');
 

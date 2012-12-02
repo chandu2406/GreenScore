@@ -13,7 +13,7 @@ PassportLocalStrategy = require('passport-local').Strategy
 FacebookStrategy      = require('passport-facebook').Strategy
 passport              = require('passport')
 express               = require('express')
-flash                 = require("connect-flash")
+flash                 = require('connect-flash')
 q                     = require('q')
 
 #################################################################

@@ -1,7 +1,7 @@
 {spawn, exec} = require 'child_process'
 
 task 'build', 'build the source directory', ->
-  exec 'coffee --compile .; scss --update .', (err, stdout, stderr) ->
+  exec 'coffee --compile .; scss --update .;npm install', (err, stdout, stderr) ->
     console.log err if err
     throw err if err
     console.log stdout + stderr if stdout or stderr

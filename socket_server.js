@@ -22,18 +22,21 @@
           @param port The port we're listening on.
       */
 
+      return;
     }
 
     SocketServer.prototype.listen = function() {
       /*
           @brief Starts this server listening.
       */
-			var http = require("http");
-      var io;
+
+      var http, io;
       io = require('socket.io').listen(this.port);
+      http = require('http');
       return io.sockets.on('connection', (function(socket) {
         return socket.on('simpleSearch', (function(data) {
           var options, processZillowData;
+          console.log("beginning simple search");
           options = {
             host: 'www.zillow.com',
             path: data.path,

@@ -159,7 +159,7 @@
       bath_hi = num_baths + depth * .4;
       bath_lo = Math.max(num_baths - depth * .4, 0);
       solar_hi = solar_lo = solar === false ? 0 : 1;
-      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("BEDROOMS <= " + bedroom_hi + " AND BEDROOMS >= " + bedroom_lo + " AND ") + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo + " AND ") + ("NCOMBATH <= " + bath_hi + " AND NCOMBATH >= " + bath_lo + " AND ") + ("USESOLAR <= " + solar_hi + " AND USESOLAR >= " + solar_lo);
+      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("BEDROOMS <= " + bedroom_hi + " AND BEDROOMS >= " + bedroom_lo + " AND ") + ("TOTSQFT  <= " + sqft_hi + "    AND TOTSQFT >=  " + sqft_lo + "    AND ") + ("NCOMBATH <= " + bath_hi + "    AND NCOMBATH >= " + bath_lo + "    AND ") + ("USESOLAR <= " + solar_hi + "   AND USESOLAR >= " + solar_lo);
       onSuccess = function(rows) {
         var kwh, row, totscore, _i, _len;
         totscore = 0;

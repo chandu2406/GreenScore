@@ -153,9 +153,9 @@ class HTTPRequestServer
 
     query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " +
             "BEDROOMS <= #{bedroom_hi} AND BEDROOMS >= #{bedroom_lo} AND " +
-            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo} AND " +
-            "NCOMBATH <= #{bath_hi} AND NCOMBATH >= #{bath_lo} AND " +
-            "USESOLAR <= #{solar_hi} AND USESOLAR >= #{solar_lo}"
+            "TOTSQFT  <= #{sqft_hi}    AND TOTSQFT >=  #{sqft_lo}    AND " +
+            "NCOMBATH <= #{bath_hi}    AND NCOMBATH >= #{bath_lo}    AND " +
+            "USESOLAR <= #{solar_hi}   AND USESOLAR >= #{solar_lo}"
 
     # on success, compute the greenscore
     onSuccess = (rows) ->

@@ -118,8 +118,8 @@
             whenSuccess = function(data) {
               var this_estimate, this_num;
               this_estimate = data[0], this_num = data[1];
-              if (this_estimate >= 50) {
-                return onSuccess(this_num);
+              if (this_num >= 50) {
+                return onSuccess(this_estimate);
               } else if (depth > 20) {
                 return onFailure("No match");
               } else {
@@ -149,7 +149,7 @@
 
       var bath_hi, bath_lo, bedroom_hi, bedroom_lo, num_baths, num_beds, onFailure, onSuccess, query, solar, solar_hi, solar_lo, sqft_hi, sqft_lo, square_footage, _ref, _ref1, _ref2, _ref3;
       num_beds = (_ref = args.num_beds) != null ? _ref : 1;
-      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 800;
+      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 1200;
       num_baths = (_ref2 = args.num_baths) != null ? _ref2 : 1;
       solar = (_ref3 = args.solar) != null ? _ref3 : false;
       bedroom_hi = num_beds + depth * .4;
@@ -159,7 +159,7 @@
       bath_hi = num_baths + depth * .4;
       bath_lo = Math.max(num_baths - depth * .4, 0);
       solar_hi = solar_lo = solar === false ? 0 : 1;
-      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("BEDROOMS <= " + bedroom_hi + " AND BEDROOMS >= " + bedroom_lo + " AND ") + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo + " AND ") + ("NCOMBATH <= " + bath_hi + " AND NCOMBATH >= " + bath_lo + " AND ") + ("USESOLAR <= " + solar_hi + " AND USESOLAR >= " + solar_lo);
+      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo);
       onSuccess = function(rows) {
         var row, totscore, _i, _len;
         totscore = 0;

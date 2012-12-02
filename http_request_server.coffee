@@ -92,6 +92,7 @@ class HTTPRequestServer
   cmdHandlers: ((self) -> {
     getGreenscore: ((args, user, onSuccess, onFailure) ->
       # TODO: use naive bayes or something to estimate better
+
       # wrapper for our estimation state machine. Needed to resolve
       # synchrony errors
       estimate_wrapper = ((depth) ->
@@ -102,8 +103,8 @@ class HTTPRequestServer
           [this_estimate, this_num] = data
 
           # if enough residences, succeed
-          if this_estimate >= 50
-            onSuccess this_num
+          if this_num >= 50
+            onSuccess this_estimate
 
           # if too many trials, fail
           else if depth > 20
@@ -136,7 +137,7 @@ class HTTPRequestServer
     @param deferred The deferred object.
     ###
     num_beds       = args.num_beds  ? 1
-    square_footage = args.sqft      ? 800
+    square_footage = args.sqft      ? 1200
     num_baths      = args.num_baths ? 1
     solar          = args.solar     ? false
 
@@ -149,11 +150,14 @@ class HTTPRequestServer
     bath_lo    = Math.max(num_baths - depth * .4, 0)
     solar_hi   = solar_lo = if solar is false then 0 else 1
 
+#    query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " +
+#            "BEDROOMS <= #{bedroom_hi} AND BEDROOMS >= #{bedroom_lo} AND " +
+#            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo} AND " +
+#            "NCOMBATH <= #{bath_hi} AND NCOMBATH >= #{bath_lo} AND " +
+#            "USESOLAR <= #{solar_hi} AND USESOLAR >= #{solar_lo}"
+
     query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " +
-            "BEDROOMS <= #{bedroom_hi} AND BEDROOMS >= #{bedroom_lo} AND " +
-            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo} AND " +
-            "NCOMBATH <= #{bath_hi} AND NCOMBATH >= #{bath_lo} AND " +
-            "USESOLAR <= #{solar_hi} AND USESOLAR >= #{solar_lo}"
+            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo}"
 
     # on success, compute the greenscore
     onSuccess = (rows) ->

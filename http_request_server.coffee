@@ -118,6 +118,7 @@ class HTTPRequestServer
         whenFailure = (data) ->
           onFailure "mySQL error"
 
+        # when promise is resolved or rejected, act
         (@estimate_score depth, args, deferred).then whenSuccess, whenFailure
         return deferred.promise
       ).bind(this)
@@ -150,22 +151,29 @@ class HTTPRequestServer
     bath_lo    = Math.max(num_baths - depth * .4, 0)
     solar_hi   = solar_lo = if solar is false then 0 else 1
 
-#    query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " +
-#            "BEDROOMS <= #{bedroom_hi} AND BEDROOMS >= #{bedroom_lo} AND " +
-#            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo} AND " +
-#            "NCOMBATH <= #{bath_hi} AND NCOMBATH >= #{bath_lo} AND " +
-#            "USESOLAR <= #{solar_hi} AND USESOLAR >= #{solar_lo}"
-
     query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " +
-            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo}"
+            "BEDROOMS <= #{bedroom_hi} AND BEDROOMS >= #{bedroom_lo} AND " +
+            "TOTSQFT <= #{sqft_hi} AND TOTSQFT >= #{sqft_lo} AND " +
+            "NCOMBATH <= #{bath_hi} AND NCOMBATH >= #{bath_lo} AND " +
+            "USESOLAR <= #{solar_hi} AND USESOLAR >= #{solar_lo}"
 
     # on success, compute the greenscore
     onSuccess = (rows) ->
       totscore = 0
       for row in rows
-        totscore += parseInt row['DOLLAREL']
+        # TODO: fix these heuristics
+        # 1100 is average DOLLAREL, 8265 is max
+#        totscore += 8265 / parseInt row['DOLLAREL']
+
+        # 99999 is max DOLLARNG
+#        totscore += 99999 / parseInt row['DOLLARNG']
+
+        # 72175 is max KWH
+        kwh = parseInt row['KWH']
+        totscore += 72175 / (if kwh is 0 then 1 else kwh)
 
       totscore /= rows.length
+      totscore = 100 if totscore > 100
       deferred.resolve([totscore, rows.length])
 
     # on failure, just return 0, 0 (something went wrong, user is notified

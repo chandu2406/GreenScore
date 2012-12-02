@@ -159,15 +159,19 @@
       bath_hi = num_baths + depth * .4;
       bath_lo = Math.max(num_baths - depth * .4, 0);
       solar_hi = solar_lo = solar === false ? 0 : 1;
-      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo);
+      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("BEDROOMS <= " + bedroom_hi + " AND BEDROOMS >= " + bedroom_lo + " AND ") + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo + " AND ") + ("NCOMBATH <= " + bath_hi + " AND NCOMBATH >= " + bath_lo + " AND ") + ("USESOLAR <= " + solar_hi + " AND USESOLAR >= " + solar_lo);
       onSuccess = function(rows) {
-        var row, totscore, _i, _len;
+        var kwh, row, totscore, _i, _len;
         totscore = 0;
         for (_i = 0, _len = rows.length; _i < _len; _i++) {
           row = rows[_i];
-          totscore += parseInt(row['DOLLAREL']);
+          kwh = parseInt(row['KWH']);
+          totscore += 72175 / (kwh === 0 ? 1 : kwh);
         }
         totscore /= rows.length;
+        if (totscore > 100) {
+          totscore = 100;
+        }
         return deferred.resolve([totscore, rows.length]);
       };
       onFailure = function(err) {

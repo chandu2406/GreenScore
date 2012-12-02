@@ -229,21 +229,6 @@
       return this.mysql_connect();
     };
 
-    HTTPRequestServer.prototype.construct_greenscore_query = function(args) {
-      /*
-          @brief Constructs a greenscore SQL query given the input.
-      
-          @param args The arguments we're basing our query off of.
-      */
-
-      var num_baths, num_beds, solar, square_footage, _ref, _ref1, _ref2, _ref3;
-      num_beds = (_ref = args.num_beds) != null ? _ref : 1;
-      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 1600;
-      num_baths = (_ref2 = args.num_baths) != null ? _ref2 : 1;
-      solar = (_ref3 = args.solar) != null ? _ref3 : false;
-      return "SELECT COFFEE FROM RECS05 LIMIT 0, 50";
-    };
-
     HTTPRequestServer.prototype.mysql_connect = function() {
       /*
           @brief Establishes a connection with our sql database.
@@ -261,6 +246,7 @@
       });
       return this.conn.connect(function(err) {
         if (err) {
+          console.log("Could not connect to mySQL db: ");
           return console.log(err);
         } else {
           return console.log("Connected to mySQL db");
@@ -272,7 +258,9 @@
       /*
           @brief Allows client to make arbitrary sql queries.
       
-          FIXME: THIS IS SO BAD OMG
+          WARNING: This function executes abitrary sql queries. DO NOT EXPOSE THIS
+                   FUNCTION TO THE USER. And be careful what you input (no "DROP
+                   TABLE RECS05;" please)
       */
       if (this.conn === void 0) {
         return onFailure("No mySQL connection established");

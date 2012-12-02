@@ -235,18 +235,6 @@ class HTTPRequestServer
     # connect to our db
     do @mysql_connect
 
-  construct_greenscore_query: (args) ->
-    ###
-    @brief Constructs a greenscore SQL query given the input.
-
-    @param args The arguments we're basing our query off of.
-    ###
-    num_beds = args.num_beds ? 1
-    square_footage = args.sqft ? 1600
-    num_baths = args.num_baths ? 1
-    solar = args.solar ? false
-    return "SELECT COFFEE FROM RECS05 LIMIT 0, 50"
-
   mysql_connect: ->
     ###
     @brief Establishes a connection with our sql database.
@@ -263,6 +251,7 @@ class HTTPRequestServer
     })
     @conn.connect((err) ->
       if err
+        console.log "Could not connect to mySQL db: "
         console.log err
       else
         console.log "Connected to mySQL db")
@@ -271,7 +260,9 @@ class HTTPRequestServer
     ###
     @brief Allows client to make arbitrary sql queries.
 
-    FIXME: THIS IS SO BAD OMG
+    WARNING: This function executes abitrary sql queries. DO NOT EXPOSE THIS
+             FUNCTION TO THE USER. And be careful what you input (no "DROP
+             TABLE RECS05;" please)
     ###
     if @conn is undefined
       onFailure "No mySQL connection established"

@@ -1,8 +1,9 @@
 /** @file mapHandler.js
- *  @brief controller to initiate and update map object
+ *  @brief model of the map object
  *
  *  @author Kenneth Murphy (kmmurphy)
  */
+
 
 var gMap = {};
 
@@ -52,6 +53,7 @@ gMap.newMarker = function(data){
 	marker.addr = data.street+", "+data.city+" "+data.state+", "+data.zipcode;
 	//add it to the newMarker array to be initialized on pageshow
 	gMap.newMarkers.push(marker);
+
 }
 
 gMap.initMarkers = function(){

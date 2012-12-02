@@ -94,13 +94,15 @@ h1 {
   }
 }
 
+#mapView {
+  height: 100%;
+}
+
+#mapView .contentBubble{
+	height: 80%;
+}
 
 #map_canvas {
   height: 100%;
   width: 100%;
 }
-
-#mapView {
-  height: 100%;
-}
-

@@ -9,6 +9,8 @@
     "html": "0.0.x",
     "mysql": "2.0.x",
     "q": "0.8.x"
+    "passport": "0.1.x",
+    "passport-facebook": "0.1.x"
   },
   "engines": {
     "node": "0.8.x",

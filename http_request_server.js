@@ -10,9 +10,18 @@
 
 
 (function() {
-  var HTTPRequestServer, express, q;
+  var FacebookStrategy, HTTPRequestServer, PassportLocalStrategy, express, flash, passport, q,
+    __slice = [].slice;
+
+  PassportLocalStrategy = require('passport-local').Strategy;
+
+  FacebookStrategy = require('passport-facebook').Strategy;
+
+  passport = require('passport');
 
   express = require('express');
+
+  flash = require("connect-flash");
 
   q = require('q');
 
@@ -41,6 +50,9 @@
         this.app.use(express.session({
           secret: 'whatisthis'
         }));
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
+        this.app.use(flash());
         return this.app.use(this.app.router);
       }).bind(this));
       return this.app.all('/json/:cmd', this.processJSONCmd.bind(this));
@@ -173,10 +185,40 @@
 
       var workingDir;
       console.log("Listening on port " + this.port);
-      workingDir = __dirname + "/../app";
+      workingDir = __dirname + "/app";
       this.app.use("/", express["static"](workingDir));
       this.app.get("/", (function(request, response) {
-        return response.render(workingDir + "/index.html");
+        return response.sendfile(workingDir + "/index.html");
+      }));
+      /*
+          @brief passport stuff
+      */
+
+      passport.use(new FacebookStrategy({
+        clientID: "121594388000133",
+        clientSecret: "0d478582454ff9d8755f2ebb48dccf28",
+        callbackURL: "http://localhost:8080"
+      }, function(accessToken, refreshToken, profile, done) {
+        return User.findOrCreate.apply(User, __slice.call(unused).concat([function(err, user) {
+          if (err) {
+            return done(err);
+          }
+          return done(null, user);
+        }]));
+      }));
+      this.app.get('/auth/facebook', passport.authenticate('facebook'));
+      this.app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+      }));
+      passport.use(new PassportLocalStrategy(function(username, password, done) {
+        return done(null, false, {
+          message: 'unimp'
+        });
+      }));
+      this.app.post('/login', passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login'
       }));
       this.app.listen(this.port);
       process.on("uncaughtException", this.onUncaughtException);

@@ -9,8 +9,12 @@
 #################################################################
 # requires
 #################################################################
-express = require('express')
-q       = require('q')
+PassportLocalStrategy = require('passport-local').Strategy
+FacebookStrategy      = require('passport-facebook').Strategy
+passport              = require('passport')
+express               = require('express')
+flash                 = require("connect-flash")
+q                     = require('q')
 
 #################################################################
 # http request server class
@@ -34,6 +38,9 @@ class HTTPRequestServer
       @app.use(express.bodyParser())
       @app.use(express.methodOverride())
       @app.use(express.session {secret: 'whatisthis'})
+      @app.use(passport.initialize())
+      @app.use(passport.session())
+      @app.use(flash())
       @app.use(@app.router)
     ).bind(this))
     @app.all '/json/:cmd', (@processJSONCmd).bind(this)
@@ -172,10 +179,44 @@ class HTTPRequestServer
     @brief Listens on the specified port.
     ###
     console.log "Listening on port #{@port}"
-    workingDir = __dirname + "/../app"
+    workingDir = __dirname + "/app"
     @app.use("/", express.static(workingDir))
     @app.get("/", ((request, response) ->
-      response.render(workingDir + "/index.html")))
+      response.sendfile(workingDir + "/index.html")))
+
+    ###
+    @brief passport stuff
+    ###
+    # facebook strategy
+    passport.use(new FacebookStrategy({
+        clientID: "121594388000133"
+        clientSecret: "0d478582454ff9d8755f2ebb48dccf28"
+        callbackURL: "http://localhost:8080"
+      },
+      (accessToken, refreshToken, profile, done) ->
+        # handwaved away unused
+        User.findOrCreate(unused..., (err, user) ->
+          if (err)
+            return done(err)
+          done(null, user)
+        )
+    ))
+
+    # define methods for facebook authentication
+    @app.get('/auth/facebook', passport.authenticate('facebook'))
+    @app.get('/auth/facebook/callback',
+      passport.authenticate('facebook', { successRedirect: '/',\
+                                      failureRedirect: '/login' }))
+
+    # define methods for local authentication
+    passport.use(new PassportLocalStrategy(
+      (username,password,done) -> done(null, false, { message: 'unimp' })))
+
+    @app.post('/login', passport.authenticate('local', {\
+      successRedirect: '/',\
+      failureRedirect: '/login' }))
+
+
     @app.listen @port
     process.on "uncaughtException", @onUncaughtException
 

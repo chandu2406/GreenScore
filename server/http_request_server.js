@@ -10,9 +10,11 @@
 
 
 (function() {
-  var HTTPRequestServer, express;
+  var HTTPRequestServer, express, q;
 
   express = require('express');
+
+  q = require('q');
 
   HTTPRequestServer = (function() {
 
@@ -96,21 +98,73 @@
 
     HTTPRequestServer.prototype.cmdHandlers = (function(self) {
       return {
-        getGreenscore: (function(args, user, onSuccess, onError) {
-          return this.mysql_query(this.construct_greenscore_query(args), onSuccess, onError);
-        }).bind(self),
-        echo: (function(args, user, onSuccess, onError) {
-          var ret;
-          ret = "Echo: " + args.msg;
-          return onSuccess(ret);
-        }),
-        sum: (function(args, user, onSuccess, onError) {
-          var ret;
-          ret = parseInt(args.x, 10) + parseInt(args.y, 10);
-          return onSuccess(ret);
-        })
+        getGreenscore: (function(args, user, onSuccess, onFailure) {
+          var estimate_wrapper;
+          estimate_wrapper = (function(depth) {
+            var deferred, whenFailure, whenSuccess;
+            deferred = q.defer();
+            whenSuccess = function(data) {
+              var this_estimate, this_num;
+              this_estimate = data[0], this_num = data[1];
+              if (this_estimate >= 50) {
+                return onSuccess(this_num);
+              } else if (depth > 20) {
+                return onFailure("No match");
+              } else {
+                return estimate_wrapper(depth + 1);
+              }
+            };
+            whenFailure = function(data) {
+              return onFailure("mySQL error");
+            };
+            (this.estimate_score(depth, args, deferred)).then(whenSuccess, whenFailure);
+            return deferred.promise;
+          }).bind(this);
+          return estimate_wrapper(0);
+        }).bind(self)
       };
     });
+
+    HTTPRequestServer.prototype.estimate_score = function(depth, args, deferred) {
+      /*
+          @brief Estimates the greenscore given depth and args. Depth determines how
+                 general of a search to make.
+      
+          @param depth The depth of this search (higher depth = more general)
+          @param args Arguments we need to determine the greenscore.
+          @param deferred The deferred object.
+      */
+
+      var bath_hi, bath_lo, bedroom_hi, bedroom_lo, num_baths, num_beds, onFailure, onSuccess, query, solar, solar_hi, solar_lo, sqft_hi, sqft_lo, square_footage, _ref, _ref1, _ref2, _ref3;
+      num_beds = (_ref = args.num_beds) != null ? _ref : 1;
+      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 800;
+      num_baths = (_ref2 = args.num_baths) != null ? _ref2 : 1;
+      solar = (_ref3 = args.solar) != null ? _ref3 : false;
+      bedroom_hi = num_beds + depth * .4;
+      bedroom_lo = Math.max(num_beds - depth * .4, 0);
+      sqft_hi = square_footage + depth * 50;
+      sqft_lo = Math.max(square_footage - depth * 50, 0);
+      bath_hi = num_baths + depth * .4;
+      bath_lo = Math.max(num_baths - depth * .4, 0);
+      solar_hi = solar_lo = solar === false ? 0 : 1;
+      query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("BEDROOMS <= " + bedroom_hi + " AND BEDROOMS >= " + bedroom_lo + " AND ") + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo + " AND ") + ("NCOMBATH <= " + bath_hi + " AND NCOMBATH >= " + bath_lo + " AND ") + ("USESOLAR <= " + solar_hi + " AND USESOLAR >= " + solar_lo);
+      onSuccess = function(rows) {
+        var row, totscore, _i, _len;
+        totscore = 0;
+        for (_i = 0, _len = rows.length; _i < _len; _i++) {
+          row = rows[_i];
+          totscore += parseInt(row['DOLLAREL']);
+        }
+        totscore /= rows.length;
+        return deferred.resolve([totscore, rows.length]);
+      };
+      onFailure = function(err) {
+        console.log(err);
+        return deferred.reject([0, 0]);
+      };
+      this.mysql_query(query, onSuccess, onFailure);
+      return deferred.promise;
+    };
 
     HTTPRequestServer.prototype.listen = function() {
       /*
@@ -135,6 +189,12 @@
       
           @param args The arguments we're basing our query off of.
       */
+
+      var num_baths, num_beds, solar, square_footage, _ref, _ref1, _ref2, _ref3;
+      num_beds = (_ref = args.num_beds) != null ? _ref : 1;
+      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 1600;
+      num_baths = (_ref2 = args.num_baths) != null ? _ref2 : 1;
+      solar = (_ref3 = args.solar) != null ? _ref3 : false;
       return "SELECT COFFEE FROM RECS05 LIMIT 0, 50";
     };
 
@@ -162,18 +222,18 @@
       });
     };
 
-    HTTPRequestServer.prototype.mysql_query = function(query, onSuccess, onError) {
+    HTTPRequestServer.prototype.mysql_query = function(query, onSuccess, onFailure) {
       /*
           @brief Allows client to make arbitrary sql queries.
       
           FIXME: THIS IS SO BAD OMG
       */
       if (this.conn === void 0) {
-        return onError("No mySQL connection established");
+        return onFailure("No mySQL connection established");
       } else {
         return this.conn.query(query, (function(err, rows) {
           if (err === !null) {
-            return onError(err);
+            return onFailure(err);
           } else {
             return onSuccess(rows);
           }

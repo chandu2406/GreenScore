@@ -59,7 +59,10 @@ columns = '''(%s)''' % (", ".join(map(\
 
 # insert the datums!
 for datum in all_data:
-  values = '''(%s)''' % (", ".join(datum.values()))
+  value_list = []
+  for mapped in mapping:
+    value_list.append(datum[mapped])
+  values = '''(%s)''' % (", ".join(value_list))
   insert_query = "INSERT INTO %s %s VALUES %s" % (table_name, columns, \
                                                           values)
   # XXX: some insert queries are ill-formed for some reason. Ignore them (since

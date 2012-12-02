@@ -93,6 +93,7 @@ class HTTPRequestServer
   cmdHandlers: ((self) -> {
     getGreenscore: ((args, user, onSuccess, onFailure) ->
       # TODO: use naive bayes or something to estimate better
+
       # wrapper for our estimation state machine. Needed to resolve
       # synchrony errors
       estimate_wrapper = ((depth) ->
@@ -103,8 +104,8 @@ class HTTPRequestServer
           [this_estimate, this_num] = data
 
           # if enough residences, succeed
-          if this_estimate >= 50
-            onSuccess this_num
+          if this_num >= 50
+            onSuccess this_estimate
 
           # if too many trials, fail
           else if depth > 20
@@ -118,6 +119,7 @@ class HTTPRequestServer
         whenFailure = (data) ->
           onFailure "mySQL error"
 
+        # when promise is resolved or rejected, act
         (@estimate_score depth, args, deferred).then whenSuccess, whenFailure
         return deferred.promise
       ).bind(this)
@@ -137,7 +139,7 @@ class HTTPRequestServer
     @param deferred The deferred object.
     ###
     num_beds       = args.num_beds  ? 1
-    square_footage = args.sqft      ? 800
+    square_footage = args.sqft      ? 1200
     num_baths      = args.num_baths ? 1
     solar          = args.solar     ? false
 
@@ -160,9 +162,19 @@ class HTTPRequestServer
     onSuccess = (rows) ->
       totscore = 0
       for row in rows
-        totscore += parseInt row['DOLLAREL']
+        # TODO: fix these heuristics
+        # 1100 is average DOLLAREL, 8265 is max
+#        totscore += 8265 / parseInt row['DOLLAREL']
+
+        # 99999 is max DOLLARNG
+#        totscore += 99999 / parseInt row['DOLLARNG']
+
+        # 72175 is max KWH
+        kwh = parseInt row['KWH']
+        totscore += 72175 / (if kwh is 0 then 1 else kwh)
 
       totscore /= rows.length
+      totscore = 100 if totscore > 100
       deferred.resolve([totscore, rows.length])
 
     # on failure, just return 0, 0 (something went wrong, user is notified
@@ -255,18 +267,6 @@ class HTTPRequestServer
     # connect to our db
     do @mysql_connect
 
-  construct_greenscore_query: (args) ->
-    ###
-    @brief Constructs a greenscore SQL query given the input.
-
-    @param args The arguments we're basing our query off of.
-    ###
-    num_beds = args.num_beds ? 1
-    square_footage = args.sqft ? 1600
-    num_baths = args.num_baths ? 1
-    solar = args.solar ? false
-    return "SELECT COFFEE FROM RECS05 LIMIT 0, 50"
-
   mysql_connect: ->
     ###
     @brief Establishes a connection with our sql database.
@@ -283,6 +283,7 @@ class HTTPRequestServer
     })
     @conn.connect((err) ->
       if err
+        console.log "Could not connect to mySQL db: "
         console.log err
       else
         console.log "Connected to mySQL db")
@@ -291,7 +292,9 @@ class HTTPRequestServer
     ###
     @brief Allows client to make arbitrary sql queries.
 
-    FIXME: THIS IS SO BAD OMG
+    WARNING: This function executes abitrary sql queries. DO NOT EXPOSE THIS
+             FUNCTION TO THE USER. And be careful what you input (no "DROP
+             TABLE RECS05;" please)
     ###
     if @conn is undefined
       onFailure "No mySQL connection established"

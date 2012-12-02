@@ -16,7 +16,7 @@ task 'local', 'deploy locally (runs the node server)', ->
   exec 'cake build', (err, stdout, stderr) ->
     if err
       console.log err
-      throw err
+      throw err if err
     else
       console.log stdout + stderr if stdout or stderr
       node = spawn 'node', ['./main.js']

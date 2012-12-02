@@ -119,8 +119,8 @@
             whenSuccess = function(data) {
               var this_estimate, this_num;
               this_estimate = data[0], this_num = data[1];
-              if (this_estimate >= 50) {
-                return onSuccess(this_num);
+              if (this_num >= 50) {
+                return onSuccess(this_estimate);
               } else if (depth > 20) {
                 return onFailure("No match");
               } else {
@@ -150,7 +150,7 @@
 
       var bath_hi, bath_lo, bedroom_hi, bedroom_lo, num_baths, num_beds, onFailure, onSuccess, query, solar, solar_hi, solar_lo, sqft_hi, sqft_lo, square_footage, _ref, _ref1, _ref2, _ref3;
       num_beds = (_ref = args.num_beds) != null ? _ref : 1;
-      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 800;
+      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 1200;
       num_baths = (_ref2 = args.num_baths) != null ? _ref2 : 1;
       solar = (_ref3 = args.solar) != null ? _ref3 : false;
       bedroom_hi = num_beds + depth * .4;
@@ -162,13 +162,17 @@
       solar_hi = solar_lo = solar === false ? 0 : 1;
       query = "SELECT DOLLAREL, DOLLARNG, KWH FROM RECS05 WHERE " + ("BEDROOMS <= " + bedroom_hi + " AND BEDROOMS >= " + bedroom_lo + " AND ") + ("TOTSQFT <= " + sqft_hi + " AND TOTSQFT >= " + sqft_lo + " AND ") + ("NCOMBATH <= " + bath_hi + " AND NCOMBATH >= " + bath_lo + " AND ") + ("USESOLAR <= " + solar_hi + " AND USESOLAR >= " + solar_lo);
       onSuccess = function(rows) {
-        var row, totscore, _i, _len;
+        var kwh, row, totscore, _i, _len;
         totscore = 0;
         for (_i = 0, _len = rows.length; _i < _len; _i++) {
           row = rows[_i];
-          totscore += parseInt(row['DOLLAREL']);
+          kwh = parseInt(row['KWH']);
+          totscore += 72175 / (kwh === 0 ? 1 : kwh);
         }
         totscore /= rows.length;
+        if (totscore > 100) {
+          totscore = 100;
+        }
         return deferred.resolve([totscore, rows.length]);
       };
       onFailure = function(err) {
@@ -251,21 +255,6 @@
       return this.mysql_connect();
     };
 
-    HTTPRequestServer.prototype.construct_greenscore_query = function(args) {
-      /*
-          @brief Constructs a greenscore SQL query given the input.
-      
-          @param args The arguments we're basing our query off of.
-      */
-
-      var num_baths, num_beds, solar, square_footage, _ref, _ref1, _ref2, _ref3;
-      num_beds = (_ref = args.num_beds) != null ? _ref : 1;
-      square_footage = (_ref1 = args.sqft) != null ? _ref1 : 1600;
-      num_baths = (_ref2 = args.num_baths) != null ? _ref2 : 1;
-      solar = (_ref3 = args.solar) != null ? _ref3 : false;
-      return "SELECT COFFEE FROM RECS05 LIMIT 0, 50";
-    };
-
     HTTPRequestServer.prototype.mysql_connect = function() {
       /*
           @brief Establishes a connection with our sql database.
@@ -283,6 +272,7 @@
       });
       return this.conn.connect(function(err) {
         if (err) {
+          console.log("Could not connect to mySQL db: ");
           return console.log(err);
         } else {
           return console.log("Connected to mySQL db");
@@ -294,7 +284,9 @@
       /*
           @brief Allows client to make arbitrary sql queries.
       
-          FIXME: THIS IS SO BAD OMG
+          WARNING: This function executes abitrary sql queries. DO NOT EXPOSE THIS
+                   FUNCTION TO THE USER. And be careful what you input (no "DROP
+                   TABLE RECS05;" please)
       */
       if (this.conn === void 0) {
         return onFailure("No mySQL connection established");

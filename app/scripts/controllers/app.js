@@ -76,7 +76,7 @@ $(document).ready(function(e) {
           }
         }
       }
-      zillowHandler.queryZillow(zillowAddr);
+      zillowHandler.searchAddress(zillowAddr);
     }
   });
 

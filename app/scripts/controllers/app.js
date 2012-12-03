@@ -73,6 +73,13 @@ $(document).ready(function(e) {
       console.log("querying zillow");
       var zillowAddr, i, component;
 
+      // loading page
+      $.mobile.loading('show', {
+        text: 'Searching...',
+        textVisible: true,
+        theme: 'c'
+      });
+
       zillowAddr = new userAddress();
       if(typeof(addrComponents) === 'undefined'){
         alert("Please enter a valid address");

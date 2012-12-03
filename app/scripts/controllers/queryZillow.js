@@ -10,102 +10,119 @@ var zillowHandler = {};
 zillowHandler.socket = io.connect('http://localhost:3000/');
 //unique identifier to access Zillow APIs
 zillowHandler.ZWSID = "X1-ZWz1bjzdhxm7m3_af1tq";
-
-/** @brief Object to hold information returned from the Zillow API
-  */
-zillowHandler.ZillowData = function() {
-  this.zpid;
-	this.lat;
-	this.long;
-  this.street;
-  this.city;
-  this.state;
-  this.zipcode;
-  this.sqFoot;
-  this.numBed;
-  this.numBath;
-  this.maxPrice;
-  this.minPrice;
-};
+zillowHandler.searchedAddr = new Residence();
 
 /** @brief Function called to retrieve info from Zillow API for a single address
-  *
-	*	@param addr-a userAddress object to retrieve information on
-	*
-	*/
+ *
+ *	@param addr-a userAddress object to retrieve information on
+ *
+ */
 zillowHandler.searchAddress = function(addr){
-	var urlAddr, path;
-	
-  //url format the address by replacing all spaces with pluses in the route
-  urlAddr = addr.streetNum+"+"+addr.street.split(" ").join("+"); 
-  //return a path to the api query that will appended to the zillow domain name
-  path = "/webservice/GetDeepSearchResults.htm?zws-id="+zillowHandler.ZWSID+"&address="+urlAddr+"&citystatezip="+addr.zipcode;
-	console.log("emitting simplesearch event");
-	//send the url to the server.  The server will query the API and return the response.
-  zillowHandler.socket.emit("simpleSearch", {'path': path});
-	
-	$("#searchBar").val(" ");
-	
+    var urlAddr, path;
+    
+    //url format the address by replacing all spaces with pluses in the route
+    urlAddr = addr.streetNum+"+"+addr.street.split(" ").join("+"); 
+    //return a path to the api query that will appended to the zillow domain name
+    path = "/webservice/GetDeepSearchResults.htm?zws-id="+zillowHandler.ZWSID+"&address="+urlAddr+"&citystatezip="+addr.zipcode;
+    console.log("sending simpleSearch event");
+    //send the url to the server.  The server will query the API and return the response.
+    zillowHandler.socket.emit("simpleSearch", {'path': path});
+    
+    $("#searchBar").val(" ");
+    
 }
 
-/** @brief Function called to retrieve 25 houses in the area that are comparable to the 
-	*					address the user entered
-  */
-zillowHandler.getComp = function(addr){
-
-
+/** @brief Function called to retrieve houses in the area that are comparable to the 
+ *					address the user entered
+ *
+ *	@param zpid - the unique identifier of the residence for which Zillow will find comparable properties
+ * @param count - number of houses to return a count of
+ */
+zillowHandler.getComp = function(zpid,count){
+    //form the URL to call
+    var path = "/webservice/GetDeepComps.htm?zws-id="+zillowHandler.ZWSID+"&zpid="+zpid+"&count="+count;	
+    console.log("sending compSearch event");
+    zillowHandler.socket.emit("compSearch", {'path': path});
 }
-/** @brief receive api response from server and parses the response
-   * the resulting information is then sent to the mapView
-   */
+
+
+/** @brief receive api response from server for the search of a single address
+ *
+ */
 zillowHandler.socket.on("searchResults", function(data){
-	var txt, xmlDoc, xml, zillowData;
-	console.log("received results from simple search");
-	txt = data.zillowData;
-	
-	console.log(txt);
-	
-	xmlDoc = $.parseXML(txt);
-	$xml = $(xmlDoc);
-	
-	zillowData = new zillowHandler.ZillowData();
-	zillowData.lat = $xml.find("latitude").text();
-	zillowData.long = $xml.find("longitude").text();
-	zillowData.street = $xml.find("street").text();
-	zillowData.city = $xml.find("city").text();
-	zillowData.state =  $xml.find("state").text();
-	zillowData.zipcode = $xml.find("zipcode").text();
-	zillowData.sqFt = $xml.find("finishedSqFt").text();
-	zillowData.numBath = $xml.find("bathrooms").text();
-	zillowData.numBed = $xml.find("bedrooms").text();
-	
-	zillowHandler.displayResults(zillowData);
-  
+    var txt, xmlDoc, xml, zpid, lat, long;
+    //parse api return into an XML document
+    txt = data.zillowData;
+    xmlDoc = $.parseXML(txt);
+    $xml = $(xmlDoc);
+    console.log("xml for single search: "+txt);
+    newRes = new Residence();
+    newRes.zpid =  $xml.find("zpid").text();
+    newRes.lat = $xml.find("latitude").text();
+    newRes.long = $xml.find("longitude").text();
+    newRes.street = $xml.find("street").text();
+    newRes.city = $xml.find("city").text();
+    newRes.state =  $xml.find("state").text();
+    newRes.zipcode = $xml.find("zipcode").text();
+    newRes.sqFt = $xml.find("finishedSqFt").text();
+    newRes.numBath = $xml.find("bathrooms").text();
+    newRes.numBed = $xml.find("bedrooms").text();
+    
+    //reset the set of residences
+    allResidences = {};
+    
+    allResidences[newRes.zpid] = newRes;
+    
+    //initiatize the map if neccessary, otherwise update the coordinates of the center of the map
+    if($("#map_canvas").children().length === 0){
+	gMap.init(newRes);
+    }  else {
+	gMap.updateCoors(newRes.lat,newRes.long);
+    }
+    
+    zillowHandler.getComp(newRes.zpid, 25);
 });
 
-zillowHandler.displayResults = function(results){
-  /*
-	$("#mapView").on("pagechange", function(){
-			console.log("page change function called");
-			console.log("results are currently: "+results);
-			gMap.init(results);
-	});*/
-	console.log("changing page");
-	/*$.mobile.loadPage("#mapView");
-	$("#mapView").ready(function(){
-		gMap.init(results);
-	});
-	*/
-	
-	$.mobile.changePage($("#mapView"), { transition: "slideup"} );
-	//initiatize the map if it hasn't already been initialized
-	if($("#map_canvas").children().length === 0){
-		gMap.init(results);
-	} else{
-		gMap.newMarker(results);
+
+/** @brief receive api response from server that contains a list of comparable sales for a specific property
+ *
+ */
+zillowHandler.socket.on("compResults", function(data){
+    var txt, xmlDoc, xml, zpid, newRes;
+    
+    console.log("received results from comp search");
+    txt = data.zillowData;
+    console.log(txt);
+    xmlDoc = $.parseXML(txt);
+    $xml = $(xmlDoc);
+    
+    
+    $xml.find("comp").each(function(){
+	zpid = $(this).find("zpid").text();
+	console.log(zpid);
+	if(typeof(allResidences[zpid]) === 'undefined'){
+	    newRes = new Residence();
+	    newRes.zpid = zpid;
+	    newRes.lat = $(this).find("latitude").text();
+	    newRes.long = $(this).find("longitude").text();
+	    newRes.street = $(this).find("street").text();
+	    newRes.city = $(this).find("city").text();
+	    newRes.state =  $(this).find("state").text();
+	    newRes.zipcode = $(this).find("zipcode").text();
+	    newRes.sqFt = $(this).find("finishedSqFt").text();
+	    newRes.numBath = $(this).find("bathrooms").text();
+	    newRes.numBed = $(this).find("bedrooms").text();
+	    console.log(newRes);
+	    allResidences[zpid] = newRes;
+	    gMap.newMarker(newRes);
 	}
+    });
+    
+    zillowHandler.displayResults();
+    
+});
+
+zillowHandler.displayResults = function(){ 		
+    $.mobile.changePage($("#mapView"), { transition: "slideup"} );
 }
-
-
-
 

@@ -45,7 +45,7 @@ body {
 
   width: 70%;
   height: 250px;
-  margin: 0px 15% 15% 15%;
+  margin: 5px 15% 15% 15%;
   text-align: center;
 
   box-shadow: 0 0 8px #111;
@@ -54,14 +54,23 @@ body {
 
   input {
     @include roundEdges(5px);
-    margin-left: 10%;
+    margin: 3% 0 0 10%;
     width: 80%;
-    height: 25px;
+    height: 30px;
 
     box-shadow: 0 0 2px #111;
     -moz-box-shadow: 0 0 2px #111;
     -webkit-box-shadow: 0 0 2px #111;
   }
+	
+	h1 {
+		margin: 15px;
+  	font-size: 350%;
+  	color: $darkGreen;
+  	span {
+    	color: $gray;
+  	}
+	}
 }
 
 .navBar {
@@ -86,13 +95,6 @@ body {
   }
 }
 
-h1 {
-  font-size: 300%;
-  color: $darkGreen;
-  span {
-    color: $gray;
-  }
-}
 
 #mapView {
   height: 100%;
@@ -106,3 +108,4 @@ h1 {
   height: 100%;
   width: 100%;
 }
+

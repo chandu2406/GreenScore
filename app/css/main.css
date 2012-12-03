@@ -27,7 +27,7 @@ body {
   background-repeat: repeat;
   width: 70%;
   height: 250px;
-  margin: 0px 15% 15% 15%;
+  margin: 5px 15% 15% 15%;
   text-align: center;
   box-shadow: 0 0 8px #111;
   -moz-box-shadow: 0 0 8px #111;
@@ -37,12 +37,18 @@ body {
     -mox-border-radius: 5px;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
-    margin-left: 10%;
+    margin: 3% 0 0 10%;
     width: 80%;
-    height: 25px;
+    height: 30px;
     box-shadow: 0 0 2px #111;
     -moz-box-shadow: 0 0 2px #111;
     -webkit-box-shadow: 0 0 2px #111; }
+  .contentBubble h1 {
+    margin: 15px;
+    font-size: 350%;
+    color: #68874b; }
+    .contentBubble h1 span {
+      color: #42473d; }
 
 .navBar {
   position: relative;
@@ -61,12 +67,6 @@ body {
   .navBar img {
     bottom: -37px;
     position: absolute; }
-
-h1 {
-  font-size: 300%;
-  color: #68874b; }
-  h1 span {
-    color: #42473d; }
 
 #mapView {
   height: 100%; }

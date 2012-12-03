@@ -34,7 +34,7 @@
       io = require('socket.io').listen(this.port);
       http = require("http");
       return io.sockets.on('connection', (function(socket) {
-        return socket.on('simpleSearch', (function(data) {
+        socket.on('simpleSearch', (function(data) {
           var options, processZillowData;
           console.log("beginning simple search");
           options = {
@@ -50,6 +50,31 @@
             }));
             res.on('end', (function() {
               return socket.emit('searchResults', {
+                'zillowData': zillowXML
+              });
+            }));
+            return res.on('error', (function(err) {
+              return console.log(err);
+            }));
+          });
+          return (http.request(options, processZillowData)).end();
+        }));
+        return socket.on('compSearch', (function(data) {
+          var options, processZillowData;
+          console.log("beginning comp search");
+          options = {
+            host: 'www.zillow.com',
+            path: data.path,
+            method: 'GET'
+          };
+          processZillowData = (function(res) {
+            var zillowXML;
+            zillowXML = '';
+            res.on('data', (function(zillowData) {
+              return zillowXML += zillowData;
+            }));
+            res.on('end', (function() {
+              return socket.emit('compResults', {
                 'zillowData': zillowXML
               });
             }));

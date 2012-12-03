@@ -174,6 +174,11 @@ class HTTPRequestServer
         totscore += 72175 / (if kwh is 0 then 1 else kwh)
 
       totscore /= rows.length
+
+      # no reason to multiply by 4, just lots of houses getting super low
+      # scores. This logic is to be replaced anyway, as this is mainly
+      # a proof of concept.
+      totscore *= 4
       totscore = 100 if totscore > 100
       deferred.resolve([totscore, rows.length])
 

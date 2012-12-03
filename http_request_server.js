@@ -170,6 +170,7 @@
           totscore += 72175 / (kwh === 0 ? 1 : kwh);
         }
         totscore /= rows.length;
+        totscore *= 4;
         if (totscore > 100) {
           totscore = 100;
         }

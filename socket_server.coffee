@@ -29,9 +29,7 @@ class SocketServer
       # response
       socket.on 'simpleSearch', ((data) ->
         console.log "beginning simple search"
-
         options = {host: 'www.zillow.com', path: data.path, method: 'GET'}
-
         processZillowData = ((res) ->
           zillowXML = ''
           # keep track of data received
@@ -47,7 +45,7 @@ class SocketServer
           )
         )
         do (http.request options, processZillowData).end
-      )    
+      )
       socket.on 'compSearch', ((data) ->
         console.log "beginning comp search"
 
@@ -66,11 +64,50 @@ class SocketServer
           res.on 'error', ((err) ->
             console.log err
           )
-        )  
+        )
         do (http.request options, processZillowData).end
       )
+
+      socket.on 'scoreRequest', ((data) ->
+        ###
+        @brief handles a request for a greenscore
+        @param data packet sent to the server
+        Expects sqft, num_beds, num_baths, solar
+        ###
+        console.log "got a greenscore request"
+        console.log data.num_beds
+        console.log data.num_baths
+        console.log data.sqft
+
+        if (data.num_beds == undefined)
+          data.num_beds = 0
+        if (data.num_baths == undefined)
+          data.num_baths = 0
+        if (data.sqft == undefined)
+          data.sqft = 0
+
+        args = "?sqft="+Math.floor(data.sqft)+"&num_beds="+Math.floor(data.num_beds)+"&num_baths="+Math.floor(data.num_baths)
+        options = {host: 'localhost', path: '/json/getGreenscore'+args, port:8080, method: 'GET'}
+        console.log options.path
+        processScoreRequest = ((res) ->
+          console.log('processing score request!')
+          totalData = ''
+          # keep track of data received
+          res.on 'data', ((newData) ->
+            totalData += newData
+          )
+          # on end send the data to the client
+          res.on 'end', (->
+            socket.emit 'scoreResults', {'greenscore': totalData}
+          )
+          res.on 'error', ((err) ->
+            console.log err
+          )
+        )
+        do (http.request options, processScoreRequest).end
+      )
     )
-		
+
 
 # export it
 module.exports = SocketServer

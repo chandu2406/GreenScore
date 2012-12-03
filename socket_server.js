@@ -59,7 +59,7 @@
           });
           return (http.request(options, processZillowData)).end();
         }));
-        return socket.on('compSearch', (function(data) {
+        socket.on('compSearch', (function(data) {
           var options, processZillowData;
           console.log("beginning comp search");
           options = {
@@ -83,6 +83,53 @@
             }));
           });
           return (http.request(options, processZillowData)).end();
+        }));
+        return socket.on('scoreRequest', (function(data) {
+          /*
+                  @brief handles a request for a greenscore
+                  @param data packet sent to the server
+                  Expects sqft, num_beds, num_baths, solar
+          */
+
+          var args, options, processScoreRequest;
+          console.log("got a greenscore request");
+          console.log(data.num_beds);
+          console.log(data.num_baths);
+          console.log(data.sqft);
+          if (data.num_beds === void 0) {
+            data.num_beds = 0;
+          }
+          if (data.num_baths === void 0) {
+            data.num_baths = 0;
+          }
+          if (data.sqft === void 0) {
+            data.sqft = 0;
+          }
+          args = "?sqft=" + Math.floor(data.sqft) + "&num_beds=" + Math.floor(data.num_beds) + "&num_baths=" + Math.floor(data.num_baths);
+          options = {
+            host: 'localhost',
+            path: '/json/getGreenscore' + args,
+            port: 8080,
+            method: 'GET'
+          };
+          console.log(options.path);
+          processScoreRequest = (function(res) {
+            var totalData;
+            console.log('processing score request!');
+            totalData = '';
+            res.on('data', (function(newData) {
+              return totalData += newData;
+            }));
+            res.on('end', (function() {
+              return socket.emit('scoreResults', {
+                'greenscore': totalData
+              });
+            }));
+            return res.on('error', (function(err) {
+              return console.log(err);
+            }));
+          });
+          return (http.request(options, processScoreRequest)).end();
         }));
       }));
     };

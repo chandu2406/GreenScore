@@ -67,6 +67,13 @@ zillowHandler.socket.on("searchResults", function(data){
     newRes.sqFt = $xml.find("finishedSqFt").text();
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
+
+    zillowHandler.socket.emit("scoreRequest", {
+      'sqft': newRes.sqFt,
+      'num_beds': newRes.numBed,
+      'num_baths': newRes.numBath
+    });
+
     
     //reset the set of residences
     allResidences = {};
@@ -83,6 +90,10 @@ zillowHandler.socket.on("searchResults", function(data){
     zillowHandler.getComp(newRes.zpid, 25);
 });
 
+
+zillowHandler.socket.on('scoreResults', function(data){
+  console.log(data);
+});
 
 /** @brief receive api response from server that contains a list of comparable sales for a specific property
  *

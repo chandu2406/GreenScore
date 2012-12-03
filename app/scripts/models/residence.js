@@ -8,9 +8,9 @@
 var allResidences = {};
 
 function Residence(){
-	this.zpid;
-	this.lat;
-	this.long;
+  this.zpid;
+  this.lat;
+  this.long;
   this.street;
   this.city;
   this.state;
@@ -20,4 +20,5 @@ function Residence(){
   this.numBath;
   this.maxPrice;
   this.minPrice;
+  this.greenscore;
 }

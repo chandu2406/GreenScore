@@ -70,6 +70,12 @@ zillowHandler.socket.on("searchResults", function(data) {
   newRes.sqFt = $xml.find("finishedSqFt").text();
   newRes.numBath = $xml.find("bathrooms").text();
   newRes.numBed = $xml.find("bedrooms").text();
+  newRes.greenscore = $.parseJSON(
+    $.ajax({
+      type: 'GET',
+      url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
+      async: false
+    }).responseText)['result'];
 
   // reset the set of residences
   allResidences = {};
@@ -116,6 +122,12 @@ zillowHandler.socket.on("compResults", function(data){
       newRes.sqFt = $(this).find("finishedSqFt").text();
       newRes.numBath = $(this).find("bathrooms").text();
       newRes.numBed = $(this).find("bedrooms").text();
+      newRes.greenscore = $.parseJSON(
+        $.ajax({
+          type: 'GET',
+          url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
+          async: false
+        }).responseText)['result'];
       console.log(newRes);
       allResidences[zpid] = newRes;
       gMap.newMarker(newRes);

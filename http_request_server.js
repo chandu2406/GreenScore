@@ -203,7 +203,7 @@
       passport.use(new FacebookStrategy({
         clientID: "121594388000133",
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28",
-        callbackURL: "http://" + window.location.hostname
+        callbackURL: "http://localhost:" + process.env.PORT
       }, function(accessToken, refreshToken, profile, done) {
         return User.findOrCreate.apply(User, __slice.call(unused).concat([function(err, user) {
           if (err) {

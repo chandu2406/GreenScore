@@ -7,7 +7,7 @@ task 'build', 'build the source directory', ->
     console.log stdout + stderr if stdout or stderr
 
 task 'deploy', 'deploy to kettle', ->
-  exec 'echo "TODO: should scp -r build dir to kettle"', (err, stdout, stderr) ->
+  exec 'cake build; git push heroku master', (err, stdout, stderr) ->
     console.log err if err
     throw err if err
     console.log stdout + stderr if stdout or stderr

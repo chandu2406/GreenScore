@@ -1,1 +1,1 @@
-web: cake build ; node main.js
+web: node main.js

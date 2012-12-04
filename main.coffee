@@ -13,7 +13,7 @@ main = () ->
   @brief Main function.
   ###
   http_server = new HTTPRequestServer process.env.PORT or 8080
-  socket_server = new SocketServer 3000
+  #socket_server = new SocketServer 3000
 
   do http_server.listen
   do socket_server.listen

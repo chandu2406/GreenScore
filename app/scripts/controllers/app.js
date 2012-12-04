@@ -19,11 +19,24 @@ $(document).ready(function(e) {
   $("#fullName").watermark("Please enter your name");
   $("#newAddr").watermark("Please enter your address");
 
-  //attach click handlers to navbar. Will need to make these tap handlers for mobile
-  $(".searchBtn").on("click", function() {$.mobile.changePage($("#landingPage"), {transition: "fade"});  });
-  $(".profileBtn").on("click", function() {$.mobile.changePage($("#profilePage"), {transition: "fade"});  });
-  $(".loginBtn").on("click", function() {$.mobile.changePage($("#loginPage"), {transition: "fade"});  });
+  // attach click handlers to navbar. Will need to make these tap handlers for mobile
+  var changePageHelper = function(to, transition) {
+    /** @brief Helper to change pages.
+     */
+    $.mobile.changePage(to, {'transition': transition});
 
+    // remove old google map
+    $("#map_canavs").children().remove();
+  };
+  $(".searchBtn").on("click", function() {
+    changePageHelper($("#landingPage"), "fade");
+  });
+  $(".profileBtn").on("click", function() {
+    changePageHelper($("#profilePage"), "fade");
+  });
+  $(".loginBtn").on("click", function() {
+    changePageHelper($("#loginPage"), "fade");
+  });
 
   //GEOCODER
   geocoder = new google.maps.Geocoder();
@@ -59,6 +72,13 @@ $(document).ready(function(e) {
     if(event.keyCode == 13){
       console.log("querying zillow");
       var zillowAddr, i, component;
+
+      // loading page
+      $.mobile.loading('show', {
+        text: 'Searching...',
+        textVisible: true,
+        theme: 'c'
+      });
 
       zillowAddr = new userAddress();
       if(typeof(addrComponents) === 'undefined'){

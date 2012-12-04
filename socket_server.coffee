@@ -21,7 +21,7 @@ class SocketServer
     @brief Starts this server listening.
     ###
     io = require('socket.io').listen(@port)
-    http = require('http')
+    http = require "http"
 
     # Listen for client connection event
     io.sockets.on 'connection', ((socket) ->
@@ -30,7 +30,11 @@ class SocketServer
       socket.on 'simpleSearch', ((data) ->
         console.log "beginning simple search"
 
-        options = {host: 'www.zillow.com', path: data.path, method: 'GET'}
+        options = {
+          host: 'www.zillow.com',
+          path: data.path,
+          method: 'GET'
+        }
 
         processZillowData = ((res) ->
           zillowXML = ''

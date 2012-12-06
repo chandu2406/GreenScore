@@ -20,8 +20,9 @@
       @brief Main function.
     */
 
-    var http_server;
+    var http_server, socket_server;
     http_server = new HTTPRequestServer(process.env.PORT || 8080);
+    socket_server = new SocketServer(3000);
     http_server.listen();
     return socket_server.listen();
   };

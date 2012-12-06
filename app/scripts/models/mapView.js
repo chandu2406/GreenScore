@@ -5,41 +5,45 @@
  */
 
 var gMap = {};
-
+//globals to hold map and info window
 gMap.map;
+gMap.infoWindow;
+
 gMap.newMarkers = [];
 gMap.markers = [];
 
-gMap.infoWindow;
-//can add other info for this
-gMap.Marker = function() {
-  this.latLong;
-  this.address;
-  this.data;
+
+
+gMap.Marker = function(){
+    this.latLong;
+    this.address;
+    this.data;
+
 }
 
-/** @brief Function called to retrieve info from Zillow API for a single address
+/** @brief Initializes a event handler to load the google map the first time the page is shown, and add markers to the map
  *
- *  @param addr-a userAddress object to retrieve information on
+ *	@param residence- information retrieved from the zillow API that the user entered
  *
  */
-gMap.init = function(data) {
-  var mapOptions = {
-    center: new google.maps.LatLng(data.lat, data.long),
-    zoom: 13,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-  gMap.newMarker(data);
+gMap.init = function(residence){
+    
+    var mapOptions = {
+	center: new google.maps.LatLng(residence.lat, residence.long),
+	zoom: 13,
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    gMap.newMarker(residence);
 
   $("#mapView").on("pageshow", function() {
-  // if the div holding the map is empty, initialize the map
-  if ($("#map_canvas").children().length === 0) {
-    gMap.infoWindow = new google.maps.InfoWindow();
-    gMap.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-  }
+      // if the div holding the map is empty, initialize the map
+      if ($("#map_canvas").children().length === 0) {
+	  gMap.infoWindow = new google.maps.InfoWindow();
+	  gMap.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+      }
 
-  // initialize all new markers on the page
-  gMap.initMarkers();
+      // initialize all new markers on the page
+      gMap.initMarkers();
   });
 }
 
@@ -54,26 +58,25 @@ gMap.updateCoors = function (lat, long) {
   gMap.map.setCenter(latLong);
 }
 
-/** @brief Function called to retrieve info from Zillow API for a single address
+/** @brief Creates a new marker object and adds it to an array of markers that 
+ *         will be created on the next pageshow event
  *
- *  @param addr-a userAddress object to retrieve information on
+ *	@param residence - info about where to place the marker and what data will be associated with it
  *
  */
-gMap.newMarker = function(data) {
-  var marker;
-  // create a new marker
-  marker = new gMap.Marker();
-  marker.latLong = new google.maps.LatLng(data.lat, data.long);
-  console.log("pushing marker into newMarker array at "+marker.latLong);
-  marker.addr = data.street+", "+data.city+" "+data.state+", "+data.zipcode;
-  marker.data = data;
-  // add it to the newMarker array to be initialized on pageshow
-  gMap.newMarkers.push(marker);
+gMap.newMarker = function(residence){
+    var marker;
+    //create a new marker object as defined above
+    marker = new gMap.Marker();
+    marker.latLong = new google.maps.LatLng(residence.lat, residence.long);
+    marker.addr = residence.street+", "+residence.city+" "+residence.state+", "+residence.zipcode;
+    marker.data = residence;
+    //add it to the newMarker array to be initialized on pageshow
+    gMap.newMarkers.push(marker);
 }
 
-/** @brief Function called to retrieve info from Zillow API for a single address
- *
- *  @param addr-a userAddress object to retrieve information on
+
+/** @brief Function to initialize markers on the map on pageshow
  *
  */
 gMap.initMarkers = function() {
@@ -95,10 +98,12 @@ gMap.initMarkers = function() {
   gMap.newMarkers = [];
 }
 
-/** @brief Function called to retrieve info from Zillow API for a single address
+
+/** @brief attaches info about a residence to a marker so that when clicked, the marker will display
+ *         the information in an attractive format
  *
- *  @param addr-a userAddress object to retrieve information on
- *
+ *  @param marker- newly ititialized marker on which to attach an event handler to display data
+ *  @param residence- the residence data to associate with that marker. 
  */
 gMap.attachData = function(marker, data) {
   var content, child;

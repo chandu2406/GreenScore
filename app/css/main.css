@@ -72,7 +72,21 @@ body {
   height: 100%; }
 
 #mapView .contentBubble {
-  height: 80%; }
+  height: 80%;
+  position: relative; }
+  #mapView .contentBubble #filterOverlay {
+    background-color: rgba(120, 120, 120, 0.8);
+    text-align: center;
+    position: absolute;
+    bottom: 15px;
+    left: -12px;
+    width: 100%;
+    height: 30px;
+    font-size: 150%;
+    overflow: visible; }
+    #mapView .contentBubble #filterOverlay h2 {
+      position: relative;
+      top: 5px; }
 
 #map_canvas {
   height: 100%;

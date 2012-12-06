@@ -102,6 +102,23 @@ body {
 
 #mapView .contentBubble{
 	height: 80%;
+	position: relative;	   
+
+	#filterOverlay {
+		background-color: rgba(120,120,120,.8);
+		text-align: center;
+		position: absolute;
+		bottom: 15px;
+		left: -12px;
+		width: 100%;
+		height: 30px;
+		font-size: 150%;
+		overflow: visible;
+		h2 {
+			position: relative;
+			top: 5px;
+		}
+	}		
 }
 
 #map_canvas {

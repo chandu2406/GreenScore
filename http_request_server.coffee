@@ -209,7 +209,7 @@ class HTTPRequestServer
     passport.use(new FacebookStrategy({
         clientID: "121594388000133"
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28"
-        callbackURL: "http://localhost:8080"
+        callbackURL: "http://localhost:" + process.env.PORT
       },
       (accessToken, refreshToken, profile, done) ->
         # handwaved away unused

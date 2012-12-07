@@ -31,14 +31,15 @@ Members:
                         requests, especially when searching. On the client side,
                         this is present in app/scripts/controllers
   databases             We use several different SQL databases that we set up on
-                        our server.
-  additional databases  We use coffeescript and scss to enhance the quality of
-                        our codebase.
+                        our server to both keep track of user accounts and
+                        environmental survey data.
+  additional tech       We use coffeescript and scss to enhance the quality of
+                        our codebase, especially on the server side.
 
 2. Robust App [15 pts]
-  Our app is functional. We do form validation for user input, and make sure
-  that users are logged in before they can log in to the profile page. We also
-  do not allow users to make any unwarranted SQL queries.
+  Our app is functional. We do form validation for, and sanitize, user input,
+  and make sure that users are logged in before they can log in to the profile
+  page. We also do not allow users to make any unwarranted SQL queries.
 
 3. User Experience (UX) [15 pts]
   Our goal is to make the app as simple to use as possible, and to make the UI

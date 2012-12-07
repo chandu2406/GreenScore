@@ -30,4 +30,33 @@ Members:
   websockets            See socket_server.coffee - we use Socket.io to do socket
                         requests, especially when searching. On the client side,
                         this is present in app/scripts/controllers
+  databases             We use several different SQL databases that we set up on
+                        our server.
+  additional databases  We use coffeescript and scss to enhance the quality of
+                        our codebase.
+
+2. Robust App [15 pts]
+  Our app is functional. We do form validation for user input, and make sure
+  that users are logged in before they can log in to the profile page. We also
+  do not allow users to make any unwarranted SQL queries.
+
+3. User Experience (UX) [15 pts]
+  Our goal is to make the app as simple to use as possible, and to make the UI
+  as clean as pssible. We used jQuery mobile to help the first point. For the
+  latter, we have the facebook login option to create a familiar and fast login
+  experience. We keep our headers consistent for easy navigation, and we keep
+  map controls (such as the filter) separate form the navigation to avoid
+  unneccessary clutter.
+
+4. Design Process, User Testing, and Iterative Design [10 pts]
+  // TODO(ken)
+
+5. Effort [10 pts]
+
+6. Code Design / Style [5 pts]
+  We used an MVC frameowrk in app/ to clearly separate our code. We also used a
+  doxygen-esque commenting framework to document our code.
+
+7. Presentation [5 pts]
+  Next Friday!
 

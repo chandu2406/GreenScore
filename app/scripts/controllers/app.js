@@ -45,13 +45,13 @@ $(document).ready(function(e) {
     });
 
 
-    /*on enter in the address box, queryZillow. Will have to have this 
+    /*on enter in the address box, queryAPI. Will have to have this 
      *option as a button for mobile version
      */
     $("#searchBar").bind("keyup", function(event){
         if(event.keyCode == 13){
-            console.log("querying zillow");
-            var zillowAddr, i, component;
+            console.log("querying query");
+            var queryAddr, i, component;
 
             // loading page
             $.mobile.loading('show', {
@@ -60,7 +60,7 @@ $(document).ready(function(e) {
                 theme: 'c'
             });
 
-            zillowAddr = new userAddress();
+            queryAddr = new userAddress();
             if(typeof(addrComponents) === 'undefined'){
                 alert("Please enter a valid address");
             }else {
@@ -68,15 +68,15 @@ $(document).ready(function(e) {
                     console.log(addrComponents);
                     component = addrComponents[i];
                     if(component.types[0] === "street_number"){
-                        zillowAddr.streetNum = component.long_name;
+                        queryAddr.streetNum = component.long_name;
                     }else if(component.types[0] === "route"){
-                        zillowAddr.street = component.long_name;
+                        queryAddr.street = component.long_name;
                     }else if(component.types[0] === "postal_code"){
-                        zillowAddr.zipcode = component.long_name;
+                        queryAddr.zipcode = component.long_name;
                     }
                 }
             }
-            zillowHandler.searchAddress(zillowAddr);
+            queryHandler.searchAddress(queryAddr);
         }
     });
 });

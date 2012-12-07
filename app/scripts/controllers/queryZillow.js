@@ -49,6 +49,15 @@ zillowHandler.getComp = function(zpid,count){
     zillowHandler.socket.emit("compSearch", {'path': path});
 }
 
+zillowHandler.getDemographics = function(regionId){
+    //form the URL to call
+    var path = "/webservice/GetDemographics.htm?zws-id="+zillowHandler.ZWSID+
+        "&regionid="+regionId;
+    console.log("sending getDemographics event");
+    zillowHandler.socket.emit("getDemo", {'path': path});
+}
+
+
 
 /** @brief receive api response from server for the search of a single address
  *
@@ -105,14 +114,12 @@ zillowHandler.socket.on("compResults", function(data){
 
     console.log("received results from comp search");
     txt = data.zillowData;
-    console.log(txt);
+
     xmlDoc = $.parseXML(txt);
     $xml = $(xmlDoc);
 
     errorCode = $(xml).find("code").text();
-
     console.log("GetDeepComp exitted with error code "+errorCode);
-
 
     $xml.find("comp").each(function() {
 	zpid = $(this).find("zpid").text();
@@ -143,11 +150,63 @@ zillowHandler.socket.on("compResults", function(data){
 	    
 	}
     });
-    
-    zillowHandler.displayResults();
+    zillowHandler.getDemographics('250017');
+    //zillowHandler.displayResults();
 });
+
+
+/** @brief Receive api response from server that contains information about a neighborhood
+ *
+ */
+zillowHandler.socket.on("demoResults", function(data){
+    var txt, xmlDoc, xml;
+    console.log("demographics returned");
+    txt = data.zillowData;
+
+    xmlDoc = $.parseXML(txt);
+    $xml = $(xmlDoc);
+   
+    tData = new tempNeighborhood();
+    
+    tData.medianSalePrice = zillowHandler.findAttr("Median Sale Price", xml);
+    tData.medianHomeSize =  zillowHandler.findAttr("Median Home Size (Sq. Ft.)", xml);
+    tData.avgYearBuilt = zillowHandler.findAttr("Avg. Year Built", xml);
+    tData.medianIncome = zillowHandler.findAttr("Median Household Income", xml);
+    tData.medianAge = zillowHandler.findAttr("Median Age", xml);
+    tData.avgCommute = zillowHandler.findAttr("Average Commute Time (Minutes)", xml);
+   
+    //call another function to pass the data to the canvas drawer
+
+});
+
+
+zillowHandler.findAttr = function(name, xml){
+    var name, value;
+    
+    $xml.find("attribute").each(function() {
+        if($(this).find("name").text() === name){
+            value = $(this).find("neighborhood");
+            console.log("found "+name);
+            console.log(parseInt($(value).find("value").text()));
+            return parseInt($(value).find("value").text());
+        }
+    });
+}
 
 zillowHandler.displayResults = function() {
     $.mobile.changePage($("#mapView"), { transition: "slideup"} );
+}
+
+
+//temporary object to hold neighborhood data
+//   -tried to choose interesting data(there's a lot of other stats)
+function tempNeighborhood() {
+    this.medianSalePrice;
+    this.medianHomeSize;
+    this.avgYearBuilt;
+    //median household income
+    this.medianIncome;
+    this.medianAge;
+    this.avgCommute;
 }
 

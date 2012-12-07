@@ -6,11 +6,7 @@
 
 $(document).ready(function(e) {
 
-    // click event handler for facebook login
-    $("#fb_button").on("click", function() {
-        window.open("/auth/facebook","_self");
-    });
-
+    
     var geocoder, addrComponents, addrLat, addrLong;
     //watermarks for text input fields
     $("#searchBar").watermark("Please enter an address");
@@ -19,40 +15,7 @@ $(document).ready(function(e) {
     $("#fullName").watermark("Please enter your name");
     $("#newAddr").watermark("Please enter your address");
 
-    // attach click handlers to navbar. Will need to make these tap handlers for mobile
-    var changePageHelper = function(to, transition) {
-        /** @brief Helper to change pages.
-         */
-        $.mobile.changePage(to, {'transition': transition});
-        // remove old google map
-        $("#map_canavs").children().remove();
-    };
-
-    $(".searchBtn").on("click", function() {
-        changePageHelper($("#landingPage"), "fade");
-    });
-    $(".profileBtn").on("click", function() {
-        changePageHelper($("#profilePage"), "fade");
-    });
-    $(".loginBtn").on("click", function() {
-        changePageHelper($("#loginPage"), "fade");
-    });
-    $(".mapBtn").on("click", function() {
-        changePageHelper($("#mapView"), "fade");
-    });
-    $(".filterBtn").on("click", function() {
-        changePageHelper($("#filterPage"), "fade");
-    });
- 
-    //more click handlers to move to load.js
-    $("#priceFilter").on("click", filter.byPrice);
-    $("#bathFilter").on("click", filter.byNumBath);
-    $("#bedFilter").on("click", filter.byNumBed);
     
-    $("#filterOverlay").on("click", function(){
-        $.mobile.changePage($("#filterPage"), {transition: "slideup"});
-    });
-
     //GEOCODER
     geocoder = new google.maps.Geocoder();
     //autocomplete suggestion code adopted from http://tech.cibul.net/geocode-with-google-maps-api-v3/
@@ -61,7 +24,7 @@ $(document).ready(function(e) {
         $("#searchBar").autocomplete({
             //This bit uses the geocoder to fetch address values
             source: function(request, response) {
-                geocoder.geocode( {'address': request.term }, function(results, status) {
+                geocoder.geocode({'address': request.term},function(results,status) {
                     response($.map(results, function(item) {
                         return {
                             label: item.formatted_address,
@@ -85,7 +48,7 @@ $(document).ready(function(e) {
     /*on enter in the address box, queryZillow. Will have to have this 
      *option as a button for mobile version
      */
-     $("#searchBar").bind("keyup", function(event){
+    $("#searchBar").bind("keyup", function(event){
         if(event.keyCode == 13){
             console.log("querying zillow");
             var zillowAddr, i, component;
@@ -116,7 +79,6 @@ $(document).ready(function(e) {
             zillowHandler.searchAddress(zillowAddr);
         }
     });
-
 });
 
 

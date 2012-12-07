@@ -73,6 +73,26 @@ class SocketServer
         )  
         do (http.request options, processZillowData).end
       )
+      socket.on 'getDemo', ((data) ->
+
+        options = {host: 'www.zillow.com', path: data.path, method: 'GET'}
+
+        processZillowData = ((res) ->
+          zillowXML = ''
+          # keep track of data received
+          res.on 'data', ((zillowData) ->
+            zillowXML += zillowData
+          )
+          # on end send the data to the client
+          res.on 'end', (->
+            socket.emit 'demoResults', {'zillowData': zillowXML}
+          )
+          res.on 'error', ((err) ->
+            console.log err
+          )
+        )  
+        do (http.request options, processZillowData).end
+      )
     )
 		
 

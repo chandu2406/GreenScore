@@ -5,7 +5,9 @@
  */
 
 
-var allResidences = {};
+var Residences = {};
+
+Residences.all = {};
 
 function Residence(){
   this.zpid;
@@ -18,7 +20,6 @@ function Residence(){
   this.sqFoot;
   this.numBed;
   this.numBath;
-  this.maxPrice;
-  this.minPrice;
+  this.priceEst;
   this.greenscore;
 }

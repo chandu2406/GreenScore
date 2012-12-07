@@ -5,25 +5,28 @@
  */
 
 var gMap = {};
-//globals to hold map and info window
+//globals to hold the map and infowindow
 gMap.map;
 gMap.infoWindow;
-
-gMap.newMarkers = [];
-gMap.markers = [];
-
-
 
 gMap.Marker = function(){
     this.latLong;
     this.address;
-    this.data;
-
+    this.residence;
+    //marker object returned by Google API
+    this.gMarker;
 }
+//array of marker objects defined above
+gMap.newMarkers = [];
+//array of google map initialized markers
+gMap.markers = [];
 
-/** @brief Initializes a event handler to load the google map the first time the page is shown, and add markers to the map
+
+/** @brief Initializes a event handler to load the google map the first time 
+ *  the page is shown, and add markers to the map
  *
- *	@param residence- information retrieved from the zillow API that the user entered
+ *  @param residence- information retrieved from the zillow API that the 
+ *         user entered
  *
  */
 gMap.init = function(residence){
@@ -35,16 +38,17 @@ gMap.init = function(residence){
     };
     gMap.newMarker(residence);
 
-  $("#mapView").on("pageshow", function() {
-      // if the div holding the map is empty, initialize the map
-      if ($("#map_canvas").children().length === 0) {
-	  gMap.infoWindow = new google.maps.InfoWindow();
-	  gMap.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-      }
+    $("#mapView").on("pageshow", function() {
+	// if the div holding the map is empty, initialize the map
+	if ($("#map_canvas").children().length === 0) {
+	    gMap.infoWindow = new google.maps.InfoWindow();
+	    gMap.map = new google.maps.Map(document.getElementById("map_canvas"),
+					   mapOptions);
+	}
 
-      // initialize all new markers on the page
-      gMap.initMarkers();
-  });
+	// initialize all new markers on the page
+	gMap.initMarkers();
+    });
 }
 
 /** @brief Function called to retrieve info from Zillow API for a single address
@@ -53,9 +57,9 @@ gMap.init = function(residence){
  *
  */
 gMap.updateCoors = function (lat, long) {
-  console.log("updating center of map coordinates");
-  var latLong = new google.maps.LatLng(lat, long);
-  gMap.map.setCenter(latLong);
+    console.log("updating center of map coordinates");
+    var latLong = new google.maps.LatLng(lat, long);
+    gMap.map.setCenter(latLong);
 }
 
 /** @brief Creates a new marker object and adds it to an array of markers that 
@@ -69,8 +73,9 @@ gMap.newMarker = function(residence){
     //create a new marker object as defined above
     marker = new gMap.Marker();
     marker.latLong = new google.maps.LatLng(residence.lat, residence.long);
-    marker.addr = residence.street+", "+residence.city+" "+residence.state+", "+residence.zipcode;
-    marker.data = residence;
+    marker.addr = residence.street+", "+residence.city+" "+residence.state+
+	", "+residence.zipcode;
+    marker.residence = residence;
     //add it to the newMarker array to be initialized on pageshow
     gMap.newMarkers.push(marker);
 }
@@ -80,44 +85,49 @@ gMap.newMarker = function(residence){
  *
  */
 gMap.initMarkers = function() {
-  var i, marker, newMarker, contentStr, infowindow;
-  for (i=0; i<gMap.newMarkers.length; i++) {
-    marker = gMap.newMarkers[i];
-    console.log("creating marker at "+marker.latLong);
-    newMarker = new google.maps.Marker({
-      position: marker.latLong,
-      map: gMap.map,
-      title: marker.addr,
-      optimized: false,
-      clickable: true,
-      visable: true
-    });
-    gMap.markers.push(marker);
-    gMap.attachData(newMarker, marker.data);
-  }
-  gMap.newMarkers = [];
+    var i, marker, newMarker, contentStr, infowindow;
+    for (i=0; i<gMap.newMarkers.length; i++) {
+	marker = gMap.newMarkers[i];
+	console.log("creating marker at "+marker.latLong);
+	newMarker = new google.maps.Marker({
+	    position: marker.latLong,
+	    map: gMap.map,
+	    title: marker.addr,
+	    optimized: false,
+	    clickable: true,
+	    visable: true
+	});
+	
+	gMap.attachData(newMarker, marker.residence);
+        
+        marker.gMarker = newMarker;
+        gMap.markers.push(marker);
+    }
+    gMap.newMarkers = [];
 }
 
 
-/** @brief attaches info about a residence to a marker so that when clicked, the marker will display
- *         the information in an attractive format
+/** @brief attaches info about a residence to a marker so that when clicked, 
+ *         the marker will display the information in an attractive format
  *
- *  @param marker- newly ititialized marker on which to attach an event handler to display data
+ *  @param marker- newly ititialized marker on which to attach an event 
+ *         handler to display data
+ *
  *  @param residence- the residence data to associate with that marker. 
  */
 gMap.attachData = function(marker, data) {
-  var content, child;
+    var content, child;
 
-  content = document.createElement('div');
+    content = document.createElement('div');
 
-  for(prop in data){
-    child = document.createElement('h2');
-    child.innerHTML = prop+": "+data[prop];
-    content.appendChild(child);
-  }
+    for(prop in data){
+	child = document.createElement('h2');
+	child.innerHTML = prop+": "+data[prop];
+	content.appendChild(child);
+    }
 
-  google.maps.event.addListener(marker, 'click', function() {
-    gMap.infoWindow.setContent(content);
-    gMap.infoWindow.open(gMap.map, marker);
-  });
+    google.maps.event.addListener(marker, 'click', function() {
+	gMap.infoWindow.setContent(content);
+	gMap.infoWindow.open(gMap.map, marker);
+    });
 }

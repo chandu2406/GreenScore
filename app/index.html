@@ -1,167 +1,193 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>GreenScore</title>
+    <title>GreenScore</title>
 
-  <!-- STYLESHEETS -->
-  <link href="./css/reset.css" rel="stylesheet">
-  <link href="./css/jquery.mobile-unthemed.min.css" rel="stylesheet">
-  <link href="./css/main.css" rel="stylesheet">
+    <!-- STYLESHEETS -->
+    <link href="./css/reset.css" rel="stylesheet">
+    <link href="./css/jquery.mobile-unthemed.min.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
 
-  <!-- favicon -->
-  <link rel="shortcut icon" href="./assets/greenscore.ico">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./assets/greenscore.ico">
 
-  <!-- SCRIPTS -->
-  <!-- external scripts -->
-  <!-- Google Maps API -->
-  <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHuRsJH37S3hiW7ig9SJBnCJQ_1H3Zf_w&sensor=false">
-      </script>
+    <!-- SCRIPTS -->
+    <!-- external scripts -->
+    <!-- Google Maps API -->
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHuRsJH37S3hiW7ig9SJBnCJQ_1H3Zf_w&sensor=false">
+    </script>
 
 
-  <!-- lib scripts -->
-  <!-- jquery -->
-  <script src="./scripts/lib/jquery-1.8.3.min.js" type="text/javascript"></script>
-  <script src="./scripts/lib/jquery-ui.js" type="text/javascript"></script>
-  <script src="./scripts/lib/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>
-  <script src="./scripts/lib/jquery.watermark.min.js" type="text/javascript"></script>
+    <!-- lib scripts -->
+    <!-- jquery -->
+    <script src="./scripts/lib/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <!--script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script-->
+    <script src="./scripts/lib/jquery-ui.js" type="text/javascript"></script>
+    <script src="./scripts/lib/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>
+    <script src="./scripts/lib/jquery.watermark.min.js" type="text/javascript"></script>
 
-  <!-- backbone -->
-<!--  <script src="./scripts/lib/backbone-min.js" type="text/javascript"></script> -->
-  <!-- socket.io -->
-  <script src="http://localhost:3000/socket.io/socket.io.js" type="text/javascript"></script>
+    <!-- backbone -->
+    <!--  <script src="./scripts/lib/backbone-min.js" type="text/javascript"></script> -->
+    <!-- socket.io -->
+    <script src="http://localhost:3000/socket.io/socket.io.js" type="text/javascript"></script>
 
-  <!-- crypto.js -->
-  <script src="./scripts/lib/sha256.js" type="text/javascript"></script>
+    <!-- crypto.js -->
+    <script src="./scripts/lib/sha256.js" type="text/javascript"></script>
 
-  <!-- MVC scripts -->
-  <!-- models -->
-  <script src="./scripts/models/mapView.js" type="text/javascript"></script>
- 	<script src="./scripts/models/residence.js" type="text/javascript"></script>
-  <!-- views -->
-  <!-- controllers -->
-  <script src="./scripts/controllers/queryZillow.js" type="text/javascript"></script>
-  <script src="./scripts/controllers/app.js" type="text/javascript"></script>
-  <script src="./scripts/controllers/mapController.js" type="text/javascript"></script>
-</head>
-<body>
-  <div data-role="page" data-url="home" data-fullscreen="true" id="landingPage">
-    <div data-role="header">
-      <div class="navBar">
-        <h2 class="searchBtn">Search</h2>
-        <h2 class="loginBtn">Login</h2>
-        <img src="./assets/selection.png"  style="right: 34%;"/>
+    <!-- MVC scripts -->
+    <!-- models -->
+    <script src="./scripts/models/mapView.js" type="text/javascript"></script>
+    <script src="./scripts/models/residence.js" type="text/javascript"></script>
+    <!-- views -->
+    <!-- controllers -->
+    <script src="./scripts/controllers/mapController.js" type="text/javascript"></script>
+    <script src="./scripts/controllers/filters.js" type="text/javascript"></script>
+    <script src="./scripts/controllers/queryZillow.js" type="text/javascript"></script>
+    <script src="./scripts/controllers/app.js" type="text/javascript"></script>
+    
+  </head>
+  <body>
+    <div data-role="page" data-url="home" data-fullscreen="true" id="landingPage">
+      <div data-role="header">
+        <div class="navBar">
+          <h2 class="searchBtn">Search</h2>
+          <h2 class="loginBtn">Login</h2>
+          <img src="./assets/selection.png"  style="right: 34%;"/>
+        </div>
       </div>
-    </div>
-    <div data-role="content" class="contentBubble">
-      <h1>Green<span>score</span></h1>
-      <label for="searchBar"></label>
+      <div data-role="content" class="contentBubble">
+        <h1>Green<span>score</span></h1>
+        <label for="searchBar"></label>
         <input id="searchBar" type="text" />
-    </div>
-    <div data-role="footer"></div>
-  </div>
-
-  <!-- The login screen -->
-  <div data-role="page" data-url="/loginPage" data-fullscreen="true" id="loginPage">
-    <div data-role="header">
-      <div class="navBar">
-        <h2 class="searchBtn">Search</h2>
-        <h2>Login</h2>
-        <img src="./assets/selection.png"  style="right: 15%;"/>
       </div>
+      <div data-role="footer"></div>
     </div>
-    <div data-role="content" class="contentBubble">
+
+    <!-- The login screen -->
+    <div data-role="page" data-url="/loginPage" data-fullscreen="true" id="loginPage">
+      <div data-role="header">
+        <div class="navBar">
+          <h2 class="searchBtn">Search</h2>
+          <h2>Login</h2>
+          <img src="./assets/selection.png"  style="right: 15%;"/>
+        </div>
+      </div>
+      <div data-role="content" class="contentBubble">
         <h1>Green<span>score</span></h1>
         <form id="login" action="/login" method="post">
           <label for="username"></label>
-            <input id="username" name="username" type="text" />
+          <input id="username" name="username" type="text" />
           <label for="password"></label>
-            <input id="password" name="password" type="password" />
-            <input id="login_button" type="submit" value="login" />
+          <input id="password" name="password" type="password" />
+          <input id="login_button" type="submit" value="login" />
         </form>
         <a id="fb_button" href="#">Login with Facebook</a>
-    </div>
-    <div data-role="footer"></div>
-  </div>
-
-  <!-- New User Page -->
-  <div data-role="page" data-url="/register" data-fullscreen="true" id="newUserPage">
-    <div data-role="header">
-      <div class="navBar">
-        <h2 class="searchBtn">Search</h2>
-        <h2>Profile</h2>
-        <img src="./assets/selection.png"  style="right: 15%;"/>
       </div>
+      <div data-role="footer"></div>
     </div>
-    <div data-role="content" class="contentBubble">
+
+    <!-- New User Page -->
+    <div data-role="page" data-url="/register" data-fullscreen="true" id="newUserPage">
+      <div data-role="header">
+        <div class="navBar">
+          <h2 class="searchBtn">Search</h2>
+          <h2>Profile</h2>
+          <img src="./assets/selection.png"  style="right: 15%;"/>
+        </div>
+      </div>
+      <div data-role="content" class="contentBubble">
         <h1>Green<span>score</span></h1>
         <h2>Welcome to Greenscore!</h2>
         <h3>Please enter your information below</h3>
         <label for="fullName"></label>
-          <input id="fullName" type="text" />
+        <input id="fullName" type="text" />
         <label for="newAddr"></label>
-          <input id="newAddr" type="text" />
+        <input id="newAddr" type="text" />
         <div id="newUserData"></div>
-    </div>
-    <div data-role="footer"></div>
-  </div>
-
-  <!-- A User's Profile Page -->
-  <div data-role="page" data-fullscreen="true" id="profilePage">
-    <div data-role="header">
-      <div class="navBar">
-        <h2 class="searchBtn">Search</h2>
-        <h2>Profile</h2>
-        <img src="./assets/selection.png"  style="right: 15%;"/>
       </div>
+      <div data-role="footer"></div>
     </div>
-    <div data-role="content" class="contentBubble">
-          <h2>A users profile information</h2>
-    </div>
-    <div data-role="footer"></div>
-  </div>
 
-  <!-- Page where the user can view a map with search results -->
-  <div data-role="page" data-fullscreen="true" id="mapView">
-    <div data-role="header">
-      <div class="navBar">
-        <h2 class="searchBtn">Search</h2>
-        <h2 class="profileBtn">Profile</h2>
-        <h2>Map</h2>
-        <img src="./assets/selection.png"  style="right: 14%;"/>
+    <!-- A User's Profile Page -->
+    <div data-role="page" data-fullscreen="true" id="profilePage">
+      <div data-role="header">
+        <div class="navBar">
+          <h2 class="searchBtn">Search</h2>
+          <h2>Profile</h2>
+          <img src="./assets/selection.png"  style="right: 15%;"/>
+        </div>
       </div>
-    </div>
-
-    <div data-role="content" class="contentBubble">
-      <div id="map_canvas"></div>
-      <div id="filterOverlay">
-	<h2>
-	  Filter
-	</h2>
+      <div data-role="content" class="contentBubble">
+        <h2>A users profile information</h2>
       </div>
+      <div data-role="footer"></div>
     </div>
-    <div data-role="footer"></div>
-  </div>
 
-  <!-- Page the user can filter results through -->
-  <div data-role="page" data-fullscreen="true" id="filterPage">
-    <div data-role="header">
-      <div class="navBar">
-        <h2 class="searchBtn">Search</h2>
-        <h2 class="profileBtn">Profile</h2>
-        <h2>Filter</h2>
-        <img src="./assets/selection.png"  style="right: 15%;"/>
+    <!-- Page where the user can view a map with search results -->
+    <div data-role="page" data-fullscreen="true" id="mapView">
+      <div data-role="header">
+        <div class="navBar">
+          <h2 class="searchBtn">Search</h2>
+          <h2 class="profileBtn">Profile</h2>
+          <h2>Map</h2>
+          <h2 class="filterBtn">Filter</h2>
+          <img src="./assets/selection.png"  style="right: 14%;"/>
+        </div>
       </div>
+
+      <div data-role="content" class="contentBubble">
+        <div id="map_canvas"></div>
+        <div id="filterOverlay">
+	  <h2>
+	    Filter
+	  </h2>
+        </div>
+      </div>
+      <div data-role="footer"></div>
     </div>
-    <div data-role="content" class="contentBubble">
 
+    <!-- Page the user can filter results through -->
+    <div data-role="page" data-fullscreen="true" id="filterPage">
+      <div data-role="header">
+        <div class="navBar">
+          <h2 class="searchBtn">Search</h2>
+          <h2 class="profileBtn">Profile</h2>
+          <h2 class="mapBtn">Map</h2>
+          <h2>Filter</h2>
+          <img src="./assets/selection.png"  style="right: 15%;"/>
+        </div>
+      </div>
+      <div data-role="content" class="contentBubble">
+        <h2>Filters</h2>
+        
+        <label for="priceMax">Maximum Price</label>
+        <input type="text" name="priceMax" id="priceMax" value=""/>
+    
+        <label for="priceMin">Minimum Price</label>
+        <input type="text" name="priceMin" id="priceMin" value=""/>
+    
+        <button id="priceFilter">Filter by Price</button>
+        
+        <label for="numBath">Number of Bathrooms</label>
+        <input type="range"  name="numBath" id="numBath" value="2" min="0" max="15" step=".5"/>
+        <button id="bathFilter">Filter by Price</button>
+        
+        <label for="numBed">Number of Bedrooms</label>
+        <input type="range" name="numBed" id="numBed" value="2" min="0" max="15" step=".5"/>
+        <button id="bedFilter">Filter by Price</button>
+        
+        <label for="greenscore">Greenscore</label>
+        <input type="range" name="greenscore" id="greenscore" value=".5" min="0" max="1" step=".5"/>
+	<button id="gsFilter">Filter by Price</button>
+        
+      </div>
+      <div data-role="footer"></div>
     </div>
-    <div data-role="footer"></div>
-  </div>
 
 
-</body>
+  </body>
 </html>

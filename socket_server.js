@@ -59,7 +59,7 @@
           });
           return (http.request(options, processZillowData)).end();
         }));
-        return socket.on('compSearch', (function(data) {
+        socket.on('compSearch', (function(data) {
           var options, processZillowData;
           console.log("beginning comp search");
           options = {
@@ -75,6 +75,30 @@
             }));
             res.on('end', (function() {
               return socket.emit('compResults', {
+                'zillowData': zillowXML
+              });
+            }));
+            return res.on('error', (function(err) {
+              return console.log(err);
+            }));
+          });
+          return (http.request(options, processZillowData)).end();
+        }));
+        return socket.on('getDemo', (function(data) {
+          var options, processZillowData;
+          options = {
+            host: 'www.zillow.com',
+            path: data.path,
+            method: 'GET'
+          };
+          processZillowData = (function(res) {
+            var zillowXML;
+            zillowXML = '';
+            res.on('data', (function(zillowData) {
+              return zillowXML += zillowData;
+            }));
+            res.on('end', (function() {
+              return socket.emit('demoResults', {
                 'zillowData': zillowXML
               });
             }));

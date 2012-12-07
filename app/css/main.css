@@ -83,11 +83,18 @@ body {
     width: 100%;
     height: 30px;
     font-size: 150%;
-    overflow: visible; }
+    overflow: visible;
+    cursor: pointer; }
     #mapView .contentBubble #filterOverlay h2 {
       position: relative;
       top: 5px; }
+  #mapView .contentBubble #map_canvas {
+    height: 100%;
+    width: 100%; }
 
-#map_canvas {
-  height: 100%;
-  width: 100%; }
+#filterPage .contentBubble {
+  height: 80%;
+  text-align: left; }
+  #filterPage .contentBubble h2 {
+    text-align: center;
+    font-size: 150%; }

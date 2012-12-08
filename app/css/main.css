@@ -55,18 +55,21 @@ body {
   width: 70%;
   text-align: right;
   margin: 20px 0px 30px 15%; }
-  .navBar h2 {
-    font-size: 16px;
-    margin-right: 14%;
-    display: inline;
-    color: #42473d;
-    cursor: pointer; }
-  .navBar h2:hover {
-    color: black;
-    cursor: pointer; }
-  .navBar img {
-    bottom: -37px;
-    position: absolute; }
+  .navBar .navBtn {
+    position: relative;
+    display: inline-block;
+    margin-right: 10%;
+    text-align: center; }
+    .navBar .navBtn h2 {
+      font-size: 16px;
+      color: #42473d;
+      cursor: pointer; }
+    .navBar .navBtn h2:hover {
+      color: black;
+      cursor: pointer; }
+    .navBar .navBtn img {
+      bottom: -37px;
+      position: absolute; }
 
 #mapView {
   height: 100%; }

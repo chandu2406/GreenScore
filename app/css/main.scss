@@ -78,20 +78,25 @@ body {
   width: 70%;
   text-align:right;
   margin: 20px 0px 30px 15%;
-  h2 {
-    font-size: 16px;
-    margin-right: 14%;
-    display: inline;
-    color: $gray;
-    cursor: pointer;
-  }
-  h2:hover{
-    color: black;
-    cursor: pointer;
-  }
-  img {
-    bottom: -37px;
-    position: absolute;
+  .navBtn {
+          position: relative;
+          display: inline-block;
+          margin-right: 10%;
+          text-align: center;
+          
+          h2 {
+             font-size: 16px;
+             color: $gray;
+             cursor: pointer;
+           }
+           h2:hover{
+             color: black;
+             cursor: pointer;
+           }
+           img {
+             bottom: -37px;
+             position: absolute;
+           }
   }
 }
 
@@ -124,7 +129,7 @@ body {
         #map_canvas {
           height: 100%;
           width: 100%;
-          }	
+        }	
 }
 
 

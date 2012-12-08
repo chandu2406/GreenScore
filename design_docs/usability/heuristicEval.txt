@@ -1,0 +1,69 @@
+For the heuristic evaluation I stepped through each of Nielsen's
+ten usability heiristics and tried to identify aspects of the app
+that violate each heuristic.  For each violation I also proposed 
+a solution to this problem.  After the heuristic evaluation, 
+we will move on to brief user testing and then make another
+iteration of the app. 
+
+Heuristics
+Descriptions can be found here 
+http://www.nngroup.com/articles/ten-usability-heuristics/
+these are the heuristics most often used in industry by UX designers. 
+
+
+1. Visibility of system status
+
+Problem: When querying zillow api and our databases the system hangs
+         for several seconds before switching to the map.
+Solution: Add a loading gif indicating that the system is doing something
+
+Problem: Doesn't show what filters have been applied on the map
+Solution: add a small div listing any filters added at the bottom of 
+          the screen. Will need to figure our how to do this in a visually
+          attractive manner. 
+
+
+2. Match between the system and the real world
+No problems were found that violate this heuristic.  No system terms were used
+
+
+3. User control and freedom
+Problem: User isn't able to undo filters
+Solution: Make the filters applied a list in which filters may be removed.
+
+4. Consistency and standards
+Problem: Navbar doesn't display consist headings depending on where you are
+         in the app.
+Solution: make the navbar consistent! may need to initialize the map
+          sooner.
+
+5. error prevention
+This is a big problem in general that will need to be addressed.  We have been
+neglecting error detection on address enter, api response, and login. We 
+will need to add error messages that display meaningful messages when 
+an error occurs.
+
+6. Recognition rather than recall
+-this isn't a serious problem because of the simplistity of the UI 
+
+Problem: still have the problem that the user doesn't know what filters have
+         been applied.
+Solution: same as above.
+
+
+7. Flexibility and Efficiency of user
+Not applicable to this project.  This heuristic is about adding shortcuts
+for expert users to speed up their use of the system. 
+
+8. Aesthetic and Minimalist design
+We don't violate this heuristic in any way.  There is no irrelevant or rarely
+needed data displayed.
+
+9. Help Users recognize, diagnose, and recover from errors  
+As stated above we need to add error messages with meaningful error messages
+and descriptions of what to fix.
+
+10. Help and Documentation
+We plan to provide help with a system through error messages.  Documentation
+of the system for a user is not necessary given that no terms or actions are
+unique to the app.  All terms and actions that may be performed(such as filtering or searching) are present in many web apps. 

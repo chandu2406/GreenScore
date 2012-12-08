@@ -1,0 +1,21 @@
+User testing results
+
+For user testing several think alouds were performed.  For this style of
+user testing a novice user is given several tasks to complete using the app. 
+They vocalize their thoughts while performing the tasks.  Normally someone
+would go back and view a screen capture and audio recording to 
+record usability problems.  In this case we watched the participants 
+and recorded changes that need to be made. Results of things that need
+to be changed are below.
+
+1. when the map is first shown show the info window for the house being 
+   searched
+2. show an appropriate error message, or handle if zilllow doesn't have
+   information on that house.
+3. make the navbar consistent from page to page
+4. make filtering occur dynamically(shouldn't need to press a button)
+5. clear results if the user returns to search-start fresh
+6. have a clear method of returning to the map after filtering.
+        -most users scrolled to the bottom of the page looking for a return
+         button
+7. add a short description on the home page

@@ -15,11 +15,12 @@
 
 
 $(document).ready(function(e) {    
-    // click event handler for facebook login
+    // Click event handler for facebook login
     $("#fb_button").on("click", function() {
         window.open("/auth/facebook","_self");
     });
 
+    // Click event handler for login button
     $('#login_button').on('click', function() {
       console.log('pressed login button');
       var req_fifo;
@@ -27,7 +28,9 @@ $(document).ready(function(e) {
       // GetAsyncData sends a request to read the fifo.
       function GetAsyncData() {
         var url = "/login";
-        var params = "username=" + $('#username').val() + "&password=" + $('#password').val();
+        var params = "username=" + 
+          escape($('#username').val()) + "&password=" + 
+          escape($('#password').val());
 
         // branch for native XMLHttpRequest object
         if (window.XMLHttpRequest) {
@@ -70,6 +73,7 @@ $(document).ready(function(e) {
       GetAsyncData();
     });
     
+    // Click event handler for register button
     $('#register_button').on('click', function() {
       console.log('pressed register button');
       var req_fifo;
@@ -77,7 +81,11 @@ $(document).ready(function(e) {
       // GetAsyncData sends a request to read the fifo.
       function GetAsyncData() {
         var url = "/register";
-        var params = "username=" + $('#new_username').val() + "&password=" + $('#new_password').val() + "&email=" + $('#new_email').val() + "&address=" + $('#new_address').val();
+        var params = "username=" + 
+          escape($('#new_username').val()) + "&password=" + 
+          escape($('#new_password').val()) + "&email=" + 
+          escape($('#new_email').val()) + "&address=" + 
+          escape($('#new_address').val());
 
         // branch for native XMLHttpRequest object
         if (window.XMLHttpRequest) {
@@ -143,9 +151,6 @@ $(document).ready(function(e) {
     $(".filterBtn").on("click", function() {
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
-    //$(".profileBtn").on("click", function() {
-    //    $.mobile.changePage($("#profilePage"), {transition: "slideup"});
-    //});
     
     //attach indicator and color change to the navbar on each page
     var indicator = $("<img></img>");

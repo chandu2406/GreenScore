@@ -4,6 +4,7 @@
 @brief Our socket server implementation.
 @author Kenneth Murphy (kmmurphy)
 @author Lucas Ray (ltray)
+@author Nick LaGrow (nlagrow)
 ###
 
 class SocketServer

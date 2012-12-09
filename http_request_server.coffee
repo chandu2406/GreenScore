@@ -218,9 +218,6 @@ class HTTPRequestServer
     @mysql_query query, onSuccess, onFailure
 
 
-
-
-
   listen: ->
     ###
     @brief Listens on the specified port.
@@ -290,21 +287,26 @@ class HTTPRequestServer
 
     # local strategy
     passport.use(new PassportLocalStrategy(
-      (username,password,done) ->
-        console.log("authenticating with local strategy")
-        user = username
+      ((username,password,done) ->
+        onSuccess = ((rows) ->
+          if rows.length != 1
+            console.log 'fail'
+            return done(null, false, 'No account found or conflicting accounts.')
+          else if rows[0].PASSWORD != password
+            console.log 'fail'
+            console.log rows
+            return done(null, false, 'Incorrect password.')
+          else
+            console.log 'success'
+            return done(null,username))
+        onFailure = ((rows) ->
+          console.log 'fail'
+          return done(null,false, 'Bad user or password'))
 
-        # verify valid username
-        if (user != 'nick')
-          return done(null, false, 'Unknown user')
-
-        # verify valid password
-        if (password != 'word')
-          return done(null, false, 'Incorrect password')
-
-        # return success
-        done(null, user)
-    ))
+        query = "SELECT PASSWORD FROM USERS WHERE USERNAME='"+username+"'"
+        @mysql_query query, onSuccess, onFailure
+      ).bind(this))
+    )
 
     @app.listen @port
     process.on "uncaughtException", @onUncaughtException

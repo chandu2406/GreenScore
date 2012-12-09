@@ -283,18 +283,28 @@
           }
         }))(req, res, next);
       }));
-      passport.use(new PassportLocalStrategy(function(username, password, done) {
-        var user;
-        console.log("authenticating with local strategy");
-        user = username;
-        if (user !== 'nick') {
-          return done(null, false, 'Unknown user');
-        }
-        if (password !== 'word') {
-          return done(null, false, 'Incorrect password');
-        }
-        return done(null, user);
-      }));
+      passport.use(new PassportLocalStrategy((function(username, password, done) {
+        var onFailure, onSuccess, query;
+        onSuccess = (function(rows) {
+          if (rows.length !== 1) {
+            console.log('fail');
+            return done(null, false, 'No account found or conflicting accounts.');
+          } else if (rows[0].PASSWORD !== password) {
+            console.log('fail');
+            console.log(rows);
+            return done(null, false, 'Incorrect password.');
+          } else {
+            console.log('success');
+            return done(null, username);
+          }
+        });
+        onFailure = (function(rows) {
+          console.log('fail');
+          return done(null, false, 'Bad user or password');
+        });
+        query = "SELECT PASSWORD FROM USERS WHERE USERNAME='" + username + "'";
+        return this.mysql_query(query, onSuccess, onFailure);
+      }).bind(this)));
       this.app.listen(this.port);
       process.on("uncaughtException", this.onUncaughtException);
       return this.mysql_connect();

@@ -69,7 +69,7 @@
     </div>
 
     <!-- The login screen -->
-    <div data-role="page" data-url="/loginPage" data-fullscreen="true" id="loginPage">
+    <div data-role="page" data-fullscreen="true" id="loginPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -80,12 +80,12 @@
       </div>
       <div data-role="content" class="contentBubble">
         <h1>Green<span>score</span></h1>
-        <form id="login" action="/login" method="post">
+        <form id="login">
           <label for="username"></label>
           <input id="username" name="username" type="text" />
           <label for="password"></label>
           <input id="password" name="password" type="password" />
-          <input id="login_button" type="submit" value="login" />
+          <input id="login_button" type="button" value="login" />
         </form>
         <a id="fb_button" href="#">Login with Facebook</a>
       </div>

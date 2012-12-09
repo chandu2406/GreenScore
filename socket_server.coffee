@@ -51,7 +51,7 @@ class SocketServer
           )
         )
         do (http.request options, processZillowData).end
-      )    
+      )
       socket.on 'compSearch', ((data) ->
         console.log "beginning comp search"
 
@@ -70,7 +70,7 @@ class SocketServer
           res.on 'error', ((err) ->
             console.log err
           )
-        )  
+        )
         do (http.request options, processZillowData).end
       )
       socket.on 'getDemo', ((data) ->
@@ -90,11 +90,11 @@ class SocketServer
           res.on 'error', ((err) ->
             console.log err
           )
-        )  
+        )
         do (http.request options, processZillowData).end
       )
     )
-		
+
 
 # export it
 module.exports = SocketServer

@@ -223,9 +223,8 @@ class HTTPRequestServer
     # define methods for facebook authentication
     @app.get('/auth/facebook', passport.authenticate('facebook'))
     @app.get('/auth/facebook/callback',
-      passport.authenticate('facebook', { successRedirect: '/',\
-                                      failureRedirect: '/failuretemp' }))
-
+      passport.authenticate('facebook', { successRedirect: '/SUCCEED',\
+                                      failureRedirect: '/FAIL' }))
 
     @app.post('/login', ((req, res, next) ->
       console.log("received /login post")
@@ -236,12 +235,13 @@ class HTTPRequestServer
           return next(error)
 
         if (!user)
-          console.log("no user")
-          return res.redirect('/failure')
+          return res.send({success: 'false',\
+                  user_id: undefined,\
+                  message: 'login failed'})
 
-        console.log("success")
-        #TODO this doesn't redirect right w JQM
-        res.redirect('/')
+        return res.send({success: 'true',\
+                  user_id: user,\
+                  message: 'login succeeded'})
       ))(req,res,next)
     ))
 

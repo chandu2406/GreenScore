@@ -17,6 +17,52 @@ $(document).ready(function(e) {
     $("#fb_button").on("click", function() {
         window.open("/auth/facebook","_self");
     });
+
+    $('#login_button').on('click', function() {
+      console.log('pressed login button');
+      var req_fifo;
+
+      // GetAsyncData sends a request to read the fifo.
+      function GetAsyncData() {
+        var url = "/login";
+        var params = "username=" + $('#username').val() + "&password=" + $('#password').val();
+
+        // branch for native XMLHttpRequest object
+        if (window.XMLHttpRequest) {
+          req_fifo = new XMLHttpRequest();
+          req_fifo.abort();
+          req_fifo.onreadystatechange = GotAsyncData;
+          console.log(url+'?'+params);
+          req_fifo.open("POST", url+"?"+params, true);
+          req_fifo.send(null);
+        } 
+      }
+
+      function GotAsyncData() {
+        if (req_fifo.readyState != 4 || req_fifo.status != 200) {
+          return;
+        }
+        var response = JSON.parse(req_fifo.response);
+        console.log(response);
+        console.log(response.message);
+
+        if (response['success'] === 'true') {
+          $('.loginBtn').html('<h2>Profile</h2>');
+          $('.loginBtn').off('click');
+          $('.loginBtn').addClass('profileBtn');
+          $('.loginBtn').removeClass('loginBtn');
+           
+          $(".profileBtn").on("click", function() {
+              $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+          });
+        
+          $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+        }
+
+        return;
+      } 
+      GetAsyncData();
+    });
     
     //attach page change event to navBar
     $(".searchBtn").on("click", function() {
@@ -34,9 +80,9 @@ $(document).ready(function(e) {
     $(".filterBtn").on("click", function() {
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
-    $(".profileBtn").on("click", function() {
-        $.mobile.changePage($("#profilePage"), {transition: "slideup"});
-    });
+    //$(".profileBtn").on("click", function() {
+    //    $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+    //});
     
     //attach indicator and color change to the navbar on each page
     var indicator = $("<img></img>");

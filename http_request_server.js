@@ -214,8 +214,8 @@
       }));
       this.app.get('/auth/facebook', passport.authenticate('facebook'));
       this.app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/failuretemp'
+        successRedirect: '/SUCCEED',
+        failureRedirect: '/FAIL'
       }));
       this.app.post('/login', (function(req, res, next) {
         console.log("received /login post");
@@ -226,11 +226,17 @@
             return next(error);
           }
           if (!user) {
-            console.log("no user");
-            return res.redirect('/failure');
+            return res.send({
+              success: 'false',
+              user_id: -1,
+              message: 'login failed'
+            });
           }
-          console.log("success");
-          return res.redirect('/');
+          return res.send({
+            success: 'true',
+            user_id: user,
+            message: 'login succeeded'
+          });
         }))(req, res, next);
       }));
       passport.use(new PassportLocalStrategy(function(username, password, done) {

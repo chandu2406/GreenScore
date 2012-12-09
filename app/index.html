@@ -88,12 +88,26 @@
           <input id="login_button" type="button" value="login" />
         </form>
         <a id="fb_button" href="#">Login with Facebook</a>
+        <form id="register"> 
+          <label for="username"></label>
+          <input id="new_username" name="username" type="text" />
+          <label for="password"></label>
+          <input id="new_password" name="password" type="password" />
+          <label for="password_two"></label>
+          <input id="new_password_two" name="password_two" type="password" />
+          <label for="email"></label>
+          <input id="new_email" name="email" type="text" />
+          <label for="address"></label>
+          <input id="new_address" name="address" type="text" />
+
+          <input id="register_button" type="button" value="Register" />
+        </form>
       </div>
       <div data-role="footer"></div>
     </div>
 
     <!-- New User Page -->
-    <div data-role="page" data-url="/register" data-fullscreen="true" id="newUserPage">
+    <div data-role="page" data-fullscreen="true" id="newUserPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>

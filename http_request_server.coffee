@@ -192,6 +192,35 @@ class HTTPRequestServer
     @mysql_query query, onSuccess, onFailure
     return deferred.promise
 
+  register_user: (username, password, email, address, response) ->
+    query = "SELECT * FROM USERS WHERE USERNAME='"+username+"'"
+    onSuccess = ((rows) ->
+      onRegistration = (rows) ->
+        console.log(username + " registered.")
+        return response.send({success: 'true',\
+                         user_id: username,\
+                         message: 'Login succeeded'})
+
+      if rows.length > 0
+        console.log(username + " already exists as a user.")
+        return response.send({success: 'false',\
+                         user_id: undefined,\
+                         message: 'Login failed: '+username+' aready exists.'})
+      else
+        console.log(username + " is a new user.")
+        to_insert = "INSERT INTO USERS (USERNAME,PASSWORD,EMAIL,ADDRESS) " +
+          "VALUES (\""+username+"\",\""+password+"\",\""+email+"\",\""+address+"\")"
+        console.log to_insert
+        @mysql_query to_insert, onRegistration, onFailure).bind(this)
+
+    onFailure = (err) ->
+      console.log err
+    @mysql_query query, onSuccess, onFailure
+
+
+
+
+
   listen: ->
     ###
     @brief Listens on the specified port.
@@ -202,9 +231,6 @@ class HTTPRequestServer
     @app.get("/", ((request, response) ->
       response.sendfile(workingDir + "/index.html")))
 
-    ###
-    @brief passport stuff
-    ###
     # facebook strategy
     passport.use(new FacebookStrategy({
         clientID: "121594388000133"
@@ -226,6 +252,23 @@ class HTTPRequestServer
       passport.authenticate('facebook', { successRedirect: '/SUCCEED',\
                                       failureRedirect: '/FAIL' }))
 
+    @app.post('/register', ((request, response) ->
+      console.log "received /register post"
+      args = request.query
+
+      # validation needs to be done here
+      uname = args['username']
+      console.log uname
+      pw = args['password']
+      console.log pw
+      email = args['email']
+      console.log email
+      address = args['address']
+      console.log address
+      @register_user uname, pw, email, address, response
+    ).bind(this))
+
+
     @app.post('/login', ((req, res, next) ->
       console.log("received /login post")
       passport.authenticate('local', ((error, user, info) ->
@@ -236,17 +279,16 @@ class HTTPRequestServer
 
         if (!user)
           return res.send({success: 'false',\
-                  user_id: undefined,\
-                  message: 'login failed'})
-
-        return res.send({success: 'true',\
-                  user_id: user,\
-                  message: 'login succeeded'})
+                           user_id: undefined,\
+                           message: 'Login failed: ' + info})
+        else
+          return res.send({success: 'true',\
+                           user_id: user,\
+                           message: 'Login succeeded'})
       ))(req,res,next)
     ))
 
-    # define methods for local authentication
-    # TODO make this a real function
+    # local strategy
     passport.use(new PassportLocalStrategy(
       (username,password,done) ->
         console.log("authenticating with local strategy")
@@ -254,13 +296,11 @@ class HTTPRequestServer
 
         # verify valid username
         if (user != 'nick')
-          console.log("bad username")
-          return done(null, false, {message: 'Unknown user '+username})
+          return done(null, false, 'Unknown user')
 
         # verify valid password
         if (password != 'word')
-          console.log("bad pw")
-          return done(null, false, {message: 'invalid password'})
+          return done(null, false, 'Incorrect password')
 
         # return success
         done(null, user)

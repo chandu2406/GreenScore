@@ -15,6 +15,13 @@ $(document).ready(function(e) {
     $("#fullName").watermark("Please enter your name");
     $("#newAddr").watermark("Please enter your address");
 
+    // watermarks for registration
+    $("#new_username").watermark("Username");
+    $("#new_password").watermark("Password");
+    $("#new_password_two").watermark("Password (again)");
+    $("#new_email").watermark("Email");
+    $("#new_address").watermark("Address");
+
     
     //GEOCODER
     geocoder = new google.maps.Geocoder();

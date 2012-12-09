@@ -184,6 +184,39 @@
       return deferred.promise;
     };
 
+    HTTPRequestServer.prototype.register_user = function(username, password, email, address, response) {
+      var onFailure, onSuccess, query;
+      query = "SELECT * FROM USERS WHERE USERNAME='" + username + "'";
+      onSuccess = (function(rows) {
+        var onRegistration, to_insert;
+        onRegistration = function(rows) {
+          console.log(username + " registered.");
+          return response.send({
+            success: 'true',
+            user_id: username,
+            message: 'Login succeeded'
+          });
+        };
+        if (rows.length > 0) {
+          console.log(username + " already exists as a user.");
+          return response.send({
+            success: 'false',
+            user_id: void 0,
+            message: 'Login failed: ' + username + ' aready exists.'
+          });
+        } else {
+          console.log(username + " is a new user.");
+          to_insert = "INSERT INTO USERS (USERNAME,PASSWORD,EMAIL,ADDRESS) " + "VALUES (\"" + username + "\",\"" + password + "\",\"" + email + "\",\"" + address + "\")";
+          console.log(to_insert);
+          return this.mysql_query(to_insert, onRegistration, onFailure);
+        }
+      }).bind(this);
+      onFailure = function(err) {
+        return console.log(err);
+      };
+      return this.mysql_query(query, onSuccess, onFailure);
+    };
+
     HTTPRequestServer.prototype.listen = function() {
       /*
           @brief Listens on the specified port.
@@ -196,10 +229,6 @@
       this.app.get("/", (function(request, response) {
         return response.sendfile(workingDir + "/index.html");
       }));
-      /*
-          @brief passport stuff
-      */
-
       passport.use(new FacebookStrategy({
         clientID: "121594388000133",
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28",
@@ -217,6 +246,20 @@
         successRedirect: '/SUCCEED',
         failureRedirect: '/FAIL'
       }));
+      this.app.post('/register', (function(request, response) {
+        var address, args, email, pw, uname;
+        console.log("received /register post");
+        args = request.query;
+        uname = args['username'];
+        console.log(uname);
+        pw = args['password'];
+        console.log(pw);
+        email = args['email'];
+        console.log(email);
+        address = args['address'];
+        console.log(address);
+        return this.register_user(uname, pw, email, address, response);
+      }).bind(this));
       this.app.post('/login', (function(req, res, next) {
         console.log("received /login post");
         return passport.authenticate('local', (function(error, user, info) {
@@ -228,15 +271,16 @@
           if (!user) {
             return res.send({
               success: 'false',
-              user_id: -1,
-              message: 'login failed'
+              user_id: void 0,
+              message: 'Login failed: ' + info
+            });
+          } else {
+            return res.send({
+              success: 'true',
+              user_id: user,
+              message: 'Login succeeded'
             });
           }
-          return res.send({
-            success: 'true',
-            user_id: user,
-            message: 'login succeeded'
-          });
         }))(req, res, next);
       }));
       passport.use(new PassportLocalStrategy(function(username, password, done) {
@@ -244,16 +288,10 @@
         console.log("authenticating with local strategy");
         user = username;
         if (user !== 'nick') {
-          console.log("bad username");
-          return done(null, false, {
-            message: 'Unknown user ' + username
-          });
+          return done(null, false, 'Unknown user');
         }
         if (password !== 'word') {
-          console.log("bad pw");
-          return done(null, false, {
-            message: 'invalid password'
-          });
+          return done(null, false, 'Incorrect password');
         }
         return done(null, user);
       }));

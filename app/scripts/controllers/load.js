@@ -2,6 +2,8 @@
  *  @brief Controller to initialize handlers, and the navBar
  *
  *  @author Kenneth Murphy (kmmurphy)
+ *  @author Nick LaGrow (nlagrow)
+ *  @bug No local storage currently
  */
 
 /*  need to write a function to deal with a new search
@@ -46,16 +48,20 @@ $(document).ready(function(e) {
         console.log(response);
         console.log(response.message);
 
+        // If the user successfully logged in:
         if (response['success'] === 'true') {
+          // Change login text to profile text
           $('.loginBtn').html('<h2>Profile</h2>');
+
+          // Remove previous click bindings
           $('.loginBtn').off('click');
+
+          // Change login links to profile links
           $('.loginBtn').addClass('profileBtn');
           $('.loginBtn').removeClass('loginBtn');
-           
           $(".profileBtn").on("click", function() {
               $.mobile.changePage($("#profilePage"), {transition: "slideup"});
           });
-        
           $.mobile.changePage($("#profilePage"), {transition: "slideup"});
         }
 
@@ -64,6 +70,63 @@ $(document).ready(function(e) {
       GetAsyncData();
     });
     
+    $('#register_button').on('click', function() {
+      console.log('pressed register button');
+      var req_fifo;
+
+      // GetAsyncData sends a request to read the fifo.
+      function GetAsyncData() {
+        var url = "/register";
+        var params = "username=" + $('#new_username').val() + "&password=" + $('#new_password').val() + "&email=" + $('#new_email').val() + "&address=" + $('#new_address').val();
+
+        // branch for native XMLHttpRequest object
+        if (window.XMLHttpRequest) {
+          req_fifo = new XMLHttpRequest();
+          req_fifo.abort();
+          req_fifo.onreadystatechange = GotAsyncData;
+          console.log(url+'?'+params);
+          req_fifo.open("POST", url+"?"+params, true);
+          req_fifo.send(null);
+        } 
+      }
+
+      function GotAsyncData() {
+        if (req_fifo.readyState != 4 || req_fifo.status != 200) {
+          return;
+        }
+        var response = JSON.parse(req_fifo.response);
+        console.log(response);
+        console.log(response.message);
+
+        console.log(response.success);
+        // If the user successfully logged in:
+        if (response['success'] === 'true') {
+          // Change login text to profile text
+          $('.loginBtn').html('<h2>Profile</h2>');
+
+          // Remove previous click bindings
+          $('.loginBtn').off('click');
+
+          // Change login links to profile links
+          $('.loginBtn').addClass('profileBtn');
+          $('.loginBtn').removeClass('loginBtn');
+          $(".profileBtn").on("click", function() {
+              $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+          });
+          $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+        } else {
+          alert ('Sorry, something went wrong with registering your account.');
+        }
+
+        return;
+      } 
+      GetAsyncData();
+    });
+
+
+
+
+
     //attach page change event to navBar
     $(".searchBtn").on("click", function() {
         $.mobile.changePage($("#landingPage"), {transition: "slideup"});

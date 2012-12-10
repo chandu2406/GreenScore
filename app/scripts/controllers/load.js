@@ -81,6 +81,7 @@ $(document).ready(function(e) {
       // GetAsyncData sends a request to read the fifo.
       function GetAsyncData() {
         var url = "/register";
+
         var params = "username=" + 
           escape($('#new_username').val()) + "&password=" + 
           escape($('#new_password').val()) + "&email=" + 

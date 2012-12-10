@@ -11,7 +11,7 @@
 
 
 (function() {
-  var $, FacebookStrategy, HTTPRequestServer, PassportLocalStrategy, express, flash, passport, q,
+  var FacebookStrategy, HTTPRequestServer, PassportLocalStrategy, express, flash, passport, q,
     __slice = [].slice;
 
   PassportLocalStrategy = require('passport-local').Strategy;
@@ -25,8 +25,6 @@
   flash = require('connect-flash');
 
   q = require('q');
-
-  $ = require('jquery');
 
   HTTPRequestServer = (function() {
 

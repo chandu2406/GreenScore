@@ -16,7 +16,6 @@ passport              = require('passport')
 express               = require('express')
 flash                 = require('connect-flash')
 q                     = require('q')
-$                     = require('jquery')
 
 #################################################################
 # http request server class

@@ -129,10 +129,6 @@ $(document).ready(function(e) {
       GetAsyncData();
     });
 
-
-
-
-
     //attach page change event to navBar
     $(".searchBtn").on("click", function() {
         $.mobile.changePage($("#landingPage"), {transition: "slideup"});
@@ -174,6 +170,4 @@ $(document).ready(function(e) {
     $("#filterOverlay").on("click", function(){
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
-
-
 });

@@ -12,9 +12,7 @@
  *     --query zillow/database again
  */
 
-
-
-$(document).ready(function(e) {    
+$(document).ready(function(e) {
     // Click event handler for facebook login
     $("#fb_button").on("click", function() {
         window.open("/auth/facebook","_self");
@@ -28,9 +26,9 @@ $(document).ready(function(e) {
       // GetAsyncData sends a request to read the fifo.
       function GetAsyncData() {
         var url = "/login";
-        var params = "username=" + 
-          escape($('#username').val()) + "&password=" + 
-          escape($('#password').val());
+        var hashed_pass = CryptoJS.SHA256(escape($('#password').val()));
+        var params = "username=" + escape($('#username').val()) +
+                     "&password=" + hashed_pass;
 
         // branch for native XMLHttpRequest object
         if (window.XMLHttpRequest) {
@@ -40,7 +38,7 @@ $(document).ready(function(e) {
           console.log(url+'?'+params);
           req_fifo.open("POST", url+"?"+params, true);
           req_fifo.send(null);
-        } 
+        }
       }
 
       function GotAsyncData() {
@@ -69,10 +67,10 @@ $(document).ready(function(e) {
         }
 
         return;
-      } 
+      }
       GetAsyncData();
     });
-    
+
     // Click event handler for register button
     $('#register_button').on('click', function() {
       console.log('pressed register button');
@@ -81,11 +79,11 @@ $(document).ready(function(e) {
       // GetAsyncData sends a request to read the fifo.
       function GetAsyncData() {
         var url = "/register";
-        var params = "username=" + 
-          escape($('#new_username').val()) + "&password=" + 
-          escape($('#new_password').val()) + "&email=" + 
-          escape($('#new_email').val()) + "&address=" + 
-          escape($('#new_address').val());
+        var hashed_pass = CryptoJS.SHA256(escape($('#new_password').val()));
+        var params = "username=" + escape($('#new_username').val()) +
+                     "&password=" + hashed_pass +
+                     "&email=" + escape($('#new_email').val()) +
+                     "&address=" + escape($('#new_address').val());
 
         // branch for native XMLHttpRequest object
         if (window.XMLHttpRequest) {
@@ -95,7 +93,7 @@ $(document).ready(function(e) {
           console.log(url+'?'+params);
           req_fifo.open("POST", url+"?"+params, true);
           req_fifo.send(null);
-        } 
+        }
       }
 
       function GotAsyncData() {
@@ -127,7 +125,7 @@ $(document).ready(function(e) {
         }
 
         return;
-      } 
+      }
       GetAsyncData();
     });
 
@@ -151,11 +149,11 @@ $(document).ready(function(e) {
     $(".filterBtn").on("click", function() {
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
-    
+
     //attach indicator and color change to the navbar on each page
     var indicator = $("<img></img>");
     indicator.attr("src","./assets/selection.png");
-    
+
     indicator.css("left", "8px");
     $("#landingPage").find(".searchBtn").append(indicator.clone());
     $("#newUserPage").find(".profileBtn").append(indicator.clone());
@@ -166,16 +164,16 @@ $(document).ready(function(e) {
     $("#loginPage").find(".loginBtn").append(indicator.clone());
      indicator.css("left", "3px");
     $("#mapView").find(".mapBtn").append(indicator.clone());
-    
-   
+
+
     //attach filters
     $("#priceFilter").on("click", filter.byPrice);
     $("#bathFilter").on("click", filter.byNumBath);
     $("#bedFilter").on("click", filter.byNumBed);
-    
+
     $("#filterOverlay").on("click", function(){
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
-    
+
 
 });

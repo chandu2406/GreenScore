@@ -174,6 +174,7 @@
         if (totscore > 100) {
           totscore = 100;
         }
+        totscore = parseInt(totscore);
         return deferred.resolve([totscore, rows.length]);
       };
       onFailure = function(err) {

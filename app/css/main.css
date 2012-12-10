@@ -101,3 +101,73 @@ body {
   #filterPage .contentBubble h2 {
     text-align: center;
     font-size: 150%; }
+
+div! > div! > .marker_div {
+  background-image: url("../assets/debut_light.png"); }
+
+.marker_div {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 12px; }
+  .marker_div .child_header {
+    border-bottom: dotted thin gray; }
+  .marker_div .child_zpid {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    color: gray; }
+  .marker_div .child_street {
+    clear: both;
+    float: left;
+    margin-top: -2px;
+    margin-left: -2px;
+    color: green;
+    font-size: 20px; }
+  .marker_div .child_city {
+    clear: both;
+    float: right;
+    color: gray;
+    font-size: 15px; }
+  .marker_div .child_state {
+    clear: both;
+    float: right;
+    color: gray;
+    font-size: 15px; }
+  .marker_div .child_zipcode {
+    clear: both;
+    float: right;
+    color: gray;
+    font-size: 15px; }
+  .marker_div .child_sqFt {
+    float: left;
+    font-size: 18px; }
+  .marker_div .child_numBed {
+    clear: both;
+    float: left;
+    font-size: 18px; }
+  .marker_div .child_numBath {
+    clear: both;
+    float: left;
+    font-size: 18px; }
+  .marker_div .child_priceEst {
+    clear: both;
+    float: left;
+    font-size: 20px;
+    color: red; }
+  .marker_div .child_greenscore {
+    clear: both;
+    float: right;
+    font-size: 20px;
+    color: green; }
+  .marker_div .child_lat {
+    clear: both;
+    float: left;
+    color: gray; }
+  .marker_div .child_long {
+    float: left;
+    color: gray; }
+  .marker_div .child_zpid {
+    clear: both;
+    float: right;
+    color: gray; }

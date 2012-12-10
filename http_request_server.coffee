@@ -180,6 +180,7 @@ class HTTPRequestServer
       # a proof of concept.
       totscore *= 4
       totscore = 100 if totscore > 100
+      totscore = parseInt totscore
       deferred.resolve([totscore, rows.length])
 
     # on failure, just return 0, 0 (something went wrong, user is notified

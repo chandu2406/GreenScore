@@ -57,7 +57,6 @@ $(document).ready(function(e) {
      */
     $("#searchBar").bind("keyup", function(event){
         if(event.keyCode == 13){
-            console.log("querying query");
             var queryAddr, i, component;
 
             // loading page
@@ -72,7 +71,6 @@ $(document).ready(function(e) {
                 alert("Please enter a valid address");
             }else {
                 for(i=0; i<addrComponents.length; i++){
-                    console.log(addrComponents);
                     component = addrComponents[i];
                     if(component.types[0] === "street_number"){
                         queryAddr.streetNum = component.long_name;

@@ -7,14 +7,14 @@
 var filter = {};
 
 /** @brief Filters markers present on the map by price.
- *         
+ *
  */
 filter.byPrice = function() {
     var min, max, markerPrice;
 
     min = $("#priceMin").val();
     max = $("#priceMax").val();
-    
+
     if(min === ""){
         alert("please an a minimum price");
         $("#minPrice").css("background-color", "#ff0000");
@@ -25,7 +25,7 @@ filter.byPrice = function() {
         min = parseInt(min);
         max = parseInt(max);
         console.log("max and min are:" + max + " " + min);
-                    
+
         for(i=0; i<gMap.markers.length; i++){
             markerPrice = parseInt(gMap.markers[i].residence.priceEst);
             console.log(markerPrice);
@@ -38,11 +38,11 @@ filter.byPrice = function() {
             }
         }
     }
-    
+
 }
 
 /** @brief Filters markers present on the map by number of bathrooms
- *         
+ *
  */
 filter.byNumBath = function(){
     console.log("filtering by number of baths");
@@ -63,12 +63,12 @@ filter.byNumBath = function(){
 }
 
 /** @brief Filters markers present on the map by number of bedrooms
- *         
+ *
  */
 filter.byNumBed = function(){
     var numBed;
     numBed = parseFloat($("#numBed").val());
-      
+
     for(i=0; i<gMap.markers.length; i++){
         if(numBed !== parseFloat(gMap.markers[i].residence.numBed)){
             console.log("removing marker: "+gMap.markers[i]);

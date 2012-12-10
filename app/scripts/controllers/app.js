@@ -6,7 +6,7 @@
 
 $(document).ready(function(e) {
 
-    
+
     var geocoder, addrComponents, addrLat, addrLong;
     //watermarks for text input fields
     $("#searchBar").watermark("Please enter an address");
@@ -22,7 +22,7 @@ $(document).ready(function(e) {
     $("#new_email").watermark("Email");
     $("#new_address").watermark("Address");
 
-    
+
     //GEOCODER
     geocoder = new google.maps.Geocoder();
     //autocomplete suggestion code adopted from http://tech.cibul.net/geocode-with-google-maps-api-v3/
@@ -52,7 +52,7 @@ $(document).ready(function(e) {
     });
 
 
-    /*on enter in the address box, queryAPI. Will have to have this 
+    /*on enter in the address box, queryAPI. Will have to have this
      *option as a button for mobile version
      */
     $("#searchBar").bind("keyup", function(event){

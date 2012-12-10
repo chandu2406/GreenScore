@@ -11,8 +11,8 @@ queryHandler.socket = io.connect('http://localhost:3000/');
 queryHandler.ZWSID = "X1-ZWz1bjzdhxm7m3_af1tq";
 queryHandler.searchedAddr = new Residence();
 
-/** @brief Function called to retrieve info from Zillow API 
- *				 for a single address and from the database
+/** @brief Function called to retrieve info from Zillow API
+ *         for a single address and from the database
  *
  *  @param addr-a userAddress object to retrieve information on
  *
@@ -31,7 +31,7 @@ queryHandler.searchAddress = function(addr) {
     // the response.
     queryHandler.socket.emit("simpleSearch", {'path': path});
 
-    $("#searchBar").val(" ");
+    $("#searchBar").val("");
 }
 
 /** @brief Function called to retrieve houses in the area that are comparable
@@ -82,11 +82,11 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
     newRes.greenscore = $.parseJSON(
-	$.ajax({
-	    type: 'GET',
-	    url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
-	    async: false
-	}).responseText)['result'];
+  $.ajax({
+      type: 'GET',
+      url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
+      async: false
+  }).responseText)['result'];
 
     // reset the set of residences
     Residences.all = {};
@@ -95,13 +95,13 @@ queryHandler.socket.on("searchResults", function(data) {
     // initiatize the map if neccessary, otherwise update the coordinates of
     // the center of the map
     if ($("#map_canvas").children().length === 0) {
-	gMap.init(newRes);
+  gMap.init(newRes);
     } else {
-	gMap.updateCoors(newRes.lat,newRes.long);
+  gMap.updateCoors(newRes.lat,newRes.long);
     }
 
     queryHandler.getComp(newRes.zpid, 25);
-    
+
 });
 
 
@@ -122,40 +122,40 @@ queryHandler.socket.on("compResults", function(data){
     console.log("GetDeepComp exitted with error code "+errorCode);
     */
     $xml.find("comp").each(function() {
-	zpid = $(this).find("zpid").text();
-	console.log(zpid);
-	if (typeof(Residences.all[zpid]) === 'undefined') {
-	    newRes = new Residence();
-	    newRes.zpid = zpid;
-	    newRes.lat = $(this).find("latitude").text();
-	    newRes.long = $(this).find("longitude").text();
-	    newRes.street = $(this).find("street").text();
-	    newRes.city = $(this).find("city").text();
-	    newRes.state =  $(this).find("state").text();
-	    newRes.zipcode = $(this).find("zipcode").text();
-	    newRes.sqFt = $(this).find("finishedSqFt").text();
+  zpid = $(this).find("zpid").text();
+  console.log(zpid);
+  if (typeof(Residences.all[zpid]) === 'undefined') {
+      newRes = new Residence();
+      newRes.zpid = zpid;
+      newRes.lat = $(this).find("latitude").text();
+      newRes.long = $(this).find("longitude").text();
+      newRes.street = $(this).find("street").text();
+      newRes.city = $(this).find("city").text();
+      newRes.state =  $(this).find("state").text();
+      newRes.zipcode = $(this).find("zipcode").text();
+      newRes.sqFt = $(this).find("finishedSqFt").text();
             newRes.priceEst = $(this).find("amount").text();
-	    newRes.numBath = $(this).find("bathrooms").text();
-	    newRes.numBed = $(this).find("bedrooms").text();
-	    newRes.greenscore = $.parseJSON(
-		$.ajax({
-		    type: 'GET',
-		    url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
-		    async: false
-		}).responseText)['result'];
-	    console.log(newRes);
-	    
-	    Residences.all[zpid] = newRes;
-	    gMap.newMarker(newRes);
-	    
-	}
+      newRes.numBath = $(this).find("bathrooms").text();
+      newRes.numBed = $(this).find("bedrooms").text();
+      newRes.greenscore = $.parseJSON(
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
+        async: false
+    }).responseText)['result'];
+      console.log(newRes);
+
+      Residences.all[zpid] = newRes;
+      gMap.newMarker(newRes);
+
+  }
     });
-    
+
     queryHandler.displayResults();
 });
 
 
-/** @brief Receive api response from server that contains 
+/** @brief Receive api response from server that contains
  *         information about a neighborhood
  *
  */
@@ -166,16 +166,16 @@ queryHandler.socket.on("demoResults", function(data){
 
     xmlDoc = $.parseXML(txt);
     $xml = $(xmlDoc);
-   
+
     tData = new tempNeighborhood();
-    
+
     tData.medianSalePrice = queryHandler.findAttr("Median Sale Price", xml);
     tData.medianHomeSize =  queryHandler.findAttr("Median Home Size (Sq. Ft.)", xml);
     tData.avgYearBuilt = queryHandler.findAttr("Avg. Year Built", xml);
     tData.medianIncome = queryHandler.findAttr("Median Household Income", xml);
     tData.medianAge = queryHandler.findAttr("Median Age", xml);
     tData.avgCommute = queryHandler.findAttr("Average Commute Time (Minutes)", xml);
-   
+
     //call another function to pass the data to the canvas drawer
 
 });
@@ -183,7 +183,7 @@ queryHandler.socket.on("demoResults", function(data){
 
 queryHandler.findAttr = function(name, xml){
     var name, value;
-    
+
     $xml.find("attribute").each(function() {
         if($(this).find("name").text() === name){
             value = $(this).find("neighborhood");

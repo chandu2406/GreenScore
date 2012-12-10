@@ -62,15 +62,15 @@ body {
     -moz-box-shadow: 0 0 2px #111;
     -webkit-box-shadow: 0 0 2px #111;
   }
-	
-	h1 {
-		margin: 15px;
-  	font-size: 350%;
-  	color: $darkGreen;
-  	span {
-    	color: $gray;
-  	}
-	}
+
+  h1 {
+    margin: 15px;
+    font-size: 350%;
+    color: $darkGreen;
+    span {
+      color: $gray;
+    }
+  }
 }
 
 .navBar {
@@ -79,24 +79,24 @@ body {
   text-align:right;
   margin: 20px 0px 30px 15%;
   .navBtn {
-          position: relative;
-          display: inline-block;
-          margin-right: 10%;
-          text-align: center;
-          
-          h2 {
-             font-size: 16px;
-             color: $gray;
-             cursor: pointer;
-           }
-           h2:hover{
-             color: black;
-             cursor: pointer;
-           }
-           img {
-             bottom: -37px;
-             position: absolute;
-           }
+    position: relative;
+    display: inline-block;
+    margin-right: 10%;
+    text-align: center;
+
+    h2 {
+      font-size: 16px;
+      color: $gray;
+      cursor: pointer;
+    }
+    h2:hover{
+      color: black;
+      cursor: pointer;
+    }
+    img {
+      bottom: -37px;
+      position: absolute;
+    }
   }
 }
 
@@ -106,45 +106,41 @@ body {
 }
 
 #mapView .contentBubble{
-	height: 80%;
-	position: relative;	   
+  height: 80%;
+  position: relative;
 
-	#filterOverlay {
-		background-color: rgba(120,120,120,.8);
-		text-align: center;
-		position: absolute;
-		bottom: 15px;
-		left: -12px;
-		width: 100%;
-		height: 30px;
-		font-size: 150%;
-		overflow: visible;
-                cursor: pointer;
-		h2 {
-			position: relative;
-			top: 5px;
-		}
-	}
+  #filterOverlay {
+    background-color: rgba(120,120,120,.8);
+    text-align: center;
+    position: absolute;
+    bottom: 15px;
+    left: -12px;
+    width: 100%;
+    height: 30px;
+    font-size: 150%;
+    overflow: visible;
+    cursor: pointer;
+    h2 {
+      position: relative;
+      top: 5px;
+    }
+  }
 
-        #map_canvas {
-          height: 100%;
-          width: 100%;
-        }	
+  #map_canvas {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 
 #filterPage {
-            .contentBubble {    
-                           height: 80%;
-                           text-align: left; 
+  .contentBubble {
+    height: 80%;
+    text-align: left;
 
-                           h2 {
-                              text-align: center;
-                              font-size: 150%;
-                           }                                    
-            }
+    h2 {
+      text-align: center;
+      font-size: 150%;
+    }
+  }
 }
-
-
-
-

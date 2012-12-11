@@ -20,7 +20,6 @@ $(document).ready(function(e) {
 
     // Click event handler for login button
     $('#login_button').on('click', function() {
-      console.log('pressed login button');
       var req_fifo;
 
       // GetAsyncData sends a request to read the fifo.
@@ -35,7 +34,6 @@ $(document).ready(function(e) {
           req_fifo = new XMLHttpRequest();
           req_fifo.abort();
           req_fifo.onreadystatechange = GotAsyncData;
-          console.log(url+'?'+params);
           req_fifo.open("POST", url+"?"+params, true);
           req_fifo.send(null);
         }
@@ -46,8 +44,6 @@ $(document).ready(function(e) {
           return;
         }
         var response = JSON.parse(req_fifo.response);
-        console.log(response);
-        console.log(response.message);
 
         // If the user successfully logged in:
         if (response['success'] === 'true') {
@@ -73,7 +69,6 @@ $(document).ready(function(e) {
 
     // Click event handler for register button
     $('#register_button').on('click', function() {
-      console.log('pressed register button');
       var req_fifo;
 
       // GetAsyncData sends a request to read the fifo.
@@ -90,7 +85,6 @@ $(document).ready(function(e) {
           req_fifo = new XMLHttpRequest();
           req_fifo.abort();
           req_fifo.onreadystatechange = GotAsyncData;
-          console.log(url+'?'+params);
           req_fifo.open("POST", url+"?"+params, true);
           req_fifo.send(null);
         }
@@ -101,10 +95,6 @@ $(document).ready(function(e) {
           return;
         }
         var response = JSON.parse(req_fifo.response);
-        console.log(response);
-        console.log(response.message);
-
-        console.log(response.success);
         // If the user successfully logged in:
         if (response['success'] === 'true') {
           // Change login text to profile text

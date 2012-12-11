@@ -26,7 +26,6 @@ queryHandler.searchAddress = function(addr) {
     // name
     path = "/webservice/GetDeepSearchResults.htm?zws-id="+queryHandler.ZWSID+
         "&address="+urlAddr+"&citystatezip="+addr.zipcode;
-    console.log("sending simpleSearch event");
     // send the url to the server.  The server will query the API and return
     // the response.
     queryHandler.socket.emit("simpleSearch", {'path': path});
@@ -45,7 +44,6 @@ queryHandler.getComp = function(zpid,count){
     // form the URL to call
     var path = "/webservice/GetDeepComps.htm?zws-id="+queryHandler.ZWSID+
         "&zpid="+zpid+"&count="+count;
-    console.log("sending compSearch event");
     queryHandler.socket.emit("compSearch", {'path': path});
 }
 
@@ -53,7 +51,6 @@ queryHandler.getDemographics = function(regionId){
     //form the URL to call
     var path = "/webservice/GetDemographics.htm?zws-id="+queryHandler.ZWSID+
         "&regionid="+regionId;
-    console.log("sending getDemographics event");
     queryHandler.socket.emit("getDemo", {'path': path});
 }
 
@@ -68,7 +65,6 @@ queryHandler.socket.on("searchResults", function(data) {
     txt = data.zillowData;
     xmlDoc = $.parseXML(txt);
     $xml = $(xmlDoc);
-    console.log("xml for single search: "+txt);
     newRes = new Residence();
     newRes.zpid =  $xml.find("zpid").text();
     newRes.lat = $xml.find("latitude").text();
@@ -112,18 +108,15 @@ queryHandler.socket.on("searchResults", function(data) {
 queryHandler.socket.on("compResults", function(data){
     var txt, xmlDoc, xml, zpid, newRes, errorCode;
 
-    console.log("received results from comp search");
     txt = data.zillowData;
 
     xmlDoc = $.parseXML(txt);
     $xml = $(xmlDoc);
     /*
     errorCode = $(xml).find("code").text();
-    console.log("GetDeepComp exitted with error code "+errorCode);
     */
     $xml.find("comp").each(function() {
   zpid = $(this).find("zpid").text();
-  console.log(zpid);
   if (typeof(Residences.all[zpid]) === 'undefined') {
       newRes = new Residence();
       newRes.zpid = zpid;
@@ -143,7 +136,6 @@ queryHandler.socket.on("compResults", function(data){
         url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
         async: false
     }).responseText)['result'];
-      console.log(newRes);
 
       Residences.all[zpid] = newRes;
       gMap.newMarker(newRes);
@@ -161,7 +153,6 @@ queryHandler.socket.on("compResults", function(data){
  */
 queryHandler.socket.on("demoResults", function(data){
     var txt, xmlDoc, xml;
-    console.log("demographics returned");
     txt = data.zillowData;
 
     xmlDoc = $.parseXML(txt);
@@ -187,8 +178,6 @@ queryHandler.findAttr = function(name, xml){
     $xml.find("attribute").each(function() {
         if($(this).find("name").text() === name){
             value = $(this).find("neighborhood");
-            console.log("found "+name);
-            console.log(parseInt($(value).find("value").text()));
             return parseInt($(value).find("value").text());
         }
     });

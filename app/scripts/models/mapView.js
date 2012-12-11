@@ -22,33 +22,33 @@ gMap.newMarkers = [];
 gMap.markers = [];
 
 
-/** @brief Initializes a event handler to load the google map the first time 
+/** @brief Initializes a event handler to load the google map the first time
  *  the page is shown, and add markers to the map
  *
- *  @param residence- information retrieved from the zillow API that the 
+ *  @param residence- information retrieved from the zillow API that the
  *         user entered
  *
  */
 gMap.init = function(residence){
-    
-    var mapOptions = {
-	center: new google.maps.LatLng(residence.lat, residence.long),
-	zoom: 13,
-	mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    gMap.newMarker(residence);
 
-    $("#mapView").on("pageshow", function() {
-	// if the div holding the map is empty, initialize the map
-	if ($("#map_canvas").children().length === 0) {
-	    gMap.infoWindow = new google.maps.InfoWindow();
-	    gMap.map = new google.maps.Map(document.getElementById("map_canvas"),
-					   mapOptions);
-	}
+  var mapOptions = {
+    center: new google.maps.LatLng(residence.lat, residence.long),
+    zoom: 13,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  gMap.newMarker(residence);
 
-	// initialize all new markers on the page
-	gMap.initMarkers();
-    });
+  $("#mapView").on("pageshow", function() {
+  // if the div holding the map is empty, initialize the map
+    if ($("#map_canvas").children().length === 0) {
+        gMap.infoWindow = new google.maps.InfoWindow();
+        gMap.map = new google.maps.Map(document.getElementById("map_canvas"),
+                                       mapOptions);
+    }
+
+    // initialize all new markers on the page
+    gMap.initMarkers();
+  });
 }
 
 /** @brief Function called to retrieve info from Zillow API for a single address
@@ -57,15 +57,15 @@ gMap.init = function(residence){
  *
  */
 gMap.updateCoors = function (lat, long) {
-    console.log("updating center of map coordinates");
+   console.log("updating center of map coordinates");
     var latLong = new google.maps.LatLng(lat, long);
     gMap.map.setCenter(latLong);
 }
 
-/** @brief Creates a new marker object and adds it to an array of markers that 
+/** @brief Creates a new marker object and adds it to an array of markers that
  *         will be created on the next pageshow event
  *
- *	@param residence - info about where to place the marker and what data will be associated with it
+ *  @param residence - info about where to place the marker and what data will be associated with it
  *
  */
 gMap.newMarker = function(residence){
@@ -74,7 +74,7 @@ gMap.newMarker = function(residence){
     marker = new gMap.Marker();
     marker.latLong = new google.maps.LatLng(residence.lat, residence.long);
     marker.addr = residence.street+", "+residence.city+" "+residence.state+
-	", "+residence.zipcode;
+  ", "+residence.zipcode;
     marker.residence = residence;
     //add it to the newMarker array to be initialized on pageshow
     gMap.newMarkers.push(marker);
@@ -87,19 +87,19 @@ gMap.newMarker = function(residence){
 gMap.initMarkers = function() {
     var i, marker, newMarker, contentStr, infowindow;
     for (i=0; i<gMap.newMarkers.length; i++) {
-	marker = gMap.newMarkers[i];
-	console.log("creating marker at "+marker.latLong);
-	newMarker = new google.maps.Marker({
-	    position: marker.latLong,
-	    map: gMap.map,
-	    title: marker.addr,
-	    optimized: false,
-	    clickable: true,
-	    visable: true
-	});
-	
-	gMap.attachData(newMarker, marker.residence);
-        
+  marker = gMap.newMarkers[i];
+  console.log("creating marker at "+marker.latLong);
+  newMarker = new google.maps.Marker({
+      position: marker.latLong,
+      map: gMap.map,
+      title: marker.addr,
+      optimized: false,
+      clickable: true,
+      visable: true
+  });
+
+  gMap.attachData(newMarker, marker.residence);
+
         marker.gMarker = newMarker;
         gMap.markers.push(marker);
     }
@@ -107,27 +107,147 @@ gMap.initMarkers = function() {
 }
 
 
-/** @brief attaches info about a residence to a marker so that when clicked, 
+/** @brief attaches info about a residence to a marker so that when clicked,
  *         the marker will display the information in an attractive format
  *
- *  @param marker- newly ititialized marker on which to attach an event 
+ *  @param marker- newly ititialized marker on which to attach an event
  *         handler to display data
  *
- *  @param residence- the residence data to associate with that marker. 
+ *  @param residence- the residence data to associate with that marker.
  */
 gMap.attachData = function(marker, data) {
-    var content, child;
+  var content, child, header, stats, results, footer, i;
 
-    content = document.createElement('div');
+  content = document.createElement('div');
+  content.setAttribute('class', 'marker_div');
 
-    for(prop in data){
-	child = document.createElement('h2');
-	child.innerHTML = prop+": "+data[prop];
-	content.appendChild(child);
-    }
+  header_tags  = ['street', 'city', 'state', 'zipcode'];
+  stats_tags   = ['sqFt', 'numBed', 'numBath'];
+  results_tags = ['priceEst', 'greenscore'];
+  footer_tags  = ['lat', 'long', 'zpid'];
 
-    google.maps.event.addListener(marker, 'click', function() {
-	gMap.infoWindow.setContent(content);
-	gMap.infoWindow.open(gMap.map, marker);
-    });
+  // add the header
+  header = document.createElement('div');
+  header.setAttribute('class', 'marker_header');
+  for (i = 0; i < header_tags.length; i++) {
+    prop = header_tags[i];
+    child = document.createElement('h2');
+    child.setAttribute('class', 'marker_child child_' + prop);
+
+    // add the data
+    text = data[prop];
+    child.innerHTML = text;
+    header.appendChild(child);
+  };
+
+  // add the stats
+  stats = document.createElement('div');
+  stats.setAttribute('class', 'marker_stats');
+  for (i = 0; i < stats_tags.length; i++) {
+    prop = stats_tags[i];
+    child = document.createElement('h2');
+    child.setAttribute('class', 'marker_child child_' + prop);
+    text = "";
+
+    // content
+    text += data[prop];
+
+    // suffixes
+    switch(prop) {
+      case 'sqFt':
+        text += ' sqft';
+        break;
+      case 'numBed':
+        text += ' beds';
+        break;
+      case 'numBath':
+        text += ' baths';
+        break;
+      default:
+        break;
+    };
+    child.innerHTML = text;
+    stats.appendChild(child);
+  };
+
+  // add the results
+  results = document.createElement('div');
+  results.setAttribute('class', 'marker_results');
+  for (i = 0; i < results_tags.length; i++) {
+    prop = results_tags[i];
+    child = document.createElement('h2');
+    child.setAttribute('class', 'marker_child child_' + prop);
+    text = "";
+
+    // prefixes
+    switch(prop) {
+      case 'priceEst':
+        text += '$';
+        break;
+      case 'greenscore':
+        text += 'GS: ';
+        break;
+      default:
+        break;
+    };
+
+    // content
+    text += data[prop];
+
+    // suffixes
+    switch(prop) {
+      case 'priceEst':
+        text += ' / mo';
+        break;
+      default:
+        break;
+    };
+
+    child.innerHTML = text;
+    results.appendChild(child);
+  };
+
+  // add the footer
+  footer = document.createElement('div');
+  footer.setAttribute('class', 'marker_footer');
+  for (i = 0; i < footer_tags.length; i++) {
+    prop = footer_tags[i];
+    child = document.createElement('h2');
+    child.setAttribute('class', 'marker_child child_' + prop);
+    text = "";
+
+    // prefixes
+    switch(prop) {
+      case 'zpid':
+        text += 'ZPID: ';
+        break;
+      default:
+        break;
+    };
+
+    // content
+    text += data[prop];
+
+    // suffixes
+    switch(prop) {
+      case 'lat':
+        text += ', ';
+        break;
+      default:
+        break;
+    };
+
+    child.innerHTML = text;
+    footer.appendChild(child);
+  };
+
+  content.appendChild(header);
+  content.appendChild(stats);
+  content.appendChild(results);
+  content.appendChild(footer);
+
+  google.maps.event.addListener(marker, 'click', function() {
+    gMap.infoWindow.setContent(content);
+    gMap.infoWindow.open(gMap.map, marker);
+  });
 }

@@ -110,8 +110,8 @@ div! > div! > .marker_div {
   height: 100%;
   font-family: Arial, sans-serif;
   font-size: 12px; }
-  .marker_div .child_header {
-    border-bottom: dotted thin gray; }
+  .marker_div .marker_stats {
+    border-bottom: dashed thin gray; }
   .marker_div .child_zpid {
     position: absolute;
     bottom: 3px;

@@ -156,17 +156,17 @@ div! > div! > .marker_div {
   font-family: Arial, sans-serif;
   font-size: 12px;
 
-  .child_header {
-    border-bottom: dotted thin gray;
+  .marker_header {
   }
 
-  .child_stats {
+  .marker_stats {
+    border-bottom: dashed thin gray;
   }
 
-  .child_results {
+  .marker_results {
   }
 
-  .child_footer {
+  .marker_footer {
   }
 
   // ZPID

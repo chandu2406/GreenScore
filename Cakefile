@@ -1,4 +1,4 @@
-{spawn, exec} = require 'child_process'
+{spawn, exec, execFile} = require 'child_process'
 
 task 'build', 'build the source directory', ->
   exec 'coffee --compile .; scss --update .;npm install', (err, stdout, stderr) ->
@@ -7,10 +7,12 @@ task 'build', 'build the source directory', ->
     console.log stdout + stderr if stdout or stderr
 
 task 'deploy', 'deploy to kettle', ->
-  exec 'git push heroku master', (err, stdout, stderr) ->
-    console.log err if err
-    throw err if err
-    console.log stdout + stderr if stdout or stderr
+  exec 'cake build', (err, stdout, stderr) ->
+    if err
+      console.log err
+      throw err if err
+    else
+      helper = spawn '/bin/sh', ['./deploy_helper.sh'], {stdio: 'inherit'}
 
 task 'local', 'deploy locally (runs the node server)', ->
   exec 'cake build', (err, stdout, stderr) ->

@@ -20,6 +20,8 @@ gMap.Marker = function(){
 gMap.newMarkers = [];
 //array of google map initialized markers
 gMap.markers = [];
+//google map marker currently opened
+gMap.open_marker = undefined;
 
 
 /** @brief Initializes a event handler to load the google map the first time
@@ -121,8 +123,8 @@ gMap.attachData = function(marker, data) {
   content = document.createElement('div');
   content.setAttribute('class', 'marker_div');
 
-  header_tags  = ['street', 'city', 'state', 'zipcode'];
-  stats_tags   = ['sqFt', 'numBed', 'numBath'];
+  header_tags  = ['street', 'zipcode', 'state', 'city'];
+  stats_tags   = ['numBed', 'sqFt', 'numBath'];
   results_tags = ['priceEst', 'greenscore'];
   footer_tags  = ['lat', 'long', 'zpid'];
 
@@ -131,13 +133,32 @@ gMap.attachData = function(marker, data) {
   header.setAttribute('class', 'marker_header');
   for (i = 0; i < header_tags.length; i++) {
     prop = header_tags[i];
-    child = document.createElement('h2');
+    child = document.createElement('div');
     child.setAttribute('class', 'marker_child child_' + prop);
 
     // add the data
     text = data[prop];
+
+    // suffixes
+    switch(prop) {
+      case 'city':
+        text += ', ';
+        break;
+      case 'state':
+        text += ', ';
+        break;
+      default:
+        break;
+    };
+
     child.innerHTML = text;
     header.appendChild(child);
+
+    // adding newlines
+    if ((prop === 'street') ||
+        (prop === 'city')) {
+      header.appendChild($('<br>')[0]);
+    };
   };
 
   // add the stats
@@ -145,7 +166,7 @@ gMap.attachData = function(marker, data) {
   stats.setAttribute('class', 'marker_stats');
   for (i = 0; i < stats_tags.length; i++) {
     prop = stats_tags[i];
-    child = document.createElement('h2');
+    child = document.createElement('div');
     child.setAttribute('class', 'marker_child child_' + prop);
     text = "";
 
@@ -168,6 +189,11 @@ gMap.attachData = function(marker, data) {
     };
     child.innerHTML = text;
     stats.appendChild(child);
+
+    // adding newlines
+    if (prop === 'sqFt') {
+      stats.appendChild($('<br>')[0]);
+    };
   };
 
   // add the results
@@ -175,7 +201,7 @@ gMap.attachData = function(marker, data) {
   results.setAttribute('class', 'marker_results');
   for (i = 0; i < results_tags.length; i++) {
     prop = results_tags[i];
-    child = document.createElement('h2');
+    child = document.createElement('div');
     child.setAttribute('class', 'marker_child child_' + prop);
     text = "";
 
@@ -194,17 +220,13 @@ gMap.attachData = function(marker, data) {
     // content
     text += data[prop];
 
-    // suffixes
-    switch(prop) {
-      case 'priceEst':
-        text += ' / mo';
-        break;
-      default:
-        break;
-    };
-
     child.innerHTML = text;
     results.appendChild(child);
+
+    // adding newlines
+    if (prop === 'greenscore') {
+      stats.appendChild($('<br>')[0]);
+    };
   };
 
   // add the footer
@@ -212,7 +234,7 @@ gMap.attachData = function(marker, data) {
   footer.setAttribute('class', 'marker_footer');
   for (i = 0; i < footer_tags.length; i++) {
     prop = footer_tags[i];
-    child = document.createElement('h2');
+    child = document.createElement('div');
     child.setAttribute('class', 'marker_child child_' + prop);
     text = "";
 
@@ -242,12 +264,40 @@ gMap.attachData = function(marker, data) {
   };
 
   content.appendChild(header);
+  content.appendChild($('<hr>')[0]);
   content.appendChild(stats);
+  content.appendChild($('<hr>')[0]);
   content.appendChild(results);
   content.appendChild(footer);
 
+  var bubble = new InfoBubble({
+    'backgroundColor': "rgb(75, 74, 75)",
+    'borderColor': "rgb(45, 44, 44)",
+    'borderRadius': "8",
+    'borderWidth': "2",
+    'padding': "5",
+    'minWidth': "200",
+    'maxWidth': "400",
+    'minHeight': "125",
+    'maxHeight': "350",
+    'shadowStyle': "1",
+    'arrowSize': "15",
+    'arrowPosition': "5",
+    'arrowStyle': "2",
+    'disableAnimation': true,
+
+    'content': content
+  });
+
   google.maps.event.addListener(marker, 'click', function() {
-    gMap.infoWindow.setContent(content);
-    gMap.infoWindow.open(gMap.map, marker);
+    if (bubble.isOpen() === false) {
+      // close existing markers
+      if (gMap.open_marker !== undefined) {
+        gMap.open_marker.close();
+      };
+
+      bubble.open(gMap.map, marker);
+      gMap.open_marker = bubble;
+    };
   });
 }

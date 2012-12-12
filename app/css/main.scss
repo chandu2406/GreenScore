@@ -145,125 +145,101 @@ body {
   }
 }
 
-// google maps markers
-div! > div! > .marker_div {
-  background-image: url("../assets/debut_light.png");
+// size variables
+$LARGE_TEXT: 18px;
+$MED_TEXT: 15px;
+$SMALL_TEXT: 12px;
+$VERYSMALL_TEXT: 9px;
+
+// color variables
+$GREEN: rgb(105, 183, 37);
+$GRAY: rgb(193, 191, 191);
+$WHITE: rgb(220, 220, 220);
+$ORANGE: rgb(234, 114, 33);
+
+.marker_header {
+  font-family: Arial, sans-serif;
+
+  .child_street {
+    width: 100%;
+    float: left;
+    color: $GREEN;
+    font-size: $LARGE_TEXT;
+  }
+
+  .child_city {
+    float: right;
+    color: $GRAY;
+    font-size: $SMALL_TEXT;
+  }
+
+  .child_state {
+    float: right;
+    color: $GRAY;
+    font-size: $SMALL_TEXT;
+  }
+
+  .child_zipcode {
+    float: right;
+    color: $GRAY;
+    font-size: $SMALL_TEXT;
+  }
 }
 
-.marker_div {
-  width: 100%;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-
-  .marker_header {
-  }
-
-  .marker_stats {
-    border-bottom: dashed thin gray;
-  }
-
-  .marker_results {
-  }
-
-  .marker_footer {
-  }
-
-  // ZPID
-  .child_zpid {
-    position: absolute;
-    bottom: 3px;
-    right: 3px;
-    color: gray;
-  }
-
-  // street
-  .child_street {
-    clear: both;
-    float: left;
-    margin-top: -2px;
-    margin-left: -2px;
-    color: green;
-    font-size: 20px;
-  }
-
-  // city
-  .child_city {
-    clear: both;
-    float: right;
-    color: gray;
-    font-size: 15px;
-  }
-
-  // state
-  .child_state {
-    clear: both;
-    float: right;
-    color: gray;
-    font-size: 15px;
-  }
-
-  // zip
-  .child_zipcode {
-    clear: both;
-    float: right;
-    color: gray;
-    font-size: 15px;
-  }
-
-  // square footage
+.marker_stats {
   .child_sqFt {
-    float: left;
-    font-size: 18px;
+    float: right;
+    color: $WHITE;
+    font-size: $MED_TEXT;
   }
 
-  // num bedrooms
   .child_numBed {
-    clear: both;
     float: left;
-    font-size: 18px;
+    color: $WHITE;
+    font-size: $MED_TEXT;
   }
 
-  // num bathrooms
   .child_numBath {
-    clear: both;
     float: left;
-    font-size: 18px;
+    color: $WHITE;
+    font-size: $MED_TEXT;
   }
+}
 
-  // price estimation
+.marker_results {
+  min-height: 20px;
+
   .child_priceEst {
-    clear: both;
     float: left;
-    font-size: 20px;
-    color: red;
+    color: $ORANGE;
+    font-size: $LARGE_TEXT;
+    font-weight: bold;
   }
 
-  // greenscore
   .child_greenscore {
-    clear: both;
     float: right;
-    font-size: 20px;
-    color: green;
+    color: $GREEN;
+    font-size: $LARGE_TEXT;
+    font-weight: bold;
   }
+}
 
-  // latitude
+.marker_footer {
   .child_lat {
-    clear: both;
+    font-size: $VERYSMALL_TEXT;
     float: left;
-    color: gray;
+    color: $GRAY;
   }
 
-  // longitude
   .child_long {
+    font-size: $VERYSMALL_TEXT;
     float: left;
-    color: gray;
+    color: $GRAY;
   }
 
-  // ZPID
   .child_zpid {
-    clear: both;
+    font-size: $VERYSMALL_TEXT;
     float: right;
-    color: gray;
+    color: $GRAY;
   }
 }

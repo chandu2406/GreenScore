@@ -6,7 +6,7 @@
 
 var queryHandler = {};
 
-queryHandler.socket = io.connect('http://localhost:3000/');
+queryHandler.socket = io.connect('http://kettle.ubiq.cs.cmu.edu:3000/');
 // unique identifier to access Zillow APIs
 queryHandler.ZWSID = "X1-ZWz1bjzdhxm7m3_af1tq";
 queryHandler.searchedAddr = new Residence();
@@ -80,7 +80,7 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.greenscore = $.parseJSON(
   $.ajax({
       type: 'GET',
-      url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
+      url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
       async: false
   }).responseText)['result'];
 
@@ -133,7 +133,7 @@ queryHandler.socket.on("compResults", function(data){
       newRes.greenscore = $.parseJSON(
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/json/getGreenscore?sqft=' + newRes.sqFt,
+        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
         async: false
     }).responseText)['result'];
 

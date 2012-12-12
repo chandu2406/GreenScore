@@ -108,7 +108,8 @@ body {
     width: 100%;
     float: left;
     color: #69b725;
-    font-size: 18px; }
+    font-size: 18px;
+    font-weight: bold; }
   .marker_header .child_city {
     float: right;
     color: #c1bfbf;
@@ -136,7 +137,7 @@ body {
   font-size: 15px; }
 
 .marker_results {
-  min-height: 20px; }
+  min-height: 26px; }
   .marker_results .child_priceEst {
     float: left;
     color: #ea7221;

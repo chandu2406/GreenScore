@@ -165,6 +165,7 @@ $ORANGE: rgb(234, 114, 33);
     float: left;
     color: $GREEN;
     font-size: $LARGE_TEXT;
+    font-weight: bold;
   }
 
   .child_city {
@@ -207,7 +208,7 @@ $ORANGE: rgb(234, 114, 33);
 }
 
 .marker_results {
-  min-height: 20px;
+  min-height: 26px;
 
   .child_priceEst {
     float: left;

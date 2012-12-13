@@ -52,6 +52,16 @@ body {
     color: #68874b; }
     .contentBubble h1 span {
       color: #42473d; }
+  .contentBubble #buttonWrapper {
+    display: inline-block;
+    text-align: ceneter;
+    width: 80%;
+    padding-top: 10px; }
+
+#loginPage .contentBubble {
+  height: 100%; }
+  #loginPage .contentBubble #login_button {
+    background-color: black; }
 
 .navBar {
   position: relative;
@@ -81,11 +91,10 @@ body {
   height: 80%;
   position: relative; }
   #mapView .contentBubble #filterOverlay {
+    background-image: url("../assets/button_background.jpg");
     background-color: rgba(120, 120, 120, 0.8);
+    display: inline-block;
     text-align: center;
-    position: absolute;
-    bottom: 15px;
-    left: -12px;
     width: 100%;
     height: 30px;
     font-size: 150%;
@@ -98,7 +107,7 @@ body {
 /* Apply when not on mobile */
 @media only screen and (min-device-width: 480px) {
   #map_canvas {
-    height: 100%;
+    height: 95%;
     width: 100%; } }
 #filterPage .contentBubble {
   height: 80%;
@@ -113,7 +122,8 @@ body {
     width: 100%;
     float: left;
     color: #69b725;
-    font-size: 18px; }
+    font-size: 18px;
+    font-weight: bold; }
   .marker_header .child_city {
     float: right;
     color: #c1bfbf;
@@ -141,7 +151,7 @@ body {
   font-size: 15px; }
 
 .marker_results {
-  min-height: 20px; }
+  min-height: 26px; }
   .marker_results .child_priceEst {
     float: left;
     color: #ea7221;
@@ -165,3 +175,15 @@ body {
   font-size: 9px;
   float: right;
   color: #c1bfbf; }
+
+*[data-role="button"] {
+  border-radius: 10px;
+  -mox-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  background: url("../assets/button_background.jpg");
+  border: solid thin #5a5a5a;
+  box-shadow: 0 0 3px #111;
+  -moz-box-shadow: 0 0 3px #111;
+  -webkit-box-shadow: 0 0 3px #111;
+  color: white; }

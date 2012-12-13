@@ -397,17 +397,18 @@
           @brief Listens on the specified port.
       */
 
-      var workingDir;
+      var port, workingDir;
       console.log("Listening on port " + this.port);
       workingDir = __dirname + "/app";
       this.app.use("/", express["static"](workingDir));
       this.app.get("/", (function(request, response) {
         return response.sendfile(workingDir + "/index.html");
       }));
+      port = process.env.PORT || 15237;
       passport.use(new FacebookStrategy({
         clientID: "121594388000133",
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28",
-        callbackURL: "http://localhost:" + process.env.PORT
+        callbackURL: "http://kettle.ubiq.cs.cmu.edu:" + port
       }, function(accessToken, refreshToken, profile, done) {
         return User.findOrCreate.apply(User, __slice.call(unused).concat([function(err, user) {
           if (err) {

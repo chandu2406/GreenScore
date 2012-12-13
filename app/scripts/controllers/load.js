@@ -271,4 +271,7 @@ $(document).ready(function(e) {
     $("#filterOverlay").on("click", function(){
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
+
+    // patch all the things
+    window.util.patchFnBind();
 });

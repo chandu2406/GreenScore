@@ -259,6 +259,11 @@
           console.log("" + addr + " updated.");
           return response.send({
             success: 'true',
+            address: addr,
+            num_baths: num_baths,
+            num_beds: num_beds,
+            sqft: sqft,
+            solar: solar,
             message: "" + addr + " updated"
           });
         };
@@ -268,19 +273,19 @@
           insert_value = "VALUES ('" + addr + "'";
           if (num_baths !== void 0) {
             insert_names += ", NUM_BATHS";
-            insert_value += ",'" + args["num_baths"] + "'";
+            insert_value += ",'" + num_baths + "'";
           }
           if (num_beds !== void 0) {
             insert_names += ", NUM_BEDS";
-            insert_value += ",'" + args["num_beds"] + "'";
+            insert_value += ",'" + num_beds + "'";
           }
           if (sqft !== void 0) {
             insert_names += ", SQFT";
-            insert_value += ",'" + args["sqft"] + "'";
+            insert_value += ",'" + sqft + "'";
           }
           if (solar !== void 0) {
             insert_names += ", SOLAR";
-            insert_value += ",'" + args["solar"] + "'";
+            insert_value += ",'" + solar + "'";
           }
           insert_names += ") ";
           insert_value += ")";
@@ -312,6 +317,42 @@
           return this.mysql_query(to_insert, onRegistration, onFailure);
         }
       }).bind(this);
+      onFailure = function(err) {
+        return console.log(err);
+      };
+      return this.mysql_query(query, onSuccess, onFailure);
+    };
+
+    HTTPRequestServer.prototype.request_address_data = function(address, response) {
+      /*
+          @brief lookup a given addrss
+          @param  response where to send the results
+      */
+
+      var onFailure, onSuccess, query;
+      console.log(address);
+      if (address === void 0) {
+        return response.send({
+          success: 'false',
+          user_id: void 0,
+          message: "Bad request - No address specified."
+        });
+      }
+      query = "SELECT * FROM ADDRESSES WHERE ADDRESS='" + address + "'";
+      onSuccess = function(rows) {
+        if (rows === void 0 || rows.length === 0) {
+          return response.send({
+            success: 'false',
+            message: "Bad request - No data found for that address."
+          });
+        } else if (rows !== void 0 && rows.length >= 1) {
+          return response.send({
+            success: 'true',
+            data: rows[0],
+            message: "Data found."
+          });
+        }
+      };
       onFailure = function(err) {
         return console.log(err);
       };
@@ -400,6 +441,14 @@
         args = request.query;
         console.log(args);
         return this.register_address(args, response);
+      }).bind(this));
+      this.app.get('/get_address_data', (function(request, response) {
+        var addr, args;
+        console.log("received get_address_data");
+        args = request.query;
+        addr = args['address'];
+        console.log(addr);
+        return this.request_address_data(addr, response);
       }).bind(this));
       this.app.get('/get_user_data', (function(request, response) {
         var args, uname;

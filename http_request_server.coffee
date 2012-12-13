@@ -255,9 +255,15 @@ class HTTPRequestServer
     query = "SELECT * FROM ADDRESSES WHERE ADDRESS='#{addr}'"
 
     onSuccess = ((rows) ->
+
       onRegistration = (rows) ->
         console.log("#{addr} updated.")
         return response.send({success: 'true',\
+                              address: addr,\
+                              num_baths: num_baths,\
+                              num_beds: num_beds,\
+                              sqft: sqft,\
+                              solar: solar,\
                               message: "#{addr} updated"})
 
       # create a new row if need be
@@ -270,24 +276,26 @@ class HTTPRequestServer
 
         if num_baths != undefined
           insert_names += ", NUM_BATHS"
-          insert_value += ",'#{args["num_baths"]}'"
+          insert_value += ",'#{num_baths}'"
 
         if num_beds != undefined
           insert_names += ", NUM_BEDS"
-          insert_value += ",'#{args["num_beds"]}'"
+          insert_value += ",'#{num_beds}'"
 
         if sqft != undefined
           insert_names += ", SQFT"
-          insert_value += ",'#{args["sqft"]}'"
+          insert_value += ",'#{sqft}'"
 
         if solar != undefined
           insert_names += ", SOLAR"
-          insert_value += ",'#{args["solar"]}'"
+          insert_value += ",'#{solar}'"
 
         insert_names += ") "
         insert_value += ")"
         to_insert = to_insert + insert_names + insert_value
         console.log to_insert
+
+
         return @mysql_query to_insert, onRegistration, onFailure
 
       else if rows != undefined && rows.length == 1
@@ -319,6 +327,38 @@ class HTTPRequestServer
         console.log to_insert
         return @mysql_query to_insert, onRegistration, onFailure).bind(this)
 
+    onFailure = (err) ->
+      console.log err
+    @mysql_query query, onSuccess, onFailure
+
+  request_address_data: (address, response) ->
+    ###
+    @brief lookup a given addrss
+    @param  response where to send the results
+    ###
+
+    console.log address
+
+    # first, check to see whether the call even makes sense
+    if address == undefined
+      return response.send({success: 'false',\
+                            user_id: undefined,\
+                            message: "Bad request - No address specified."})
+
+    query = "SELECT * FROM ADDRESSES WHERE ADDRESS='#{address}'"
+
+    onSuccess = (rows) ->
+      # create a new row if need be
+      if rows == undefined or rows.length == 0
+        # nothing found
+        return response.send({success: 'false',\
+                              message: "Bad request - No data found for that address."})
+
+      else if rows != undefined && rows.length >= 1
+        # we did find something
+        return response.send({success: 'true',\
+                              data: rows[0],\
+                              message: "Data found."})
     onFailure = (err) ->
       console.log err
     @mysql_query query, onSuccess, onFailure
@@ -403,6 +443,15 @@ class HTTPRequestServer
       args = request.query
       console.log args
       @register_address args, response
+    ).bind(this))
+
+    # address request
+    @app.get('/get_address_data', ((request, response) ->
+      console.log "received get_address_data"
+      args = request.query
+      addr = args['address']
+      console.log addr
+      @request_address_data addr, response
     ).bind(this))
 
     # get user data

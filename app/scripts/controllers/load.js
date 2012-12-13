@@ -19,7 +19,86 @@ $(document).ready(function(e) {
     });
 
     $("#profilePage").on("pagebeforeshow", function() {
-      $("#welcomeMessage").html("Hello user!");
+      if (typeof(localStorage !== "undefined")) {
+        if(window.localStorage["greenscore_username"] !== undefined) {
+          var username = window.localStorage["greenscore_username"];
+          $("#welcomeMessage").html("Hello user!");
+
+          // Get the user's info to populate the profile
+          function GetProfileData() {
+            var url = "/get_user_data";
+            var params = "username=" + username;
+
+            // branch for native XMLHttpRequest object
+            if (window.XMLHttpRequest) {
+              profile_data_fifo = new XMLHttpRequest();
+              profile_data_fifo.abort();
+              profile_data_fifo.onreadystatechange = ProcessProfileData;
+              profile_data_fifo.open("GET", url+"?"+params, true);
+              profile_data_fifo.send(null);
+            }
+          }
+
+          function ProcessProfileData() {
+            if (profile_data_fifo.readyState != 4 || profile_data_fifo.status != 200) {
+              return;
+            }
+            var response = JSON.parse(profile_data_fifo.response);
+
+            // If the user successfully logged in:
+            if (response['success'] === 'true') {
+              // Set the user's full name
+              $("#profileName").html("Name: "+response["user_id"]);
+              // Set the user's username
+              $("#profileUsername").html("Username: "+response["user_id"]);
+              // Set the user's email
+              $("#profileEmail").html("Email: "+response["email"]);
+
+              // Get and set the user's greenscore and address
+              GetAddressData(response["address"]);
+            }
+          }
+
+          function GetAddressData(address) {
+            var url = "/get_address_data";
+            var params = "address="+escape(address);
+
+            // branch for native XMLHttpRequest object
+            if (window.XMLHttpRequest) {
+              address_data_fifo = new XMLHttpRequest();
+              address_data_fifo.abort();
+              address_data_fifo.onreadystatechange = ProcessAddressData;
+              address_data_fifo.open("GET", url+"?"+params, true);
+              address_data_fifo.send(null);
+            }
+          }
+
+          function ProcessAddressData() {
+            if (address_data_fifo.readyState != 4 || address_data_fifo.status != 200) {
+              return;
+            }
+            var response = JSON.parse(address_data_fifo.response);
+
+            // If the user successfully logged in:
+            if (response['success'] === 'true') {
+              console.log("great success!");
+              console.log(response['data']);
+
+              var row = $('#profileRow');
+              var to_append="";
+              to_append += "<td>"+response['data']['ADDRESS']+"</td>";
+              to_append += "<td>"+response['data']['NUM_BATHS']+"</td>";
+              to_append += "<td>"+response['data']['NUM_BEDS']+"</td>";
+              to_append += "<td>"+response['data']['SQFT']+"</td>";
+              to_append += "<td>"+response['data']['SOLAR']+"</td>";
+              row.html(to_append);
+            }
+          }
+
+
+          GetProfileData();
+        }
+      }
     });
 
     // If we've logged in before, switch to profile instead of login in nav

@@ -18,6 +18,10 @@ $(document).ready(function(e) {
         window.open("/auth/facebook","_self");
     });
 
+    $("#profilePage").on("pagebeforeshow", function() {
+      $("#welcomeMessage").html("Hello user!");
+    });
+
     // If we've logged in before, switch to profile instead of login in nav
     if (typeof(localStorage !== "undefined")) {
       if(window.localStorage["greenscore_username"] !== undefined) {

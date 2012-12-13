@@ -74,6 +74,13 @@ body {
       color: $gray;
     }
   }
+
+  #buttonWrapper {
+    display: inline-block;
+    text-align: ceneter;
+    width: 80%;
+    padding-top: 10px;
+  }
 }
 
 .navBar {
@@ -250,4 +257,16 @@ $ORANGE: rgb(234, 114, 33);
     float: right;
     color: $GRAY;
   }
+}
+
+// buttons
+*[data-role="button"] {
+  @include roundEdges(10px);
+  background: url("../assets/button_background.jpg");
+
+  box-shadow: 0 0 3px #111;
+  -moz-box-shadow: 0 0 3px #111;
+  -webkit-box-shadow: 0 0 3px #111;
+
+  color: white;
 }

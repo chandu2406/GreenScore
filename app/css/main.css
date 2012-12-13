@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @import url(./jquery-ui.css);
 /** @file main.scss
  *
@@ -18,6 +17,9 @@ body {
   padding: 0px;
   background-image: url("../assets/green.jpg");
   background-repeat: repeat; }
+
+#searchBtn {
+  display: none; }
 
 .contentBubble {
   border-radius: 10px;
@@ -50,6 +52,11 @@ body {
     color: #68874b; }
     .contentBubble h1 span {
       color: #42473d; }
+  .contentBubble #buttonWrapper {
+    display: inline-block;
+    text-align: ceneter;
+    width: 80%;
+    padding-top: 10px; }
 
 .navBar {
   position: relative;
@@ -92,10 +99,12 @@ body {
     #mapView .contentBubble #filterOverlay h2 {
       position: relative;
       top: 5px; }
-  #mapView .contentBubble #map_canvas {
-    height: 100%;
-    width: 100%; }
 
+/* Apply when not on mobile */
+@media only screen and (min-device-width: 480px) {
+  #map_canvas {
+    height: 100%;
+    width: 100%; } }
 #filterPage .contentBubble {
   height: 80%;
   text-align: left; }
@@ -162,172 +171,14 @@ body {
   font-size: 9px;
   float: right;
   color: #c1bfbf; }
-=======
-@import url(./jquery-ui.css);
-/** @file main.scss
- *
- *  @brief Main css file for the app.
- *  @author Lucas Ray (ltray)
- *  @author Kenneth Murphy (kmmurphy)
- */
-html {
-  height: 100%;
-  width: 100%; }
 
-body {
-  font-family: Helvetica, sans-serif;
-  height: 100%;
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-  background-image: url("../assets/green.jpg");
-  background-repeat: repeat; }
-
-#searchBtn {
-  display: none; }
-
-.contentBubble {
+*[data-role="button"] {
   border-radius: 10px;
   -mox-border-radius: 10px;
   -webkit-border-radius: 10px;
   -o-border-radius: 10px;
-  background-image: url("../assets/debut_light.png");
-  background-repeat: repeat;
-  width: 70%;
-  height: 250px;
-  margin: 5px 15% 15% 15%;
-  text-align: center;
-  box-shadow: 0 0 8px #111;
-  -moz-box-shadow: 0 0 8px #111;
-  -webkit-box-shadow: 0 0 8px #111; }
-  .contentBubble input {
-    border-radius: 5px;
-    -mox-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -o-border-radius: 5px;
-    margin: 3% 0 0 10%;
-    width: 80%;
-    height: 30px;
-    box-shadow: 0 0 2px #111;
-    -moz-box-shadow: 0 0 2px #111;
-    -webkit-box-shadow: 0 0 2px #111; }
-  .contentBubble h1 {
-    margin: 15px;
-    font-size: 350%;
-    color: #68874b; }
-    .contentBubble h1 span {
-      color: #42473d; }
-
-.navBar {
-  position: relative;
-  width: 70%;
-  text-align: right;
-  margin: 20px 0px 30px 15%; }
-  .navBar .navBtn {
-    position: relative;
-    display: inline-block;
-    margin-right: 10%;
-    text-align: center; }
-    .navBar .navBtn h2 {
-      font-size: 16px;
-      color: #42473d;
-      cursor: pointer; }
-    .navBar .navBtn h2:hover {
-      color: black;
-      cursor: pointer; }
-    .navBar .navBtn img {
-      bottom: -37px;
-      position: absolute; }
-
-#mapView {
-  height: 100%; }
-
-#mapView .contentBubble {
-  height: 80%;
-  position: relative; }
-  #mapView .contentBubble #filterOverlay {
-    background-color: rgba(120, 120, 120, 0.8);
-    text-align: center;
-    position: absolute;
-    bottom: 15px;
-    left: -12px;
-    width: 100%;
-    height: 30px;
-    font-size: 150%;
-    overflow: visible;
-    cursor: pointer; }
-    #mapView .contentBubble #filterOverlay h2 {
-      position: relative;
-      top: 5px; }
-
-/* Apply when not on mobile */
-@media only screen and (min-device-width: 480px) {
-  #map_canvas {
-    height: 100%;
-    width: 100%; } }
-#filterPage .contentBubble {
-  height: 80%;
-  text-align: left; }
-  #filterPage .contentBubble h2 {
-    text-align: center;
-    font-size: 150%; }
-
-.marker_header {
-  font-family: Arial, sans-serif; }
-  .marker_header .child_street {
-    width: 100%;
-    float: left;
-    color: #69b725;
-    font-size: 18px; }
-  .marker_header .child_city {
-    float: right;
-    color: #c1bfbf;
-    font-size: 12px; }
-  .marker_header .child_state {
-    float: right;
-    color: #c1bfbf;
-    font-size: 12px; }
-  .marker_header .child_zipcode {
-    float: right;
-    color: #c1bfbf;
-    font-size: 12px; }
-
-.marker_stats .child_sqFt {
-  float: right;
-  color: gainsboro;
-  font-size: 15px; }
-.marker_stats .child_numBed {
-  float: left;
-  color: gainsboro;
-  font-size: 15px; }
-.marker_stats .child_numBath {
-  float: left;
-  color: gainsboro;
-  font-size: 15px; }
-
-.marker_results {
-  min-height: 20px; }
-  .marker_results .child_priceEst {
-    float: left;
-    color: #ea7221;
-    font-size: 18px;
-    font-weight: bold; }
-  .marker_results .child_greenscore {
-    float: right;
-    color: #69b725;
-    font-size: 18px;
-    font-weight: bold; }
-
-.marker_footer .child_lat {
-  font-size: 9px;
-  float: left;
-  color: #c1bfbf; }
-.marker_footer .child_long {
-  font-size: 9px;
-  float: left;
-  color: #c1bfbf; }
-.marker_footer .child_zpid {
-  font-size: 9px;
-  float: right;
-  color: #c1bfbf; }
->>>>>>> 6c3b9fc2af53df240ca3430e059d81ef515937e7
+  background: url("../assets/button_background.jpg");
+  box-shadow: 0 0 3px #111;
+  -moz-box-shadow: 0 0 3px #111;
+  -webkit-box-shadow: 0 0 3px #111;
+  color: white; }

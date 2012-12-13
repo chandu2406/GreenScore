@@ -83,7 +83,7 @@ queryHandler.socket.on("searchResults", function(data) {
   $.ajax({
       type: 'GET',
 //      url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
-      url: 'http://'+ipAddr+':8080/json/getGreenscore?sqft=' + newRes.sqFt,
+      url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
       async: false
   }).responseText)['result'];
 
@@ -137,7 +137,7 @@ queryHandler.socket.on("compResults", function(data){
     $.ajax({
         type: 'GET',
 //        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
-        url: 'http://'+ipAddr+':8080/json/getGreenscore?sqft=' + newRes.sqFt,
+        url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
         async: false
     }).responseText)['result'];
 

@@ -4,6 +4,12 @@
  *  @author Kenneth Murphy (kmmurphy)
  */
 
+//tmp path to socket.io for when testing on mobile
+var ipAddr = 'localhost';
+//var ipAddr = '128.237.201.189';
+
+
+
 $(document).ready(function(e) {
 
 
@@ -84,7 +90,36 @@ $(document).ready(function(e) {
             queryHandler.searchAddress(queryAddr);
         }
     });
+
+    $("#queryBtn").on("tap", function(){
+        // loading page
+        $.mobile.loading('show', {
+          text: 'Searching...',
+          textVisible: true,
+          theme: 'c'
+        });
+
+        queryAddr = new userAddress();
+        if(typeof(addrComponents) === 'undefined'){
+          alert("Please enter a valid address");
+        }else {
+          for(i=0; i<addrComponents.length; i++){
+            component = addrComponents[i];
+            if(component.types[0] === "street_number"){
+              queryAddr.streetNum = component.long_name;
+            }else if(component.types[0] === "route"){
+              queryAddr.street = component.long_name;
+            }else if(component.types[0] === "postal_code"){
+              queryAddr.zipcode = component.long_name;
+            }
+          }
+        }
+        queryHandler.searchAddress(queryAddr);
+  });
+
 });
+
+
 
 
 function userAddress(){

@@ -1,0 +1,49 @@
+/** @file mobile.scss
+ *
+ *  @brief css file for the mobile version of the app.
+ *  
+ *  @author Kenneth Murphy (kmmurphy)
+ */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  .contentBubble {
+    width: 90%;
+    padding: 0px;
+    margin: 5px 5%;
+    height: 200px; }
+    .contentBubble h1 {
+      font-size: 340%; }
+    .contentBubble input {
+      margin-top: 15px;
+      width: 74%;
+      margin-left: 13%; }
+
+  .navBar .navBtn {
+    margin-right: 6%; }
+    .navBar .navBtn h2 {
+      font-size: 18px; }
+
+  #map_canvas {
+    height: 92%;
+    width: 92%;
+    margin-top: 4%;
+    margin-left: 4%; }
+
+  #queryBtn {
+    background-color: #EDEDED;
+    width: 50%;
+    height: 28px;
+    margin-top: 10px;
+    margin-left: 25%;
+    display: block;
+    text-align: center;
+    border: 1px solid #6E6E6E;
+    box-shadow: 0 0 3px #111;
+    -moz-box-shadow: 0 0 3px #111;
+    -webkit-box-shadow: 0 0 3px #111;
+    border-radius: 5px;
+    -mox-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px; }
+    #queryBtn h2 {
+      margin-top: 5px;
+      color: #787878; } }

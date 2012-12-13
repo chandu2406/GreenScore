@@ -18,6 +18,9 @@ body {
   background-image: url("../assets/green.jpg");
   background-repeat: repeat; }
 
+#searchBtn {
+  display: none; }
+
 .contentBubble {
   border-radius: 10px;
   -mox-border-radius: 10px;
@@ -91,10 +94,12 @@ body {
     #mapView .contentBubble #filterOverlay h2 {
       position: relative;
       top: 5px; }
-  #mapView .contentBubble #map_canvas {
-    height: 100%;
-    width: 100%; }
 
+/* Apply when not on mobile */
+@media only screen and (min-device-width: 480px) {
+  #map_canvas {
+    height: 100%;
+    width: 100%; } }
 #filterPage .contentBubble {
   height: 80%;
   text-align: left; }

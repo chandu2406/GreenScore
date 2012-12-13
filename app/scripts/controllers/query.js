@@ -6,7 +6,9 @@
 
 var queryHandler = {};
 
-queryHandler.socket = io.connect('http://kettle.ubiq.cs.cmu.edu:3000/');
+//queryHandler.socket = io.connect('http://kettle.ubiq.cs.cmu.edu:3000/');
+queryHandler.socket = io.connect('http://'+ipAddr+':3000/');
+
 // unique identifier to access Zillow APIs
 queryHandler.ZWSID = "X1-ZWz1bjzdhxm7m3_af1tq";
 queryHandler.searchedAddr = new Residence();
@@ -80,7 +82,8 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.greenscore = $.parseJSON(
   $.ajax({
       type: 'GET',
-      url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+//      url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+      url: 'http://'+ipAddr+':8080/json/getGreenscore?sqft=' + newRes.sqFt,
       async: false
   }).responseText)['result'];
 
@@ -127,13 +130,14 @@ queryHandler.socket.on("compResults", function(data){
       newRes.state =  $(this).find("state").text();
       newRes.zipcode = $(this).find("zipcode").text();
       newRes.sqFt = $(this).find("finishedSqFt").text();
-            newRes.priceEst = $(this).find("amount").text();
+      newRes.priceEst = $(this).find("amount").text();
       newRes.numBath = $(this).find("bathrooms").text();
       newRes.numBed = $(this).find("bedrooms").text();
       newRes.greenscore = $.parseJSON(
     $.ajax({
         type: 'GET',
-        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+//        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+        url: 'http://'+ipAddr+':8080/json/getGreenscore?sqft=' + newRes.sqFt,
         async: false
     }).responseText)['result'];
 

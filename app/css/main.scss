@@ -83,6 +83,15 @@ body {
   }
 }
 
+// special case login page
+#loginPage .contentBubble {
+  height: 100%;
+
+  #login_button {
+    background-color: black;
+  }
+}
+
 .navBar {
   position: relative;
   width: 70%;

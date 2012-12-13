@@ -58,6 +58,11 @@ body {
     width: 80%;
     padding-top: 10px; }
 
+#loginPage .contentBubble {
+  height: 100%; }
+  #loginPage .contentBubble #login_button {
+    background-color: black; }
+
 .navBar {
   position: relative;
   width: 70%;

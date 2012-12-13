@@ -186,6 +186,14 @@
     };
 
     HTTPRequestServer.prototype.register_user = function(username, password, email, address, response) {
+      /*
+          @brief register a user in the USERS database
+          @param  username  new username
+          @param  password  new password
+          @param  address   address (as given by autocomplete)
+          @param  response  place to send response
+      */
+
       var onFailure, onSuccess, query;
       query = "SELECT * FROM USERS WHERE USERNAME='" + username + "'";
       onSuccess = (function(rows) {
@@ -218,22 +226,189 @@
       return this.mysql_query(query, onSuccess, onFailure);
     };
 
+    HTTPRequestServer.prototype.register_address = function(args, response) {
+      /*
+          @brief add an address to the address table
+          @param  args    the fields to add to the table
+          @param  respone where to send the results
+      */
+
+      var addr, num_baths, num_beds, onFailure, onSuccess, query, solar, sqft;
+      console.log(args);
+      if (args === void 0 || args["address"] === void 0) {
+        return response.send({
+          success: 'false',
+          user_id: void 0,
+          message: "Bad request - No address specified."
+        });
+      }
+      addr = args["address"];
+      num_baths = args["num_baths"];
+      num_beds = args["num_beds"];
+      sqft = args["sqft"];
+      solar = args["solar"];
+      console.log(args);
+      console.log(num_baths);
+      console.log(num_beds);
+      console.log(sqft);
+      console.log(solar);
+      query = "SELECT * FROM ADDRESSES WHERE ADDRESS='" + addr + "'";
+      onSuccess = (function(rows) {
+        var insert_names, insert_value, mod_value, onRegistration, to_insert, to_mod;
+        onRegistration = function(rows) {
+          console.log("" + addr + " updated.");
+          return response.send({
+            success: 'true',
+            address: addr,
+            num_baths: num_baths,
+            num_beds: num_beds,
+            sqft: sqft,
+            solar: solar,
+            message: "" + addr + " updated"
+          });
+        };
+        if (rows === void 0 || rows.length === 0) {
+          to_insert = "INSERT INTO ADDRESSES ";
+          insert_names = "(ADDRESS";
+          insert_value = "VALUES ('" + addr + "'";
+          if (num_baths !== void 0) {
+            insert_names += ", NUM_BATHS";
+            insert_value += ",'" + num_baths + "'";
+          }
+          if (num_beds !== void 0) {
+            insert_names += ", NUM_BEDS";
+            insert_value += ",'" + num_beds + "'";
+          }
+          if (sqft !== void 0) {
+            insert_names += ", SQFT";
+            insert_value += ",'" + sqft + "'";
+          }
+          if (solar !== void 0) {
+            insert_names += ", SOLAR";
+            insert_value += ",'" + solar + "'";
+          }
+          insert_names += ") ";
+          insert_value += ")";
+          to_insert = to_insert + insert_names + insert_value;
+          console.log(to_insert);
+          return this.mysql_query(to_insert, onRegistration, onFailure);
+        } else if (rows !== void 0 && rows.length === 1) {
+          to_mod = "UPDATE ADDRESSES SET ADDRESS='" + addr + "'";
+          mod_value = "";
+          if (num_baths !== void 0) {
+            mod_value += ",NUM_BATHS='" + num_baths + "'";
+          }
+          if (num_beds !== void 0) {
+            mod_value += ",NUM_BEDS='" + num_beds + "'";
+          }
+          if (sqft !== void 0) {
+            mod_value += ",SQFT='" + sqft + "'";
+          }
+          if (solar !== void 0) {
+            mod_value += ",SOLAR='" + solar + "'";
+          }
+          to_mod += mod_value;
+          to_mod += " WHERE ADDRESS='" + addr + "'";
+          console.log(to_mod);
+          return this.mysql_query(to_mod, onRegistration, onFailure);
+        } else {
+          console.log("BAD?");
+          console.log(to_insert);
+          return this.mysql_query(to_insert, onRegistration, onFailure);
+        }
+      }).bind(this);
+      onFailure = function(err) {
+        return console.log(err);
+      };
+      return this.mysql_query(query, onSuccess, onFailure);
+    };
+
+    HTTPRequestServer.prototype.request_address_data = function(address, response) {
+      /*
+          @brief lookup a given addrss
+          @param  response where to send the results
+      */
+
+      var onFailure, onSuccess, query;
+      console.log(address);
+      if (address === void 0) {
+        return response.send({
+          success: 'false',
+          user_id: void 0,
+          message: "Bad request - No address specified."
+        });
+      }
+      query = "SELECT * FROM ADDRESSES WHERE ADDRESS='" + address + "'";
+      onSuccess = function(rows) {
+        if (rows === void 0 || rows.length === 0) {
+          return response.send({
+            success: 'false',
+            message: "Bad request - No data found for that address."
+          });
+        } else if (rows !== void 0 && rows.length >= 1) {
+          return response.send({
+            success: 'true',
+            data: rows[0],
+            message: "Data found."
+          });
+        }
+      };
+      onFailure = function(err) {
+        return console.log(err);
+      };
+      return this.mysql_query(query, onSuccess, onFailure);
+    };
+
+    HTTPRequestServer.prototype.request_user_data = function(username, response) {
+      /*
+          @brief request database information for a given user
+          @param  username  the username to use as a key
+          @param  response  where to send the response
+      */
+
+      var onFailure, onSuccess, query;
+      query = "SELECT * FROM USERS WHERE USERNAME='" + username + "'";
+      onSuccess = function(rows) {
+        console.log("" + username + " has data.");
+        if (rows.length < 1) {
+          return response.send({
+            success: 'false',
+            user_id: username,
+            message: "Login failed - no entries for " + username
+          });
+        } else {
+          return response.send({
+            success: 'true',
+            user_id: username,
+            email: rows[0].EMAIL,
+            address: rows[0].ADDRESS,
+            message: "Succesfully got data for " + username
+          });
+        }
+      };
+      onFailure = function(err) {
+        return console.log(err);
+      };
+      return this.mysql_query(query, onSuccess, onFailure);
+    };
+
     HTTPRequestServer.prototype.listen = function() {
       /*
           @brief Listens on the specified port.
       */
 
-      var workingDir;
+      var port, workingDir;
       console.log("Listening on port " + this.port);
       workingDir = __dirname + "/app";
       this.app.use("/", express["static"](workingDir));
       this.app.get("/", (function(request, response) {
         return response.sendfile(workingDir + "/index.html");
       }));
+      port = process.env.PORT || 15237;
       passport.use(new FacebookStrategy({
         clientID: "121594388000133",
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28",
-        callbackURL: "http://localhost:" + process.env.PORT
+        callbackURL: "http://kettle.ubiq.cs.cmu.edu:" + port
       }, function(accessToken, refreshToken, profile, done) {
         return User.findOrCreate.apply(User, __slice.call(unused).concat([function(err, user) {
           if (err) {
@@ -260,6 +435,29 @@
         address = args['address'];
         console.log(address);
         return this.register_user(uname, pw, email, address, response);
+      }).bind(this));
+      this.app.post('/modify_address', (function(request, response) {
+        var args;
+        console.log("received /modify_address post");
+        args = request.query;
+        console.log(args);
+        return this.register_address(args, response);
+      }).bind(this));
+      this.app.get('/get_address_data', (function(request, response) {
+        var addr, args;
+        console.log("received get_address_data");
+        args = request.query;
+        addr = args['address'];
+        console.log(addr);
+        return this.request_address_data(addr, response);
+      }).bind(this));
+      this.app.get('/get_user_data', (function(request, response) {
+        var args, uname;
+        console.log("received get_user_data");
+        args = request.query;
+        uname = args['username'];
+        console.log(uname);
+        return this.request_user_data(uname, response);
       }).bind(this));
       this.app.post('/login', (function(req, res, next) {
         console.log("received /login post");
@@ -288,10 +486,10 @@
         var onFailure, onSuccess, query;
         onSuccess = (function(rows) {
           if (rows === void 0 || rows.length !== 1) {
-            console.log('fail');
+            console.log('fail - no user');
             return done(null, false, 'No account found or conflicting accounts.');
           } else if (rows[0].PASSWORD !== password) {
-            console.log('fail');
+            console.log('fail - incorrect password');
             console.log(rows);
             console.log(password);
             return done(null, false, 'Incorrect password.');

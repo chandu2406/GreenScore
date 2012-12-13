@@ -28,6 +28,13 @@ $(document).ready(function(e) {
     $("#new_email").watermark("Email");
     $("#new_address").watermark("Address");
 
+    // watermarks for updating info
+    $("#puf_email").watermark("Update your Email");
+    $("#puf_address").watermark("Update your Address");
+    $("#puf_num_beds").watermark("Number of bedrooms");
+    $("#puf_num_baths").watermark("Number of bathrooms");
+    $("#puf_sqft").watermark("Total Square Feet");
+
 
     //GEOCODER
     geocoder = new google.maps.Geocoder();
@@ -65,12 +72,7 @@ $(document).ready(function(e) {
         if(event.keyCode == 13){
             var queryAddr, i, component;
 
-            // loading page
-            $.mobile.loading('show', {
-                text: 'Searching...',
-                textVisible: true,
-                theme: 'c'
-            });
+            show_loading();
 
             queryAddr = new userAddress();
             if(typeof(addrComponents) === 'undefined'){
@@ -92,12 +94,7 @@ $(document).ready(function(e) {
     });
 
     $("#queryBtn").on("tap", function(){
-        // loading page
-        $.mobile.loading('show', {
-          text: 'Searching...',
-          textVisible: true,
-          theme: 'c'
-        });
+        show_loading();
 
         queryAddr = new userAddress();
         if(typeof(addrComponents) === 'undefined'){
@@ -117,6 +114,37 @@ $(document).ready(function(e) {
         queryHandler.searchAddress(queryAddr);
   });
 
+  // show page load
+  var show_loading = function() {
+    // loading page
+    window.$loader = window.$loader ||
+      $("<div>", {
+        'id': 'loading_div'
+      }).append(
+        $("<img>", {
+          'src': "../assets/ajax-loader.gif",
+          'id': "loading_gif"
+        })
+      ).append(
+        $("<div>", {
+          'id': 'loading_text'
+        }).text("Searching...")
+      );
+
+    // load the loading page as a modal
+    window.$loader.modal({
+      onOpen: function(dialog) {
+        dialog.overlay.fadeIn('fast', function() {
+          dialog.data.hide();
+          dialog.container.fadeIn('fast', function() {
+            dialog.data.slideDown('fast');
+          });
+        });
+      },
+      opacity: 80,
+      overlayCss: {backgroundColor: "#000"}
+    });
+  }
 });
 
 

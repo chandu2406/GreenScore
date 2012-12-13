@@ -24,7 +24,6 @@
 
     <!-- SCRIPTS -->
     <!-- external scripts -->
-    
     <!-- Google Maps API -->
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHuRsJH37S3hiW7ig9SJBnCJQ_1H3Zf_w&sensor=false">
@@ -37,9 +36,12 @@
     <script src="./scripts/lib/jquery.mobile.custom.min.js" type="text/javascript"></script>
     <script src="./scripts/lib/jquery.watermark.min.js" type="text/javascript"></script>
 
+    <!-- simple modal -->
+    <script src="./scripts/lib/jquery.simplemodal-1.4.3.js" type="text/javascript"></script>
 
-    <!-- to allow parent selector in css -->
-    <script src="./scripts/lib/jQuery.cssParentSelector.min.js" type="text/javascript"></script>
+    <!-- util -->
+    <script src="./scripts/lib/Util.js" type="text/javascript"></script>
+
     <!-- google maps infobubble -->
     <script src="./scripts/lib/infobubble-compiled.js" type="text/javascript"></script>
 
@@ -47,6 +49,7 @@
     <script src="./scripts/lib/sha256.js" type="text/javascript"></script>
 
     <!-- socket.io -->
+    <!--<script src="http://kettle.ubiq.cs.cmu.edu:3000/socket.io/socket.io.js" type="text/javascript"></script>-->
     <script id="socket" src="http://localhost:3000/socket.io/socket.io.js" type="text/javascript"></script>
 
     <!-- MVC scripts -->
@@ -60,7 +63,6 @@
     <script src="./scripts/controllers/query.js" type="text/javascript"></script>
     <script src="./scripts/controllers/mapController.js" type="text/javascript"></script>
     <script src="./scripts/controllers/filters.js" type="text/javascript"></script>
-   
 
   </head>
   <body>
@@ -77,7 +79,9 @@
         <h1>Green<span>score</span></h1>
         <label for="searchBar"></label>
         <input id="searchBar" type="text" />
-        <div id="queryBtn" class="button"><h2>Find Greenscore!</h2></div>
+        <div id="buttonWrapper">
+          <div id="queryBtn" data-role="button"><h2>Find Greenscore!</h2></div>
+        </div>
       </div>
       <div data-role="footer"></div>
     </div>
@@ -99,10 +103,10 @@
           <input id="username" name="username" type="text" />
           <label for="password"></label>
           <input id="password" name="password" type="password" />
-          <input id="login_button" type="button" value="login" />
+          <input id="login_button" data-role="button" type="button" value="login" />
         </form>
         <a id="fb_button" href="#">Login with Facebook</a>
-        <form id="register"> 
+        <form id="register">
           <label for="username"></label>
           <input id="new_username" name="username" type="text" />
           <label for="password"></label>
@@ -113,8 +117,7 @@
           <input id="new_email" name="email" type="text" />
           <label for="address"></label>
           <input id="new_address" name="address" type="text" />
-
-          <input id="register_button" type="button" value="Register" />
+          <input id="register_button" data-role="button" type="button" value="Register" />
         </form>
       </div>
       <div data-role="footer"></div>
@@ -154,7 +157,59 @@
         </div>
       </div>
       <div data-role="content" class="contentBubble">
-        <h2>A users profile information</h2>
+        <h1 id="welcomeMessage">Hi there!</h1>
+        <p>This page contains information about you and your current
+        residence.</p>
+        <p>You can change this info to your heart's content by using the form
+        below!</p>
+        <br>
+        <!--<p>Why do we ask for your information? By gathering information about
+        your environmental practices, we can more accurately calculate your
+        greenscore. This will give other people a better idea of how
+        environmentally friendly your home is. We'll also tell you how your
+        habits measure up to those of your neighbors!</p>-->
+        <h2>Your info:</h2>
+        <p id="profileName">Name: Nick LaGrow</p>
+        <p id="profileUsername">Username: nickthegreat</p>
+        <p id="profileEmail">Email: nick@foo.com</p>
+        <p id="profileGreenscore">Greenscore: 7</p>
+        <br>
+        <h2>Your home:</h2>
+        <table id="profileTable">
+          <tr>
+            <th>Address</th>
+            <th>Baths</th>
+            <th>Beds</th>
+            <th>Square Footage</th>
+            <th>Solar?</th>
+          </tr>
+          <tr id="profileRow">
+            <td>123 Fake Street</td>
+            <td>1</td>
+            <td>2</td>
+            <td>400</td>
+            <td>No</td>
+          </tr>
+        </table>
+        <h2>Update your info:</h2>
+        <form id="profileUpdateForm">
+          <label for="email">New email:</label>
+          <input id="puf_email" name="email" type="email" />
+          <label for="address">New Address:</label>
+          <input id="puf_address" name="address" type="text" />
+          <label for="num_beds">Number of beds:</label>
+          <input id="puf_num_beds" name="num_beds" type="number" />
+          <label for="num_baths">Number of bathrooms:</label>
+          <input id="puf_num_baths" name="num_baths" type="number" />
+          <label for="sqft">Total square feet:</label>
+          <input id="puf_sqft" name="sqft" type="number" />
+          <br>
+          <input id="puf_solar" name="solar" type="checkbox">My
+          house uses solar power</input>
+
+          <input id="puf_button" data-role="button" type="button"
+          value="Update my data" />
+        </form>
       </div>
       <div data-role="footer"></div>
     </div>
@@ -173,9 +228,9 @@
       <div data-role="content" class="contentBubble">
         <div id="map_canvas"></div>
         <div id="filterOverlay">
-	  <h2>
-	    Filter
-	  </h2>
+          <h2>
+            Filter
+          </h2>
         </div>
       </div>
       <div data-role="footer"></div>
@@ -229,11 +284,8 @@
             <input type="range"  name="gsMax" id="gsMax" value="1" min="0" max="1" step=".05"/>
           </div>
         </div>
-
       </div>
       <div data-role="footer"></div>
     </div>
-
-
   </body>
 </html>

@@ -6,7 +6,9 @@
 
 var queryHandler = {};
 
+//queryHandler.socket = io.connect('http://kettle.ubiq.cs.cmu.edu:3000/');
 queryHandler.socket = io.connect('http://'+ipAddr+':3000/');
+
 // unique identifier to access Zillow APIs
 queryHandler.ZWSID = "X1-ZWz1bjzdhxm7m3_af1tq";
 queryHandler.searchedAddr = new Residence();
@@ -31,6 +33,30 @@ queryHandler.searchAddress = function(addr) {
     queryHandler.socket.emit("simpleSearch", {'path': path});
 
     $("#searchBar").val("");
+}
+
+/** @brief Function called to retrieve info from Zillow API
+ *         for a single address and from the database - does not update map
+ *
+ *  @param addr a userAddress object to retrieve information on
+ *
+ */
+queryHandler.searchHome = function(addr) {
+    var urlAddr, path;
+
+    // url format the address by replacing all spaces with pluses in the route
+    urlAddr = (addr.streetNum !== undefined && addr.street !== undefined ?
+               addr.streetNum+"+"+addr.street.split(" ").join("+") :
+               addr);
+    // return a path to the api query that will appended to the zillow domain
+    // name
+    path = "/webservice/GetDeepSearchResults.htm?zws-id="+
+           queryHandler.ZWSID+
+           "&address="+urlAddr+
+           (addr.zipcode === undefined ? "" : "&citystatezip="+addr.zipcode);
+    // send the url to the server.  The server will query the API and return
+    // the response.
+    queryHandler.socket.emit("uniqueSearch", {'path': path});
 }
 
 /** @brief Function called to retrieve houses in the area that are comparable
@@ -78,11 +104,12 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
     newRes.greenscore = $.parseJSON(
-  $.ajax({
+    $.ajax({
       type: 'GET',
-      url: 'http://'+ipAddr+':8080/json/getGreenscore?sqft=' + newRes.sqFt,
+    //  url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+      url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
       async: false
-  }).responseText)['result'];
+    }).responseText)['result'];
 
     // reset the set of residences
     Residences.all = {};
@@ -91,15 +118,84 @@ queryHandler.socket.on("searchResults", function(data) {
     // initiatize the map if neccessary, otherwise update the coordinates of
     // the center of the map
     if ($("#map_canvas").children().length === 0) {
-  gMap.init(newRes);
+      gMap.init(newRes);
     } else {
-  gMap.updateCoors(newRes.lat,newRes.long);
+      gMap.updateCoors(newRes.lat,newRes.long);
     }
 
     queryHandler.getComp(newRes.zpid, 25);
 
 });
 
+/** @brief receive api response from server for the search of a single address
+ * Does not update map
+ * Does not calculate greenscore
+ *
+ */
+queryHandler.socket.on("uniqueResults", function(data) {
+    var txt, xmlDoc, xml, zpid, lat, long;
+    // parse api return into an XML document
+    txt = data.zillowData;
+    xmlDoc = $.parseXML(txt);
+    $xml = $(xmlDoc);
+    newRes = new Residence();
+    newRes.zpid =  $xml.find("zpid").text();
+    newRes.lat = $xml.find("latitude").text();
+    newRes.long = $xml.find("longitude").text();
+    newRes.street = $xml.find("street").text();
+    newRes.city = $xml.find("city").text();
+    newRes.state =  $xml.find("state").text();
+    newRes.zipcode = $xml.find("zipcode").text();
+    newRes.sqFt = $xml.find("finishedSqFt").text();
+    newRes.priceEst = $(this).find("amount").text();
+    newRes.numBath = $xml.find("bathrooms").text();
+    newRes.numBed = $xml.find("bedrooms").text();
+    
+    // Use the user's defined info if present, otherwise use zillow info
+    var num_beds = window.userData !== undefined
+                && window.userData['NUM_BEDS'] !== undefined ?
+                window.userData['NUM_BEDS'] :
+                newRes.numBed;
+
+    var num_baths = window.userData !== undefined
+                && window.userData['NUM_BATHS'] !== undefined ?
+                window.userData['NUM_BATHS'] :
+                newRes.numBath;
+    
+    var sqft = window.userData !== undefined
+                && window.userData['SQFT'] !== undefined ?
+                window.userData['SQFT'] :
+                newRes.sqFt;
+
+    var solar = window.userData !== undefined
+                && window.userData['SOLAR'] !== undefined ?
+                window.userData['SOLAR'] :
+                newRes.solar;
+
+    solar = solar ? "true" : "false";
+
+    //TODO more than sqft
+    var params = "?";
+    //params += "num_beds=" + num_beds + "&";
+    //params += "num_baths=" + num_baths + "&";
+    params += "sqft=" + sqft + "";
+    //params += "solar=" + solar;
+
+    console.log(params);
+
+    // Calculate and show the user's greenscore
+    var getGreenscore = $.parseJSON($.ajax({
+      type: 'GET',
+      url: 'http://'+ipAddr+':15237/json/getGreenscore'+params,
+      async: false
+    }).responseText);
+    console.log(getGreenscore);
+    var greenscore = getGreenscore['result'];
+
+
+    $("#profileGreenscore").html("Greenscore: "+greenscore);
+
+});
 
 /** @brief Receive api response from server that contains a list of
  *         comparable sales for a specific property
@@ -133,7 +229,8 @@ queryHandler.socket.on("compResults", function(data){
       newRes.greenscore = $.parseJSON(
     $.ajax({
         type: 'GET',
-        url: 'http://'+ipAddr+':8080/json/getGreenscore?sqft=' + newRes.sqFt,
+//        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+        url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
         async: false
     }).responseText)['result'];
 

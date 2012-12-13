@@ -69,6 +69,22 @@ html {
       color: $gray;
     }
   }
+
+  #buttonWrapper {
+    display: inline-block;
+    text-align: ceneter;
+    width: 80%;
+    padding-top: 10px;
+  }
+}
+
+// special case login page
+#loginPage .contentBubble {
+  height: 100%;
+
+  #login_button {
+    background-color: black;
+  }
 }
 
 #searchBar {
@@ -120,11 +136,10 @@ html {
   position: relative;
 
   #filterOverlay {
+    background-image: url("../assets/button_background.jpg");
     background-color: rgba(120,120,120,.8);
+    display: inline-block;
     text-align: center;
-    position: absolute;
-    bottom: 15px;
-    left: -12px;
     width: 100%;
     height: 30px;
     font-size: 150%;
@@ -136,7 +151,6 @@ html {
     }
   }
 }
-
 
 #map_canvas {
     height: 100%;
@@ -229,6 +243,7 @@ $ORANGE: rgb(234, 114, 33);
     float: left;
     color: $GREEN;
     font-size: $LARGE_TEXT;
+    font-weight: bold;
   }
 
   .child_city {
@@ -271,7 +286,7 @@ $ORANGE: rgb(234, 114, 33);
 }
 
 .marker_results {
-  min-height: 20px;
+  min-height: 26px;
 
   .child_priceEst {
     float: left;
@@ -306,4 +321,37 @@ $ORANGE: rgb(234, 114, 33);
     float: right;
     color: $GRAY;
   }
+}
+
+// buttons
+*[data-role="button"] {
+  @include roundEdges(10px);
+  background: url("../assets/button_background.jpg");
+  border: solid thin rgb(90, 90, 90);
+
+  box-shadow: 0 0 3px #111;
+  -moz-box-shadow: 0 0 3px #111;
+  -webkit-box-shadow: 0 0 3px #111;
+
+  color: white;
+}
+
+// loading screen
+#loading_div {
+  @include roundEdges(10px);
+  background-color: rgb(80, 80, 80);
+  padding: 30px;
+}
+
+#loading_text {
+  padding-top: 20px;
+  font-size: 20px;
+  color: white;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+}
+
+#loading_gif {
+  display: inline-block;
+  text-align: center;
 }

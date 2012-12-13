@@ -278,7 +278,7 @@ gMap.attachData = function(marker, data) {
     'padding': "5",
     'minWidth': "200",
     'maxWidth': "400",
-    'minHeight': "125",
+    'minHeight': "130",
     'maxHeight': "350",
     'shadowStyle': "1",
     'arrowSize': "15",

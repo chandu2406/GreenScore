@@ -18,6 +18,111 @@ $(document).ready(function(e) {
         window.open("/auth/facebook","_self");
     });
 
+    $("#profilePage").on("pagebeforeshow", function() {
+      if (typeof(localStorage !== "undefined")) {
+        if(window.localStorage["greenscore_username"] !== undefined) {
+          var username = window.localStorage["greenscore_username"];
+          $("#welcomeMessage").html("Welcome " + username + "!");
+
+          // Get the user's info to populate the profile
+          function GetProfileData() {
+            var url = "/get_user_data";
+            var params = "username=" + username;
+
+            // branch for native XMLHttpRequest object
+            if (window.XMLHttpRequest) {
+              profile_data_fifo = new XMLHttpRequest();
+              profile_data_fifo.abort();
+              profile_data_fifo.onreadystatechange = ProcessProfileData;
+              profile_data_fifo.open("GET", url+"?"+params, true);
+              profile_data_fifo.send(null);
+            }
+          }
+
+          function ProcessProfileData() {
+            if (profile_data_fifo.readyState != 4 || profile_data_fifo.status != 200) {
+              return;
+            }
+            var response = JSON.parse(profile_data_fifo.response);
+
+            // If the user successfully logged in:
+            if (response['success'] === 'true') {
+              // Set the user's full name
+              $("#profileName").html("Name: "+response["user_id"]);
+              // Set the user's username
+              $("#profileUsername").html("Username: "+response["user_id"]);
+              // Set the user's email
+              $("#profileEmail").html("Email: "+response["email"]);
+
+              // Get and set the user's greenscore and address
+              GetAddressData(response["address"]);
+            }
+          }
+
+          function GetAddressData(address) {
+            var url = "/get_address_data";
+            var params = "address="+escape(address);
+
+            // branch for native XMLHttpRequest object
+            if (window.XMLHttpRequest) {
+              address_data_fifo = new XMLHttpRequest();
+              address_data_fifo.abort();
+              address_data_fifo.onreadystatechange = ProcessAddressData;
+              address_data_fifo.open("GET", url+"?"+params, true);
+              address_data_fifo.send(null);
+            }
+          }
+
+          function ProcessAddressData() {
+            if (address_data_fifo.readyState != 4 || address_data_fifo.status != 200) {
+              return;
+            }
+            var response = JSON.parse(address_data_fifo.response);
+
+            // If the user successfully logged in:
+            if (response['success'] === 'true') {
+              console.log("great success!");
+              console.log(response['data']);
+              window.userData = response['data'];
+
+              // Build the user's address table and show it
+              var row = $('#profileRow');
+              var to_append="";
+              to_append += "<td>"+response['data']['ADDRESS']+"</td>";
+              to_append += "<td>"+response['data']['NUM_BATHS']+"</td>";
+              to_append += "<td>"+response['data']['NUM_BEDS']+"</td>";
+              to_append += "<td>"+response['data']['SQFT']+"</td>";
+              to_append += "<td>"+(response['data']['SOLAR']? "YES" : "NO") +"</td>";
+              row.html(to_append);
+
+              queryHandler.searchHome(response['data']['ADDRESS']);
+            }
+          }
+
+
+          GetProfileData();
+        }
+      }
+    });
+
+    // If we've logged in before, switch to profile instead of login in nav
+    if (typeof(localStorage !== "undefined")) {
+      if(window.localStorage["greenscore_username"] !== undefined) {
+        // Change login text to profile text
+        $('.loginBtn').html('<h2>Profile</h2>');
+
+        // Remove previous click bindings
+        $('.loginBtn').off('click');
+
+        // Change login links to profile links
+        $('.loginBtn').addClass('profileBtn');
+        $('.loginBtn').removeClass('loginBtn');
+        $(".profileBtn").on("click", function() {
+            $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+        });
+      }
+    }
+
     // Click event handler for login button
     $('#login_button').on('click', function() {
       var req_fifo;
@@ -47,6 +152,11 @@ $(document).ready(function(e) {
 
         // If the user successfully logged in:
         if (response['success'] === 'true') {
+          // Store that we've logged in
+          if (typeof(localStorage !== "undefined")) {
+            window.localStorage["greenscore_username"] = response["user_id"]; 
+          }
+
           // Change login text to profile text
           $('.loginBtn').html('<h2>Profile</h2>');
 
@@ -97,6 +207,11 @@ $(document).ready(function(e) {
         var response = JSON.parse(req_fifo.response);
         // If the user successfully logged in:
         if (response['success'] === 'true') {
+          // Store that we've logged in
+          if (typeof(localStorage !== "undefined")) {
+            window.localStorage["greenscore_username"] = response["user_id"]; 
+          }
+
           // Change login text to profile text
           $('.loginBtn').html('<h2>Profile</h2>');
 
@@ -117,6 +232,69 @@ $(document).ready(function(e) {
         return;
       }
       GetAsyncData();
+    });
+
+    // Click event handler for modify information button
+    $("#puf_button").on("click", function () {
+      var req_fifo;
+
+      // GetAsyncData sends a request to read the fifo.
+      function SendModifyAddress() {
+        var url = "/modify_address";
+
+        var address = $('#puf_address').val();
+        var email = $('#puf_email').val();
+        var num_beds = $('#puf_num_beds').val();
+        var num_baths = $('#puf_num_baths').val();
+        var sqft = $('#puf_sqft').val();
+        var solar = $('#puf_solar').val();
+
+        var params = "address=" + escape(address) +
+          (num_beds === "" ? "" : "&num_beds="+escape(num_beds)) +
+          (num_baths === "" ? "" : "&num_baths="+escape(num_baths)) +
+          (sqft === "" ? "" : "&sqft="+escape(sqft)) +
+          (solar === "" ? "" : "&solar="+escape(solar))
+
+        // ignore blank requests
+        if ($('#puf_address').val() === "") {
+          return;
+        }
+
+        console.log("send modify:");
+        console.log(params);
+
+        // branch for native XMLHttpRequest object
+        if (window.XMLHttpRequest) {
+          req_fifo = new XMLHttpRequest();
+          req_fifo.abort();
+          req_fifo.onreadystatechange = ProcessModifyAddress;
+          req_fifo.open("POST", url+"?"+params, true);
+          req_fifo.send(null);
+        }
+      }
+      
+      function ProcessModifyAddress() {
+        if (req_fifo.readyState != 4 || req_fifo.status != 200) {
+          return;
+        }
+        var response = JSON.parse(req_fifo.response);
+        // If the user successfully logged in:
+        if (response['success'] === 'true') {
+          console.log("got modify");
+
+          $('#puf_address').val("");
+          $('#puf_email').val("");
+          $('#puf_num_beds').val("");
+          $('#puf_num_baths').val("");
+          $('#puf_sqft').val("");
+          $('#puf_solar').val("");
+
+          // TODO more elegant way to refresh page
+          $.mobile.changePage($("#loginPage"), {transition: 'slidedown'});
+          $.mobile.changePage($("#profilePage"), {transition: 'slideup'});
+        }
+      }
+      SendModifyAddress();
     });
 
     //attach page change event to navBar
@@ -161,19 +339,12 @@ $(document).ready(function(e) {
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
 
-    //initialize range sliders from jQuery UI library
-    
-    $("#rangeSlider").slider({
-      range: true,
-      min: 0,
-      max: 500,
-      values: [ 75, 300 ],
-        slide: function( event, ui ) {
-          alert(ui.values[0]);
-        }
+    // patch all the things
+    window.util.patchFnBind();
+
+    // always close the loader on page show
+    $(document).on('pageshow', function() {
+      $.modal.close();
     });
-    
-    $("#numBath").slider();
-    $("#numBed").slider();
-  
+
 });

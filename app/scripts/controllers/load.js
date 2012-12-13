@@ -18,6 +18,24 @@ $(document).ready(function(e) {
         window.open("/auth/facebook","_self");
     });
 
+    // If we've logged in before, switch to profile instead of login in nav
+    if (typeof(localStorage !== "undefined")) {
+      if(window.localStorage["greenscore_username"] !== undefined) {
+        // Change login text to profile text
+        $('.loginBtn').html('<h2>Profile</h2>');
+
+        // Remove previous click bindings
+        $('.loginBtn').off('click');
+
+        // Change login links to profile links
+        $('.loginBtn').addClass('profileBtn');
+        $('.loginBtn').removeClass('loginBtn');
+        $(".profileBtn").on("click", function() {
+            $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+        });
+      }
+    }
+
     // Click event handler for login button
     $('#login_button').on('click', function() {
       var req_fifo;
@@ -47,6 +65,11 @@ $(document).ready(function(e) {
 
         // If the user successfully logged in:
         if (response['success'] === 'true') {
+          // Store that we've logged in
+          if (typeof(localStorage !== "undefined")) {
+            window.localStorage["greenscore_username"] = response["user_id"]; 
+          }
+
           // Change login text to profile text
           $('.loginBtn').html('<h2>Profile</h2>');
 
@@ -97,6 +120,11 @@ $(document).ready(function(e) {
         var response = JSON.parse(req_fifo.response);
         // If the user successfully logged in:
         if (response['success'] === 'true') {
+          // Store that we've logged in
+          if (typeof(localStorage !== "undefined")) {
+            window.localStorage["greenscore_username"] = response["user_id"]; 
+          }
+
           // Change login text to profile text
           $('.loginBtn').html('<h2>Profile</h2>');
 

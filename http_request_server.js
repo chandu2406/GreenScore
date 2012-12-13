@@ -226,6 +226,98 @@
       return this.mysql_query(query, onSuccess, onFailure);
     };
 
+    HTTPRequestServer.prototype.register_address = function(args, response) {
+      /*
+          @brief add an address to the address table
+          @param  args    the fields to add to the table
+          @param  respone where to send the results
+      */
+
+      var addr, num_baths, num_beds, onFailure, onSuccess, query, solar, sqft;
+      console.log(args);
+      if (args === void 0 || args["address"] === void 0) {
+        return response.send({
+          success: 'false',
+          user_id: void 0,
+          message: "Bad request - No address specified."
+        });
+      }
+      addr = args["address"];
+      num_baths = args["num_baths"];
+      num_beds = args["num_beds"];
+      sqft = args["sfqt"];
+      solar = args["solar"];
+      console.log(args);
+      console.log(num_baths);
+      console.log(num_beds);
+      console.log(sqft);
+      console.log(solar);
+      query = "SELECT * FROM ADDRESSES WHERE ADDRESS='" + addr + "'";
+      onSuccess = (function(rows) {
+        var insert_names, insert_value, mod_value, onRegistration, to_insert, to_mod;
+        onRegistration = function(rows) {
+          console.log("" + addr + " updated.");
+          return response.send({
+            success: 'true',
+            message: "" + addr + " updated"
+          });
+        };
+        if (rows === void 0 || rows.length === 0) {
+          to_insert = "INSERT INTO ADDRESSES ";
+          insert_names = "(ADDRESS";
+          insert_value = "VALUES ('" + addr + "'";
+          if (num_baths !== void 0) {
+            insert_names += ", NUM_BATHS";
+            insert_value += ",'" + args["num_baths"] + "'";
+          }
+          if (num_beds !== void 0) {
+            insert_names += ", NUM_BEDS";
+            insert_value += ",'" + args["num_beds"] + "'";
+          }
+          if (sqft !== void 0) {
+            insert_names += ", SQFT";
+            insert_value += ",'" + args["sqft"] + "'";
+          }
+          if (solar !== void 0) {
+            insert_names += ", SOLAR";
+            insert_value += ",'" + args["solar"] + "'";
+          }
+          insert_names += ") ";
+          insert_value += ")";
+          to_insert = to_insert + insert_names + insert_value;
+          console.log(to_insert);
+          return this.mysql_query(to_insert, onRegistration, onFailure);
+        } else if (rows !== void 0 && rows.length === 1) {
+          to_mod = "UPDATE ADDRESSES SET ADDRESS='" + addr + "'";
+          mod_value = "";
+          if (num_baths !== void 0) {
+            mod_value += ",NUM_BATHS='" + num_baths + "'";
+          }
+          if (num_beds !== void 0) {
+            mod_value += ",NUM_BEDS='" + num_beds + "'";
+          }
+          if (sqft !== void 0) {
+            mod_value += ",SQFT='" + sqft + "'";
+          }
+          if (solar !== void 0) {
+            mod_value += ",SOLAR='" + solar + "'";
+          }
+          to_mod += mod_value;
+          to_mod += " WHERE ADDRESS='" + addr + "'";
+          console.log(to_mod);
+          return this.mysql_query(to_mod, onRegistration, onFailure);
+        } else {
+          console.log("BAD?");
+          console.log(to_insert);
+          return this.mysql_query(to_insert, onRegistration, onFailure);
+        }
+      }).bind(this);
+      onFailure = function(err) {
+        return console.log(err);
+      };
+      return this.mysql_query(query, onSuccess, onFailure);
+    };
+
     HTTPRequestServer.prototype.request_user_data = function(username, response) {
       /*
           @brief request database information for a given user
@@ -301,6 +393,13 @@
         address = args['address'];
         console.log(address);
         return this.register_user(uname, pw, email, address, response);
+      }).bind(this));
+      this.app.post('/modify_address', (function(request, response) {
+        var args;
+        console.log("received /modify_address post");
+        args = request.query;
+        console.log(args);
+        return this.register_address(args, response);
       }).bind(this));
       this.app.get('/get_user_data', (function(request, response) {
         var args, uname;

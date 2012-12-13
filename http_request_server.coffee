@@ -225,6 +225,104 @@ class HTTPRequestServer
       console.log err
     @mysql_query query, onSuccess, onFailure
 
+  register_address: (args, response) ->
+    ###
+    @brief add an address to the address table
+    @param  args    the fields to add to the table
+    @param  respone where to send the results
+    ###
+
+    console.log args
+    # first, check to see whether the call even makes sense
+    if args == undefined or args["address"] == undefined
+      return response.send({success: 'false',\
+                            user_id: undefined,\
+                            message: "Bad request - No address specified."})
+
+    # determine whether address already exists in the table
+    addr = args["address"]
+    num_baths = args["num_baths"]
+    num_beds = args["num_beds"]
+    sqft = args["sfqt"]
+    solar = args["solar"]
+
+    console.log args
+    console.log num_baths
+    console.log num_beds
+    console.log sqft
+    console.log solar
+
+    query = "SELECT * FROM ADDRESSES WHERE ADDRESS='#{addr}'"
+
+    onSuccess = ((rows) ->
+      onRegistration = (rows) ->
+        console.log("#{addr} updated.")
+        return response.send({success: 'true',\
+                              message: "#{addr} updated"})
+
+      # create a new row if need be
+      if rows == undefined or rows.length == 0
+        # in this case, we are inserting a new record into the table
+        # build the insertion query
+        to_insert = "INSERT INTO ADDRESSES "
+        insert_names = "(ADDRESS"
+        insert_value = "VALUES ('#{addr}'"
+
+        if num_baths != undefined
+          insert_names += ", NUM_BATHS"
+          insert_value += ",'#{args["num_baths"]}'"
+
+        if num_beds != undefined
+          insert_names += ", NUM_BEDS"
+          insert_value += ",'#{args["num_beds"]}'"
+
+        if sqft != undefined
+          insert_names += ", SQFT"
+          insert_value += ",'#{args["sqft"]}'"
+
+        if solar != undefined
+          insert_names += ", SOLAR"
+          insert_value += ",'#{args["solar"]}'"
+
+        insert_names += ") "
+        insert_value += ")"
+        to_insert = to_insert + insert_names + insert_value
+        console.log to_insert
+        return @mysql_query to_insert, onRegistration, onFailure
+
+      else if rows != undefined && rows.length == 1
+        # in this case we are updating a currently existing record
+        # build the update query
+        to_mod = "UPDATE ADDRESSES SET ADDRESS='#{addr}'"
+        mod_value = ""
+
+        # check for valid replacements
+        # TODO do this in a way that's easier to add new fields
+        if num_baths != undefined
+          mod_value += ",NUM_BATHS='#{num_baths}'"
+
+        if num_beds != undefined
+          mod_value += ",NUM_BEDS='#{num_beds}'"
+
+        if sqft != undefined
+          mod_value += ",SQFT='#{sqft}'"
+
+        if solar != undefined
+          mod_value += ",SOLAR='#{solar}'"
+
+        to_mod += mod_value
+        to_mod += " WHERE ADDRESS='#{addr}'"
+        console.log to_mod
+        return @mysql_query to_mod, onRegistration, onFailure
+      else
+        console.log("BAD?")
+        console.log to_insert
+        return @mysql_query to_insert, onRegistration, onFailure).bind(this)
+
+    onFailure = (err) ->
+      console.log err
+    @mysql_query query, onSuccess, onFailure
+
   request_user_data: (username, response) ->
     ###
     @brief request database information for a given user
@@ -297,6 +395,14 @@ class HTTPRequestServer
       address = args['address']
       console.log address
       @register_user uname, pw, email, address, response
+    ).bind(this))
+
+    # address addition
+    @app.post('/modify_address', ((request, response) ->
+      console.log "received /modify_address post"
+      args = request.query
+      console.log args
+      @register_address args, response
     ).bind(this))
 
     # get user data

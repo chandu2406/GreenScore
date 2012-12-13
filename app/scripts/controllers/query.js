@@ -103,28 +103,32 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.priceEst = $(this).find("amount").text();
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
-    newRes.greenscore = $.parseJSON(
+
+    // get the greenscore pseudo-synrchonously (don't populate map until
+    // we get result back but allow ui thread to run)
     $.ajax({
       type: 'GET',
     //  url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
       url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
-      async: false
-    }).responseText)['result'];
+      async: true
+    }).done(function(data) {
+      var greenscore = $.parseJSON(data)['result'];
+      newRes.greenscore = greenscore;
 
-    // reset the set of residences
-    Residences.all = {};
-    Residences.all[newRes.zpid] = newRes;
+      // reset the set of residences
+      Residences.all = {};
+      Residences.all[newRes.zpid] = newRes;
 
-    // initiatize the map if neccessary, otherwise update the coordinates of
-    // the center of the map
-    if ($("#map_canvas").children().length === 0) {
-      gMap.init(newRes);
-    } else {
-      gMap.updateCoors(newRes.lat,newRes.long);
-    }
+      // initiatize the map if neccessary, otherwise update the coordinates of
+      // the center of the map
+      if ($("#map_canvas").children().length === 0) {
+        gMap.init(newRes);
+      } else {
+        gMap.updateCoors(newRes.lat,newRes.long);
+      }
 
-    queryHandler.getComp(newRes.zpid, 25);
-
+      queryHandler.getComp(newRes.zpid, 25);
+    });
 });
 
 /** @brief receive api response from server for the search of a single address
@@ -211,36 +215,49 @@ queryHandler.socket.on("compResults", function(data){
     /*
     errorCode = $(xml).find("code").text();
     */
+
+    var returned = 0;
     $xml.find("comp").each(function() {
-  zpid = $(this).find("zpid").text();
-  if (typeof(Residences.all[zpid]) === 'undefined') {
-      newRes = new Residence();
-      newRes.zpid = zpid;
-      newRes.lat = $(this).find("latitude").text();
-      newRes.long = $(this).find("longitude").text();
-      newRes.street = $(this).find("street").text();
-      newRes.city = $(this).find("city").text();
-      newRes.state =  $(this).find("state").text();
-      newRes.zipcode = $(this).find("zipcode").text();
-      newRes.sqFt = $(this).find("finishedSqFt").text();
-      newRes.priceEst = $(this).find("amount").text();
-      newRes.numBath = $(this).find("bathrooms").text();
-      newRes.numBed = $(this).find("bedrooms").text();
-      newRes.greenscore = $.parseJSON(
-    $.ajax({
-        type: 'GET',
-//        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
-        url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
-        async: false
-    }).responseText)['result'];
+      zpid = $(this).find("zpid").text();
+      if (typeof(Residences.all[zpid]) === 'undefined') {
+        newRes = new Residence();
+        newRes.zpid = zpid;
+        newRes.lat = $(this).find("latitude").text();
+        newRes.long = $(this).find("longitude").text();
+        newRes.street = $(this).find("street").text();
+        newRes.city = $(this).find("city").text();
+        newRes.state =  $(this).find("state").text();
+        newRes.zipcode = $(this).find("zipcode").text();
+        newRes.sqFt = $(this).find("finishedSqFt").text();
+        newRes.priceEst = $(this).find("amount").text();
+        newRes.numBath = $(this).find("bathrooms").text();
+        newRes.numBed = $(this).find("bedrooms").text();
 
-      Residences.all[zpid] = newRes;
-      gMap.newMarker(newRes);
+        // get the greenscore pseudo-synrchonously (don't populate map until
+        // we get result back but allow ui thread to run)
+        $.ajax({
+          type: 'GET',
+        //  url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+          url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
+          async: true
+        }).done((function(data) {
+          this.greenscore = $.parseJSON(data)['result'];
 
-  }
+          Residences.all[this.zpid] = this;
+          gMap.newMarker(this);
+
+          returned++;
+          check_for_completion();
+        }).bind(newRes));
+      }
     });
 
-    queryHandler.displayResults();
+    // checks if all elements have reported back
+    var check_for_completion = function() {
+      if (returned === $xml.find("comp").length) {
+        queryHandler.displayResults();
+      };
+    };
 });
 
 

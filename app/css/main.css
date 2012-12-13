@@ -205,4 +205,5 @@ body {
 
 #loading_gif {
   display: inline-block;
-  text-align: center; }
+  text-align: center;
+  padding-left: 30px; }

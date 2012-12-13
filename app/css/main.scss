@@ -278,3 +278,23 @@ $ORANGE: rgb(234, 114, 33);
 
   color: white;
 }
+
+// loading screen
+#loading_div {
+  @include roundEdges(10px);
+  background-color: rgb(80, 80, 80);
+  padding: 30px;
+}
+
+#loading_text {
+  padding-top: 20px;
+  font-size: 20px;
+  color: white;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+}
+
+#loading_gif {
+  display: inline-block;
+  text-align: center;
+}

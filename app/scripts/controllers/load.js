@@ -285,4 +285,9 @@ $(document).ready(function(e) {
 
     // patch all the things
     window.util.patchFnBind();
+
+    // always close the loader on page show
+    $(document).on('pageshow', function() {
+      $.modal.close();
+    });
 });

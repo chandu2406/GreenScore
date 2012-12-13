@@ -187,3 +187,22 @@ body {
   -moz-box-shadow: 0 0 3px #111;
   -webkit-box-shadow: 0 0 3px #111;
   color: white; }
+
+#loading_div {
+  border-radius: 10px;
+  -mox-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  background-color: #505050;
+  padding: 30px; }
+
+#loading_text {
+  padding-top: 20px;
+  font-size: 20px;
+  color: white;
+  font-family: Helvetica, sans-serif;
+  text-align: center; }
+
+#loading_gif {
+  display: inline-block;
+  text-align: center; }

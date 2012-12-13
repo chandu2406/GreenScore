@@ -7,7 +7,7 @@
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
   .contentBubble {
     width: 90%;
-    padding: 0px;
+    padding: 10px;
     margin: 5px 5%;
     height: 200px; }
     .contentBubble h1 {
@@ -22,12 +22,13 @@
     .navBar .navBtn h2 {
       font-size: 18px; }
 
+  /*
   #map_canvas {
     height: 92%;
     width: 92%;
     margin-top: 4%;
-    margin-left: 4%; }
-
+    margin-left: 4%;
+  }*/
   #queryBtn {
     background-color: #EDEDED;
     width: 50%;

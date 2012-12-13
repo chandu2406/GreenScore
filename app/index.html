@@ -7,10 +7,17 @@
 
     <!-- STYLESHEETS -->
     <link href="./css/reset.css" rel="stylesheet">
-    <link href="./css/jquery.mobile-unthemed.min.css" rel="stylesheet">
+    <!-- jquery mobile custom -->
+    <link href="./css/jquery.mobile.custom.min.css" rel="stylesheet">
+    <link href="./css/jquery.mobile.custom.structure.min.css" rel="stylesheet">
+    <link href="./css/jquery.mobile.custom.theme.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS: needed for autocomplete widget -->
+    <link href="css/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+    
     <link href="./css/main.css" rel="stylesheet">
       <!-- Mobile Styling -->
       <link href="./css/mobile.css" rel="stylesheet"/>
+
 
     <!-- favicon -->
     <link rel="shortcut icon" href="./assets/greenscore.ico">
@@ -25,8 +32,8 @@
     <!-- lib scripts -->
     <!-- jquery -->
     <script src="./scripts/lib/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="./scripts/lib/jquery-ui.js" type="text/javascript"></script>
-    <script src="./scripts/lib/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>
+    <script src="./scripts/lib/jquery-ui-1.9.2.custom.js" type="text/javascript"></script>
+    <script src="./scripts/lib/jquery.mobile.custom.min.js" type="text/javascript"></script>
     <script src="./scripts/lib/jquery.watermark.min.js" type="text/javascript"></script>
 
     <!-- simple modal -->
@@ -59,7 +66,7 @@
 
   </head>
   <body>
-    <div data-role="page" data-url="home" data-fullscreen="true" id="landingPage">
+    <div data-role="page" data-url="home" data-fullscreen="true" id="landingPage" class="gsPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -75,13 +82,12 @@
         <div id="buttonWrapper">
           <div id="queryBtn" data-role="button"><h2>Find Greenscore!</h2></div>
         </div>
-
       </div>
       <div data-role="footer"></div>
     </div>
 
     <!-- The login screen -->
-    <div data-role="page" data-fullscreen="true" id="loginPage">
+    <div data-role="page" data-fullscreen="true" id="loginPage" class="gsPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -118,7 +124,7 @@
     </div>
 
     <!-- New User Page -->
-    <div data-role="page" data-fullscreen="true" id="newUserPage">
+    <div data-role="page" data-fullscreen="true" id="newUserPage" class="gsPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -141,7 +147,7 @@
     </div>
 
     <!-- A User's Profile Page -->
-    <div data-role="page" data-fullscreen="true" id="profilePage">
+    <div data-role="page" data-fullscreen="true" id="profilePage" class="gsPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -209,7 +215,7 @@
     </div>
 
     <!-- Page where the user can view a map with search results -->
-    <div data-role="page" data-fullscreen="true" id="mapView">
+    <div data-role="page" data-fullscreen="true" id="mapView" class="gsPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -231,7 +237,7 @@
     </div>
 
     <!-- Page the user can filter results through -->
-    <div data-role="page" data-fullscreen="true" id="filterPage">
+    <div data-role="page" data-fullscreen="true" id="filterPage" class="gsPage">
       <div data-role="header">
         <div class="navBar">
           <div class="navBtn filterBtn"><h2>Filter</h2></div>
@@ -242,27 +248,42 @@
       </div>
       <div data-role="content" class="contentBubble">
         <h2>Filters</h2>
-
-        <label for="priceMax">Maximum Price</label>
-        <input type="text" name="priceMax" id="priceMax" value=""/>
-
-        <label for="priceMin">Minimum Price</label>
-        <input type="text" name="priceMin" id="priceMin" value=""/>
-
-        <button id="priceFilter">Filter by Price</button>
-
-        <label for="numBath">Number of Bathrooms</label>
-        <input type="range"  name="numBath" id="numBath" value="2" min="0" max="15" step=".5"/>
-        <button id="bathFilter">Filter by Bathrooms</button>
-
-        <label for="numBed">Number of Bedrooms</label>
-        <input type="range" name="numBed" id="numBed" value="2" min="0" max="15" step=".5"/>
-        <button id="bedFilter">Filter by Bedrooms</button>
-
-        <label for="greenscore">Greenscore</label>
-        <input type="range" name="greenscore" id="greenscore" value=".5" min="0" max="1" step=".5"/>
-  <button id="gsFilter">GS filtering not done yet</button>
-
+        <h3>Price</h3>
+        <div class="rangeSlider">
+          <div class="sliderMin">
+            <input type="range"  name="priceMin" id="priceMin" value="0" min="0" max="1000000"/>
+          </div>
+          <div class="sliderMax">
+            <input type="range"  name="priceMax" id="priceMax" value="1000000" min="0" max="1000000"/>
+          </div>
+        </div>
+        <h3>Number of Bathrooms</h3>
+        <div class="rangeSlider">
+          <div class="sliderMin">
+            <input type="range"  name="bathMin" id="bathMin" value="0" min="0" max="15" step=".5"/>
+          </div>
+          <div class="sliderMax">
+            <input type="range"  name="bathMax" id="bathMax" value="15" min="0" max="15" step=".5"/>
+          </div>
+        </div>
+        <h3>Number of Bedrooms</h3>
+        <div class="rangeSlider">
+          <div class="sliderMin">
+            <input type="range"  name="bedMin" id="bedMin" value="0" min="0" max="15" step="1"/>
+          </div>
+          <div class="sliderMax">
+            <input type="range"  name="bedMax" id="bedMax" value="15" min="0" max="15" step="1"/>
+          </div>
+        </div>
+        <h3>Greenscore</h3>
+        <div class="rangeSlider">
+          <div class="sliderMin">
+            <input type="range"  name="gsMin" id="gsMin" value="0" min="0" max="1" step=".05"/>
+          </div>
+          <div class="sliderMax">
+            <input type="range"  name="gsMax" id="gsMax" value="1" min="0" max="1" step=".05"/>
+          </div>
+        </div>
       </div>
       <div data-role="footer"></div>
     </div>

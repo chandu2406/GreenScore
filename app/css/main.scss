@@ -97,6 +97,23 @@ html {
     text-shadow: none;
     text-align: center;
   }
+
+  #or_spacer {
+    font-style: italic;
+    padding-top: 10px;
+    padding-bottom: 17px;
+  }
+
+  #login_page_separator {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  #account_create_label {
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: bold;
+  }
 }
 
 #searchBar {

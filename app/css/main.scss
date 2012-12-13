@@ -5,8 +5,12 @@
  *  @author Kenneth Murphy (kmmurphy)
  */
 
-// imports
-@import "./jquery-ui.css";
+/* imports
+@import "./jquery.mobile.custom.min.css";
+@import "./jquery.mobile.custom.structure.min.css";
+@import "./jquery.mobile.custom.theme.min.css";
+@import "./jquery-ui-1.9.2.custom.css":
+*/
 
 // variables
 $green: #99c76f;
@@ -26,8 +30,10 @@ html {
   width: 100%;
 }
 
-body {
+.gsPage {
   font-family: Helvetica, sans-serif;
+  text-shadow: 0px 0px 0px #fff;
+
   height: 100%;
   width: 100%;
   margin: 0px;
@@ -36,7 +42,7 @@ body {
   background-repeat: repeat;
 }
 
-#searchBtn {
+#queryBtn {
   display: none;
 }
 
@@ -55,19 +61,8 @@ body {
   -moz-box-shadow: 0 0 8px #111;
   -webkit-box-shadow: 0 0 8px #111;
 
-  input {
-    @include roundEdges(5px);
-    margin: 3% 0 0 10%;
-    width: 80%;
-    height: 30px;
-
-    box-shadow: 0 0 2px #111;
-    -moz-box-shadow: 0 0 2px #111;
-    -webkit-box-shadow: 0 0 2px #111;
-  }
-
   h1 {
-    margin: 15px;
+    padding-top: 30px;
     font-size: 350%;
     color: $darkGreen;
     span {
@@ -75,6 +70,21 @@ body {
     }
   }
 }
+
+#searchBar {
+    @include roundEdges(5px);
+    margin-top: 20px;
+    margin-left: 10%;
+    width: 80%;
+    height: 30px;
+
+    box-shadow: 0 0 2px #111;
+    -moz-box-shadow: 0 0 2px #111;
+    -webkit-box-shadow: 0 0 2px #111;
+}
+
+
+
 
 .navBar {
   position: relative;
@@ -88,7 +98,7 @@ body {
     text-align: center;
 
     h2 {
-      font-size: 16px;
+      font-size: 18px;
       color: $gray;
       cursor: pointer;
     }
@@ -104,11 +114,8 @@ body {
 }
 
 
-#mapView {
-  height: 100%;
-}
-
 #mapView .contentBubble{
+  padding: 10px;
   height: 80%;
   position: relative;
 
@@ -130,27 +137,77 @@ body {
   }
 }
 
-/* Apply when not on mobile */
-@media only screen and (min-device-width : 480px){
-  #map_canvas {
+
+#map_canvas {
     height: 100%;
-     width: 100%;
-  }
+    width: 100%;
 }
-  
 
-
-#filterPage {
-  .contentBubble {
+#filterPage .contentBubble {
     height: 80%;
     text-align: left;
+    overflow: auto;
 
     h2 {
+      padding-top: 20px;
       text-align: center;
-      font-size: 150%;
+      font-size: 180%;
+      text-decoration: underline;
+    }
+
+    h3 {
+      font-size: 120%;
+      padding-top: 15px;
+      padding-left: 20px;
+    }
+
+}
+
+
+.rangeSlider{
+  width: 90%;
+  margin: 10px 0px 20px 5%;
+  height: 60px;
+  position: relative;
+  
+  .sliderMin {
+    position: relative;
+    float:left;
+    width: 100%;
+    height: 30px;      
+    input.ui-input-text, textarea.ui-input-text {
+      width: 100px;
+      float: left;
+    }
+    div.ui-slider {
+      top: 16px;
+      left: 5px;
+      float: left;
+      width: 70%;
+    }
+  }
+
+  .sliderMax {
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    float:left;
+    input.ui-input-text, textarea.ui-input-text {
+      position: absolute;
+      width: 100px;
+      right: 0px;
+    }
+    div.ui-slider {
+      top: 16px;
+      left: 105px;
+      width: 70%;
     }
   }
 }
+
+
+
+
 
 // size variables
 $LARGE_TEXT: 18px;

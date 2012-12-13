@@ -160,4 +160,20 @@ $(document).ready(function(e) {
     $("#filterOverlay").on("click", function(){
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
     });
+
+    //initialize range sliders from jQuery UI library
+    
+    $("#rangeSlider").slider({
+      range: true,
+      min: 0,
+      max: 500,
+      values: [ 75, 300 ],
+        slide: function( event, ui ) {
+          alert(ui.values[0]);
+        }
+    });
+    
+    $("#numBath").slider();
+    $("#numBed").slider();
+  
 });

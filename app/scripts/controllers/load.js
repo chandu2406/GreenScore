@@ -63,6 +63,8 @@ $(document).ready(function(e) {
             var url = "/get_address_data";
             var params = "address="+escape(address);
 
+            console.log(" get address data");
+
             // branch for native XMLHttpRequest object
             if (window.XMLHttpRequest) {
               address_data_fifo = new XMLHttpRequest();
@@ -236,9 +238,62 @@ $(document).ready(function(e) {
 
     // Click event handler for modify information button
     $("#puf_button").on("click", function () {
-      var req_fifo;
+      var user_fifo;
+      var address_fifo;
+      var username;
 
-      // GetAsyncData sends a request to read the fifo.
+      if (typeof(localStorage !== "undefined")) {
+        if(window.localStorage["greenscore_username"] !== undefined) {
+          username = window.localStorage["greenscore_username"];
+        } else {
+          alert("You need to be logged in to do that.");
+        }
+      } else {
+        alert("You need to be logged in to do that.");
+      }
+
+      function SendModifyUser() {
+        var url = "/modify_user";
+
+        var address = $('#puf_address').val();
+        var email = $('#puf_email').val();
+
+        var params = "username=" + escape(username) +
+          (address === "" ? "" : "&address="+escape(address)) +
+          (email === "" ? "" : "&email="+escape(email))
+
+        // ignore blank requests
+        if ($('#puf_address').val() === "" && $('#puf_email').val() === "") {
+          SendModifyAddress();
+          return;
+        }
+
+        console.log("send modify_user:");
+        console.log(params);
+
+        // branch for native XMLHttpRequest object
+        if (window.XMLHttpRequest) {
+          user_fifo = new XMLHttpRequest();
+          user_fifo.abort();
+          user_fifo.onreadystatechange = ProcessModifyUser;
+          user_fifo.open("POST", url+"?"+params, true);
+          user_fifo.send(null);
+        }
+      }
+      
+      function ProcessModifyUser() {
+        if (user_fifo.readyState != 4 || user_fifo.status != 200) {
+          SendModifyAddress();
+          return;
+        }
+        var response = JSON.parse(user_fifo.response);
+        // If the user successfully logged in:
+        if (response['success'] === 'true') {
+          console.log("got modify user");
+          SendModifyAddress();
+        }
+      }
+
       function SendModifyAddress() {
         var url = "/modify_address";
 
@@ -265,25 +320,23 @@ $(document).ready(function(e) {
 
         // branch for native XMLHttpRequest object
         if (window.XMLHttpRequest) {
-          req_fifo = new XMLHttpRequest();
-          req_fifo.abort();
-          req_fifo.onreadystatechange = ProcessModifyAddress;
-          req_fifo.open("POST", url+"?"+params, true);
-          req_fifo.send(null);
+          address_fifo = new XMLHttpRequest();
+          address_fifo.abort();
+          address_fifo.onreadystatechange = ProcessModifyAddress;
+          address_fifo.open("POST", url+"?"+params, true);
+          address_fifo.send(null);
         }
       }
       
       function ProcessModifyAddress() {
-        if (req_fifo.readyState != 4 || req_fifo.status != 200) {
+        if (address_fifo.readyState != 4 || address_fifo.status != 200) {
           return;
         }
-        var response = JSON.parse(req_fifo.response);
+        var response = JSON.parse(address_fifo.response);
         // If the user successfully logged in:
         if (response['success'] === 'true') {
           console.log("got modify");
 
-          $('#puf_address').val("");
-          $('#puf_email').val("");
           $('#puf_num_beds').val("");
           $('#puf_num_baths').val("");
           $('#puf_sqft').val("");
@@ -294,7 +347,7 @@ $(document).ready(function(e) {
           $.mobile.changePage($("#profilePage"), {transition: 'slideup'});
         }
       }
-      SendModifyAddress();
+      SendModifyUser();
     });
 
     //attach page change event to navBar

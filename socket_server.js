@@ -60,6 +60,31 @@
           });
           return (http.request(options, processZillowData)).end();
         }));
+        socket.on('uniqueSearch', (function(data) {
+          var options, processZillowData;
+          console.log("beginning unique search");
+          options = {
+            host: 'www.zillow.com',
+            path: data.path,
+            method: 'GET'
+          };
+          processZillowData = (function(res) {
+            var zillowXML;
+            zillowXML = '';
+            res.on('data', (function(zillowData) {
+              return zillowXML += zillowData;
+            }));
+            res.on('end', (function() {
+              return socket.emit('uniqueResults', {
+                'zillowData': zillowXML
+              });
+            }));
+            return res.on('error', (function(err) {
+              return console.log(err);
+            }));
+          });
+          return (http.request(options, processZillowData)).end();
+        }));
         socket.on('compSearch', (function(data) {
           var options, processZillowData;
           console.log("beginning comp search");

@@ -22,7 +22,7 @@ $(document).ready(function(e) {
       if (typeof(localStorage !== "undefined")) {
         if(window.localStorage["greenscore_username"] !== undefined) {
           var username = window.localStorage["greenscore_username"];
-          $("#welcomeMessage").html("Hello user!");
+          $("#welcomeMessage").html("Welcome " + username + "!");
 
           // Get the user's info to populate the profile
           function GetProfileData() {
@@ -83,6 +83,7 @@ $(document).ready(function(e) {
             if (response['success'] === 'true') {
               console.log("great success!");
               console.log(response['data']);
+              window.userData = response['data'];
 
               // Build the user's address table and show it
               var row = $('#profileRow');
@@ -94,15 +95,7 @@ $(document).ready(function(e) {
               to_append += "<td>"+(response['data']['SOLAR']? "YES" : "NO") +"</td>";
               row.html(to_append);
 
-              // Calculate and show the user's greenscore
-              var greenscore = $.parseJSON($.ajax({
-                type: 'GET',
-                url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + response['data']['SQFT'],
-                async: false
-              }).responseText)['result'];
-
-
-              $("#profileGreenscore").html("Greenscore: "+greenscore);
+              queryHandler.searchHome(response['data']['ADDRESS']);
             }
           }
 
@@ -239,6 +232,69 @@ $(document).ready(function(e) {
         return;
       }
       GetAsyncData();
+    });
+
+    // Click event handler for modify information button
+    $("#puf_button").on("click", function () {
+      var req_fifo;
+
+      // GetAsyncData sends a request to read the fifo.
+      function SendModifyAddress() {
+        var url = "/modify_address";
+
+        var address = $('#puf_address').val();
+        var email = $('#puf_email').val();
+        var num_beds = $('#puf_num_beds').val();
+        var num_baths = $('#puf_num_baths').val();
+        var sqft = $('#puf_sqft').val();
+        var solar = $('#puf_solar').val();
+
+        var params = "address=" + escape(address) +
+          (num_beds === "" ? "" : "&num_beds="+escape(num_beds)) +
+          (num_baths === "" ? "" : "&num_baths="+escape(num_baths)) +
+          (sqft === "" ? "" : "&sqft="+escape(sqft)) +
+          (solar === "" ? "" : "&solar="+escape(solar))
+
+        // ignore blank requests
+        if ($('#puf_address').val() === "") {
+          return;
+        }
+
+        console.log("send modify:");
+        console.log(params);
+
+        // branch for native XMLHttpRequest object
+        if (window.XMLHttpRequest) {
+          req_fifo = new XMLHttpRequest();
+          req_fifo.abort();
+          req_fifo.onreadystatechange = ProcessModifyAddress;
+          req_fifo.open("POST", url+"?"+params, true);
+          req_fifo.send(null);
+        }
+      }
+      
+      function ProcessModifyAddress() {
+        if (req_fifo.readyState != 4 || req_fifo.status != 200) {
+          return;
+        }
+        var response = JSON.parse(req_fifo.response);
+        // If the user successfully logged in:
+        if (response['success'] === 'true') {
+          console.log("got modify");
+
+          $('#puf_address').val("");
+          $('#puf_email').val("");
+          $('#puf_num_beds').val("");
+          $('#puf_num_baths').val("");
+          $('#puf_sqft').val("");
+          $('#puf_solar').val("");
+
+          // TODO more elegant way to refresh page
+          $.mobile.changePage($("#loginPage"), {transition: 'slidedown'});
+          $.mobile.changePage($("#profilePage"), {transition: 'slideup'});
+        }
+      }
+      SendModifyAddress();
     });
 
     //attach page change event to navBar

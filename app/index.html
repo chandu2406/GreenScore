@@ -183,6 +183,25 @@
             <td>No</td>
           </tr>
         </table>
+        <h2>Update your info:</h2>
+        <form id="profileUpdateForm">
+          <label for="email">New email:</label>
+          <input id="puf_email" name="email" type="email" />
+          <label for="address">New Address:</label>
+          <input id="puf_address" name="address" type="text" />
+          <label for="num_beds">Number of beds:</label>
+          <input id="puf_num_beds" name="num_beds" type="number" />
+          <label for="num_baths">Number of bathrooms:</label>
+          <input id="puf_num_baths" name="num_baths" type="number" />
+          <label for="sqft">Total square feet:</label>
+          <input id="puf_sqft" name="sqft" type="number" />
+          <br>
+          <input id="puf_solar" name="solar" type="checkbox">My
+          house uses solar power</input>
+
+          <input id="puf_button" data-role="button" type="button"
+          value="Update my data" />
+        </form>
       </div>
       <div data-role="footer"></div>
     </div>

@@ -243,7 +243,7 @@ class HTTPRequestServer
     addr = args["address"]
     num_baths = args["num_baths"]
     num_beds = args["num_beds"]
-    sqft = args["sfqt"]
+    sqft = args["sqft"]
     solar = args["solar"]
 
     console.log args

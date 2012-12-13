@@ -28,6 +28,13 @@ $(document).ready(function(e) {
     $("#new_email").watermark("Email");
     $("#new_address").watermark("Address");
 
+    // watermarks for updating info
+    $("#puf_email").watermark("Update your Email");
+    $("#puf_address").watermark("Update your Address");
+    $("#puf_num_beds").watermark("Number of bedrooms");
+    $("#puf_num_baths").watermark("Number of bathrooms");
+    $("#puf_sqft").watermark("Total Square Feet");
+
 
     //GEOCODER
     geocoder = new google.maps.Geocoder();

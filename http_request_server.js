@@ -165,7 +165,7 @@
         var kwh, row, totscore, _i, _len;
         totscore = 0;
         if (rows === void 0) {
-          deferred.resolve([0, 0]);
+          return deferred.reject([0, 0]);
         }
         for (_i = 0, _len = rows.length; _i < _len; _i++) {
           row = rows[_i];

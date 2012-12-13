@@ -162,7 +162,7 @@ class HTTPRequestServer
     onSuccess = (rows) ->
       totscore = 0
       if rows == undefined
-        deferred.resolve([0, 0])
+        return deferred.reject([0, 0])
 
       for row in rows
         # TODO: fix these heuristics

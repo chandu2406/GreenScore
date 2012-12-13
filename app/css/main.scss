@@ -99,10 +99,6 @@ html {
   }
 }
 
-#profilePage .contentBubble {
-  height: 100%;
-}
-
 #searchBar {
     @include roundEdges(5px);
     margin-top: 20px;

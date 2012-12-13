@@ -264,7 +264,7 @@ $(document).ready(function(e) {
 
         // ignore blank requests
         if ($('#puf_address').val() === "" && $('#puf_email').val() === "") {
-          SendModifyAddress();
+          console.log("blank request");
           return;
         }
 
@@ -283,7 +283,7 @@ $(document).ready(function(e) {
       
       function ProcessModifyUser() {
         if (user_fifo.readyState != 4 || user_fifo.status != 200) {
-          SendModifyAddress();
+          console.log("blank request");
           return;
         }
         var response = JSON.parse(user_fifo.response);

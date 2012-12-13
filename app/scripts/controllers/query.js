@@ -198,6 +198,9 @@ queryHandler.socket.on("uniqueResults", function(data) {
 
 
     $("#profileGreenscore").html("Greenscore: "+greenscore);
+    if(greenscore === undefined) {
+      $("#profileGreenscore").append("<p>An undefined greenscore indicates that we don't have enough information to provide you with an accurate greenscore. Fill in some of the data below, and we'll calculate it!</p>");
+    }
 
 });
 

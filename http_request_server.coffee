@@ -194,6 +194,13 @@ class HTTPRequestServer
     return deferred.promise
 
   register_user: (username, password, email, address, response) ->
+    ###
+    @brief register a user in the USERS database
+    @param  username  new username
+    @param  password  new password
+    @param  address   address (as given by autocomplete)
+    @param  response  place to send response
+    ###
     query = "SELECT * FROM USERS WHERE USERNAME='#{username}'"
     onSuccess = ((rows) ->
       onRegistration = (rows) ->
@@ -218,6 +225,31 @@ class HTTPRequestServer
       console.log err
     @mysql_query query, onSuccess, onFailure
 
+  request_user_data: (username, response) ->
+    ###
+    @brief request database information for a given user
+    @param  username  the username to use as a key
+    @param  response  where to send the response
+    ###
+    query = "SELECT * FROM USERS WHERE USERNAME='#{username}'"
+    onSuccess = (rows) ->
+      console.log("#{username} has data.")
+      # if there are no records, return an error
+      if rows.length < 1
+        return response.send({success: 'false',\
+                              user_id: username,\
+                              message: "Login failed - no entries for #{username}"})
+      # if there are >= 1 records, return the first
+      else
+        return response.send({success: 'true',\
+                              user_id: username,\
+                              email:   rows[0].EMAIL,\
+                              address: rows[0].ADDRESS,\
+                              message: "Succesfully got data for #{username}"})
+    onFailure = (err) ->
+      return console.log err
+
+    @mysql_query query, onSuccess, onFailure
 
   listen: ->
     ###
@@ -250,6 +282,7 @@ class HTTPRequestServer
       passport.authenticate('facebook', { successRedirect: '/SUCCEED',\
                                       failureRedirect: '/FAIL' }))
 
+    # registration
     @app.post('/register', ((request, response) ->
       console.log "received /register post"
       args = request.query
@@ -266,7 +299,18 @@ class HTTPRequestServer
       @register_user uname, pw, email, address, response
     ).bind(this))
 
+    # get user data
+    @app.get('/get_user_data', ((request, response) ->
+      console.log "received get_user_data"
+      args = request.query
 
+      # validation
+      uname = args['username']
+      console.log uname
+      @request_user_data uname, response
+    ).bind(this))
+
+    # local login
     @app.post('/login', ((req, res, next) ->
       console.log("received /login post")
       passport.authenticate('local', ((error, user, info) ->
@@ -291,10 +335,10 @@ class HTTPRequestServer
       ((username,password,done) ->
         onSuccess = ((rows) ->
           if rows is undefined or rows.length != 1
-            console.log 'fail'
+            console.log 'fail - no user'
             return done(null, false, 'No account found or conflicting accounts.')
           else if rows[0].PASSWORD != password
-            console.log 'fail'
+            console.log 'fail - incorrect password'
             console.log rows
             console.log password
             return done(null, false, 'Incorrect password.')

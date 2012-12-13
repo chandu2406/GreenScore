@@ -66,6 +66,17 @@ html {
     font: Arial, sans-serif;
     text-shadow: none;
     text-align: center; }
+  #loginPage .contentBubble #or_spacer {
+    font-style: italic;
+    padding-top: 10px;
+    padding-bottom: 17px; }
+  #loginPage .contentBubble #login_page_separator {
+    margin-top: 40px;
+    margin-bottom: 40px; }
+  #loginPage .contentBubble #account_create_label {
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: bold; }
 
 #searchBar {
   border-radius: 5px;

@@ -399,4 +399,5 @@ $(document).ready(function(e) {
     $(document).on('pageshow', function() {
       $.modal.close();
     });
+
 });

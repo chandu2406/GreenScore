@@ -84,14 +84,25 @@ $(document).ready(function(e) {
               console.log("great success!");
               console.log(response['data']);
 
+              // Build the user's address table and show it
               var row = $('#profileRow');
               var to_append="";
               to_append += "<td>"+response['data']['ADDRESS']+"</td>";
               to_append += "<td>"+response['data']['NUM_BATHS']+"</td>";
               to_append += "<td>"+response['data']['NUM_BEDS']+"</td>";
               to_append += "<td>"+response['data']['SQFT']+"</td>";
-              to_append += "<td>"+response['data']['SOLAR']+"</td>";
+              to_append += "<td>"+(response['data']['SOLAR']? "YES" : "NO") +"</td>";
               row.html(to_append);
+
+              // Calculate and show the user's greenscore
+              var greenscore = $.parseJSON($.ajax({
+                type: 'GET',
+                url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + response['data']['SQFT'],
+                async: false
+              }).responseText)['result'];
+
+
+              $("#profileGreenscore").html("Greenscore: "+greenscore);
             }
           }
 

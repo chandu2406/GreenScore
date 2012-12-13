@@ -137,6 +137,7 @@ html {
     img {
       bottom: -37px;
       position: absolute;
+      z-index: 100;
     }
   }
 }
@@ -144,10 +145,12 @@ html {
 
 #mapView .contentBubble{
   padding: 10px;
+  padding-bottom: 40px;
   height: 80%;
   position: relative;
 
   #filterOverlay {
+    @include roundEdges(10px);
     background-image: url("../assets/button_background.jpg");
     background-color: rgba(120,120,120,.8);
     display: inline-block;

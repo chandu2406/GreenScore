@@ -99,13 +99,19 @@ html {
       cursor: pointer; }
     .navBar .navBtn img {
       bottom: -37px;
-      position: absolute; }
+      position: absolute;
+      z-index: 100; }
 
 #mapView .contentBubble {
   padding: 10px;
+  padding-bottom: 40px;
   height: 80%;
   position: relative; }
   #mapView .contentBubble #filterOverlay {
+    border-radius: 10px;
+    -mox-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -o-border-radius: 10px;
     background-image: url("../assets/button_background.jpg");
     background-color: rgba(120, 120, 120, 0.8);
     display: inline-block;

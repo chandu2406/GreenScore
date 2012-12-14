@@ -99,8 +99,9 @@ html {
   #loginPage .contentBubble #welcomeMessage, #profilePage .contentBubble #welcomeMessage,
   #editProfilePage .contentBubble #welcomeMessage {
     color: #68874b; }
-  #loginPage .contentBubble #edit_button, #profilePage .contentBubble #edit_button,
-  #editProfilePage .contentBubble #edit_button {
+  #loginPage .contentBubble #edit_button, #loginPage .contentBubble #back_to_profile_button, #profilePage .contentBubble #edit_button, #profilePage .contentBubble #back_to_profile_button,
+  #editProfilePage .contentBubble #edit_button,
+  #editProfilePage .contentBubble #back_to_profile_button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -116,20 +117,26 @@ html {
     box-shadow: 0 0 3px #111;
     -moz-box-shadow: 0 0 3px #111;
     -webkit-box-shadow: 0 0 3px #111; }
-  #loginPage .contentBubble #info_label, #profilePage .contentBubble #info_label,
-  #editProfilePage .contentBubble #info_label {
+  #loginPage .contentBubble #info_label, #loginPage .contentBubble #home_label, #profilePage .contentBubble #info_label, #profilePage .contentBubble #home_label,
+  #editProfilePage .contentBubble #info_label,
+  #editProfilePage .contentBubble #home_label {
     font-family: 'Playfair Display SC', serif;
     font-style: italic;
     font-size: 35px;
     color: rgba(66, 71, 61, 0.7);
     padding-top: 10px; }
+  #loginPage .contentBubble #home_label, #profilePage .contentBubble #home_label,
+  #editProfilePage .contentBubble #home_label {
+    padding-top: 15px;
+    padding-bottom: 15px; }
   #loginPage .contentBubble .info_item, #profilePage .contentBubble .info_item,
   #editProfilePage .contentBubble .info_item {
     font-family: 'Playfair Display SC', serif;
     width: 50%;
     font-size: 20px;
     display: inline-block;
-    text-align: center; }
+    text-align: center;
+    margin-top: 15px; }
     #loginPage .contentBubble .info_item .left_item, #profilePage .contentBubble .info_item .left_item,
     #editProfilePage .contentBubble .info_item .left_item {
       float: left;
@@ -138,6 +145,34 @@ html {
     #editProfilePage .contentBubble .info_item .right_item {
       float: right;
       color: rgba(11, 11, 11, 0.9); }
+  #loginPage .contentBubble #editprofile_label, #profilePage .contentBubble #editprofile_label,
+  #editProfilePage .contentBubble #editprofile_label {
+    color: #42473d; }
+  #loginPage .contentBubble #editprofile_profile_label, #profilePage .contentBubble #editprofile_profile_label,
+  #editProfilePage .contentBubble #editprofile_profile_label {
+    color: #68874b; }
+  #loginPage .contentBubble label, #profilePage .contentBubble label,
+  #editProfilePage .contentBubble label {
+    float: left;
+    font-family: 'Playfair Display SC', serif;
+    color: rgba(36, 118, 237, 0.85);
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 3px; }
+  #loginPage .contentBubble #puf_button, #profilePage .contentBubble #puf_button,
+  #editProfilePage .contentBubble #puf_button {
+    border-radius: 10px;
+    -mox-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -o-border-radius: 10px;
+    background: url("../assets/button_background.jpg");
+    color: white;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font: Arial, sans-serif;
+    text-shadow: none;
+    text-align: center;
+    cursor: pointer; }
 
 #searchBar {
   border-radius: 5px;

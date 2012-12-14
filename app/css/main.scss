@@ -138,7 +138,7 @@ html {
   #welcomeMessage {
     color: $darkGreen;
   }
-  #edit_button {
+  #edit_button, #back_to_profile_button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -156,12 +156,17 @@ html {
     -webkit-box-shadow: 0 0 3px #111;
   }
 
-  #info_label {
+  #info_label, #home_label {
     font-family: 'Playfair Display SC', serif;
     font-style: italic;
     font-size: 35px;
     color: $transGray;
     padding-top: 10px;
+  }
+
+  #home_label {
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
   .info_item {
@@ -170,6 +175,7 @@ html {
     font-size: 20px;
     display: inline-block;
     text-align: center;
+    margin-top: 15px;
 
     .left_item {
       float: left;
@@ -180,6 +186,37 @@ html {
       float: right;
       color: $transBlack;
     }
+  }
+
+  // edit profile page
+  #editprofile_label {
+    color: $gray;
+  }
+  #editprofile_profile_label {
+    color: $darkGreen;
+  }
+
+  label {
+    float: left;
+    font-family: 'Playfair Display SC', serif;
+    color: $transBlue;
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 3px;
+  }
+
+  #puf_button {
+    @include roundEdges(10px);
+    background: url("../assets/button_background.jpg");
+
+    color: white;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font: Arial, sans-serif;
+    text-shadow: none;
+    text-align: center;
+
+    cursor: pointer;
   }
 }
 

@@ -61,7 +61,6 @@
     display: block;
     text-align: center;
     @include roundEdges(5px);
-   
 
     border: 1px solid #6E6E6E;
     box-shadow: 0 0 3px #111;
@@ -78,10 +77,6 @@
     cursor: pointer;
   }
 
-  #filterPage .contentBubble h3 {
-    
-
-  } 
 
 
   .rangeSlider {

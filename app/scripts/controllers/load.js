@@ -422,10 +422,12 @@ $(document).ready(function(e) {
     // log out button
     $("#logout_button").on("click", function() {
       if (typeof(localStorage !== "undefined")) {
-        window.localStorage["greenscore_username"] = undefined;
+        //window.localStorage["greenscore_username"] = undefined;
+        window.localStorage.removeItem("greenscore_username");
       };
 
       $.mobile.changePage($("#landingPage"), {transition: "slideup"});
+      location.reload(true);
     });
 
     // universal, good looking alert

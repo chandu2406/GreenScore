@@ -82,7 +82,7 @@ html {
   position: relative;
 
   // special case these because this css is janky
-  #login_button {
+  #login_button_internal {
     background: url("../assets/button_background.jpg");
 
     color: white;
@@ -138,6 +138,7 @@ html {
   #welcomeMessage {
     color: $darkGreen;
   }
+
   #edit_button, #back_to_profile_button {
     position: absolute;
     top: 10px;
@@ -148,12 +149,19 @@ html {
     background-color: $offblack;
     @include roundEdges(5px);
     padding: 3px;
+  }
 
-    border: solid thin rgb(90, 90, 90);
+  #logout_button {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    text-decoration: none;
+    color: $offwhite;
 
-    box-shadow: 0 0 3px #111;
-    -moz-box-shadow: 0 0 3px #111;
-    -webkit-box-shadow: 0 0 3px #111;
+    background-color: $offblack;
+    @include roundEdges(5px);
+    padding: 3px;
+    cursor: pointer;
   }
 
   #info_label, #home_label {
@@ -513,13 +521,13 @@ $ORANGE: rgb(234, 114, 33);
 }
 
 // loading screen
-#loading_div {
+#loading_div, #alert_modal_wrapper {
   @include roundEdges(10px);
   background-color: rgb(80, 80, 80);
   padding: 30px;
 }
 
-#loading_text {
+#loading_text, #alert_modal_text {
   padding-top: 20px;
   font-size: 20px;
   color: white;

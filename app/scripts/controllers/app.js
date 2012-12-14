@@ -88,12 +88,10 @@ $(document).ready(function(e) {
         if(event.keyCode == 13){
             var queryAddr, i, component;
 
-            show_loading();
-
             queryAddr = new userAddress();
             if(typeof(addrComponents) === 'undefined'){
-                alert("Please enter a valid address");
-            }else {
+                window.appAlert("Please enter a valid address");
+            } else {
                 for(i=0; i<addrComponents.length; i++){
                     component = addrComponents[i];
                     if(component.types[0] === "street_number"){
@@ -104,18 +102,17 @@ $(document).ready(function(e) {
                         queryAddr.zipcode = component.long_name;
                     }
                 }
+                show_loading();
             }
             queryHandler.searchAddress(queryAddr);
         }
     });
 
     $("#queryBtn").on("tap", function(){
-        show_loading();
-
         queryAddr = new userAddress();
         if(typeof(addrComponents) === 'undefined'){
-          alert("Please enter a valid address");
-        }else {
+          window.appAlert("Please enter a valid address");
+        } else {
           for(i=0; i<addrComponents.length; i++){
             component = addrComponents[i];
             if(component.types[0] === "street_number"){
@@ -126,7 +123,9 @@ $(document).ready(function(e) {
               queryAddr.zipcode = component.long_name;
             }
           }
+          show_loading();
         }
+
         queryHandler.searchAddress(queryAddr);
   });
 

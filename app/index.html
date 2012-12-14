@@ -105,8 +105,8 @@
           <input id="username" name="username" type="text" />
           <label for="password"></label>
           <input id="password" name="password" type="password" />
-          <div class="buttonWrapper">
-            <input id="login_button" data-role="button" class="bordered" value="login" />
+          <div class="buttonWrapper" id="login_button">
+            <input id="login_button_internal" data-role="button" class="bordered" value="login" />
           </div>
         </form>
         <div id="or_spacer">or</div>
@@ -167,6 +167,7 @@
       </div>
       <div data-role="content" class="contentBubble">
         <a href="#editProfilePage" id="edit_button" class="bordered">Edit Profile</a>
+        <div id="logout_button" class="bordered">Log Out</div>
         <h1 id="welcomeMessageWelcome">Welcome <span id="welcomeMessage"></span></h1>
         <hr />
         <!--<p>Why do we ask for your information? By gathering information about

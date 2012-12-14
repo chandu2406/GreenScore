@@ -248,7 +248,7 @@ $(document).ready(function(e) {
           });
           $.mobile.changePage($("#editProfilePage"), {transition: "slideup"});
         } else {
-          alert ('Sorry, something went wrong with registering your account.');
+          window.appAlert('Sorry, something went wrong with registering your account.');
         }
 
         return;
@@ -266,10 +266,10 @@ $(document).ready(function(e) {
         if(window.localStorage["greenscore_username"] !== undefined) {
           username = window.localStorage["greenscore_username"];
         } else {
-          alert("You need to be logged in to do that.");
+          window.appAlert("You need to be logged in to do that.");
         }
       } else {
-        alert("You need to be logged in to do that.");
+        window.appAlert("You need to be logged in to do that.");
       }
 
       function SendModifyUser() {
@@ -421,4 +421,46 @@ $(document).ready(function(e) {
       $.modal.close();
     });
 
+    // log out button
+    $("#logout_button").on("click", function() {
+      if (typeof(localStorage !== "undefined")) {
+        window.localStorage["greenscore_username"] = undefined;
+      };
+
+      $.mobile.changePage($("#landingPage"), {transition: "slideup"});
+    });
+
+    // universal, good looking alert
+    window.appAlert = function(msg) {
+      var $modal_div = $("<div>", {
+        'id': 'alert_modal_wrapper'
+      }).append($("<div>", {
+        'id': 'alert_modal_text'
+      }).text(msg));
+      $modal_div.modal({
+        onOpen: function(dialog) {
+          dialog.overlay.fadeIn('fast', function() {
+            dialog.data.hide();
+            dialog.container.fadeIn('fast', function() {
+              dialog.data.slideDown('fast');
+            });
+          });
+        },
+        onClose: function(dialog) {
+          dialog.data.fadeOut('fast', function() {
+            dialog.container.slideUp('fast', function() {
+              dialog.overlay.fadeOut('fast', function() {
+                $.modal.close();
+              });
+            });
+          });
+        },
+        opacity: 80,
+        overlayCss: {backgroundColor: "#000"}
+      });
+
+      setTimeout(function() {
+        $.modal.close();
+      }, 3000);
+    };
 });

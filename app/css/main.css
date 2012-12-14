@@ -283,15 +283,17 @@ html {
   display: inline-block;
   text-align: ceneter;
   width: 80%;
+  height: 30px;
   padding-top: 10px; }
 
 *[data-role="button"] {
-  border-radius: 10px;
-  -mox-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -o-border-radius: 10px;
+  border-radius: 5px;
+  -mox-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
   background: url("../assets/button_background.jpg");
   border: solid thin #5a5a5a;
+  height: 30px;
   box-shadow: 0 0 3px #111;
   -moz-box-shadow: 0 0 3px #111;
   -webkit-box-shadow: 0 0 3px #111;

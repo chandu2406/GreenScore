@@ -7,7 +7,7 @@
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
   .contentBubble {
     width: 90%;
-    padding: 10px;
+    padding: 0px;
     margin: 5px 5%;
     height: 200px; }
     .contentBubble h1 {
@@ -20,31 +20,61 @@
   .navBar .navBtn {
     margin-right: 6%; }
     .navBar .navBtn h2 {
-      font-size: 18px; }
+      font-size: 16px; }
 
-  /*
+  #mapView .contentBubble {
+    padding: 0px; }
+
   #map_canvas {
-    height: 92%;
-    width: 92%;
-    margin-top: 4%;
-    margin-left: 4%;
-  }*/
+    width: 94%;
+    height: 94%;
+    left: 3%;
+    top: 3%; }
+
   #queryBtn {
-    background-color: #EDEDED;
     width: 50%;
-    height: 28px;
+    height: 25px;
     margin-top: 10px;
     margin-left: 25%;
     display: block;
     text-align: center;
+    border-radius: 5px;
+    -mox-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
     border: 1px solid #6E6E6E;
     box-shadow: 0 0 3px #111;
     -moz-box-shadow: 0 0 3px #111;
     -webkit-box-shadow: 0 0 3px #111;
-    border-radius: 5px;
-    -mox-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -o-border-radius: 5px; }
+    cursor: pointer; }
     #queryBtn h2 {
-      margin-top: 5px;
-      color: #787878; } }
+      color: #616161;
+      margin-top: 4px;
+      font-weight: normal;
+      letter-spacing: 2px;
+      font: Arial, sans-serif;
+      text-shadow: none; }
+
+  .rangeSlider {
+    margin: 0 3%;
+    margin-left: 3%;
+    margin-right: 3%;
+    width: 94%;
+    height: 80px; }
+    .rangeSlider .sliderMin input.ui-input-text, .rangeSlider .sliderMin textarea.ui-input-text {
+      margin-left: 0;
+      width: 90px; }
+    .rangeSlider .sliderMin div.ui-slider {
+      width: 76%;
+      margin-left: 12%;
+      top: 10px; }
+    .rangeSlider .sliderMax input.ui-input-text, .rangeSlider .sliderMax textarea.ui-input-text {
+      margin-left: 0;
+      width: 90px;
+      right: 0px;
+      top: 0px; }
+    .rangeSlider .sliderMax div.ui-slider {
+      width: 76%;
+      margin-left: 12%;
+      top: 70px;
+      left: 0; } }

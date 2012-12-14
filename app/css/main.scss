@@ -393,13 +393,15 @@ $ORANGE: rgb(234, 114, 33);
   display: inline-block;
   text-align: ceneter;
   width: 80%;
+  height: 30px;
   padding-top: 10px;
 }
 
 *[data-role="button"] {
-  @include roundEdges(10px);
+  @include roundEdges(5px);
   background: url("../assets/button_background.jpg");
   border: solid thin rgb(90, 90, 90);
+  height: 30px;
 
   box-shadow: 0 0 3px #111;
   -moz-box-shadow: 0 0 3px #111;

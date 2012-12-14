@@ -6,7 +6,7 @@
 
 //tmp path to socket.io for when testing on mobile
 var ipAddr = 'localhost';
-//var ipAddr = '128.237.201.189';
+//var ipAddr = '128.237.224.140';
 
 
 

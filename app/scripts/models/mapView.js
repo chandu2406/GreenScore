@@ -71,6 +71,7 @@ gMap.updateCoors = function (lat, long) {
  *
  */
 gMap.newMarker = function(residence){
+    console.log(residence);
     var marker;
     //create a new marker object as defined above
     marker = new gMap.Marker();

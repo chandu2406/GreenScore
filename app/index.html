@@ -79,7 +79,7 @@
         <h1>Green<span>score</span></h1>
         <label for="searchBar"></label>
         <input id="searchBar" type="text" />
-        <div id="buttonWrapper">
+        <div class="buttonWrapper">
           <div id="queryBtn" data-role="button"><h2>Find Greenscore!</h2></div>
         </div>
       </div>
@@ -103,9 +103,14 @@
           <input id="username" name="username" type="text" />
           <label for="password"></label>
           <input id="password" name="password" type="password" />
-          <input id="login_button" data-role="button" type="button" value="login" />
+          <div class="buttonWrapper">
+            <input id="login_button" data-role="button" value="login" />
+          </div>
         </form>
-        <a id="fb_button" href="#">Login with Facebook</a>
+        <div id="or_spacer">or</div>
+        <a id="fb_button" href="#"><img src="../assets/facebook-signin-button.png"></img></a>
+        <hr id="login_page_separator" />
+        <div id="account_create_label">Create an account</div>
         <form id="register">
           <label for="username"></label>
           <input id="new_username" name="username" type="text" />
@@ -117,7 +122,9 @@
           <input id="new_email" name="email" type="text" />
           <label for="address"></label>
           <input id="new_address" name="address" type="text" />
-          <input id="register_button" data-role="button" type="button" value="Register" />
+          <div class="buttonWrapper">
+            <input id="register_button" data-role="button" value="Register" />
+          </div>
         </form>
       </div>
       <div data-role="footer"></div>

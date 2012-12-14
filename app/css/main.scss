@@ -53,6 +53,8 @@ html {
   height: 250px;
   margin: 5px 15% 15% 15%;
   text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
 
   box-shadow: 0 0 8px #111;
   -moz-box-shadow: 0 0 8px #111;
@@ -66,21 +68,52 @@ html {
       color: $gray;
     }
   }
-
-  #buttonWrapper {
-    display: inline-block;
-    text-align: ceneter;
-    width: 80%;
-    padding-top: 10px;
-  }
 }
 
 // special case login page
 #loginPage .contentBubble {
-  height: 100%;
+  height: 80%;
+  overflow: scroll;
 
+
+  // special case these because this css is janky
   #login_button {
-    background-color: black;
+    background: url("../assets/button_background.jpg");
+
+    color: white;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font: Arial, sans-serif;
+    text-shadow: none;
+    text-align: center;
+  }
+
+  #register_button {
+    background: url("../assets/button_background.jpg");
+
+    color: white;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font: Arial, sans-serif;
+    text-shadow: none;
+    text-align: center;
+  }
+
+  #or_spacer {
+    font-style: italic;
+    padding-top: 10px;
+    padding-bottom: 17px;
+  }
+
+  #login_page_separator {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  #account_create_label {
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: bold;
   }
 }
 
@@ -95,9 +128,6 @@ html {
     -moz-box-shadow: 0 0 2px #111;
     -webkit-box-shadow: 0 0 2px #111;
 }
-
-
-
 
 .navBar {
   position: relative;
@@ -122,6 +152,7 @@ html {
     img {
       bottom: -37px;
       position: absolute;
+      z-index: 100;
     }
   }
 }
@@ -129,10 +160,12 @@ html {
 
 #mapView .contentBubble{
   padding: 10px;
+  padding-bottom: 40px;
   height: 80%;
   position: relative;
 
   #filterOverlay {
+    @include roundEdges(10px);
     background-image: url("../assets/button_background.jpg");
     background-color: rgba(120,120,120,.8);
     position:absolute;
@@ -356,6 +389,13 @@ $ORANGE: rgb(234, 114, 33);
 }
 
 // buttons
+.buttonWrapper {
+  display: inline-block;
+  text-align: ceneter;
+  width: 80%;
+  padding-top: 10px;
+}
+
 *[data-role="button"] {
   @include roundEdges(10px);
   background: url("../assets/button_background.jpg");
@@ -366,6 +406,12 @@ $ORANGE: rgb(234, 114, 33);
   -webkit-box-shadow: 0 0 3px #111;
 
   color: white;
+  font-weight: normal;
+  letter-spacing: 2px;
+  font: Arial, sans-serif;
+  text-shadow: none;
+
+  cursor: pointer;
 }
 
 // loading screen
@@ -386,4 +432,5 @@ $ORANGE: rgb(234, 114, 33);
 #loading_gif {
   display: inline-block;
   text-align: center;
+  padding-left: 30px;
 }

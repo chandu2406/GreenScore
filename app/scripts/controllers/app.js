@@ -62,6 +62,22 @@ $(document).ready(function(e) {
                 addrLong = ui.item.longitude;
             }
         });
+        $("#puf_address").autocomplete({
+            //This bit uses the geocoder to fetch address values
+            source: function(request, response) {
+                geocoder.geocode({'address': request.term},function(results,status) {
+                    response($.map(results, function(item) {
+                        return {
+                            label: item.formatted_address,
+                            value: item.formatted_address,
+                            latitude: item.geometry.location.lat(),
+                            longitude: item.geometry.location.lng(),
+                            addressComp: item.address_components
+                        }
+                    }));
+                });
+            }
+        });
     });
 
 

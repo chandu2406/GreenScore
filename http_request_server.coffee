@@ -161,6 +161,9 @@ class HTTPRequestServer
     # on success, compute the greenscore
     onSuccess = (rows) ->
       totscore = 0
+      if rows == undefined
+        return deferred.reject([0, 0])
+
       for row in rows
         # TODO: fix these heuristics
         # 1100 is average DOLLAREL, 8265 is max
@@ -220,6 +223,55 @@ class HTTPRequestServer
           "VALUES ('#{username}','#{password}','#{email}','#{address}')"
         console.log to_insert
         @mysql_query to_insert, onRegistration, onFailure).bind(this)
+
+    onFailure = (err) ->
+      console.log err
+    @mysql_query query, onSuccess, onFailure
+
+  modify_user: (username, email, address, response) ->
+    ###
+    @brief register a user in the USERS database
+    @param  username  new username
+    @param  password  new password
+    @param  address   address (as given by autocomplete)
+    @param  response  place to send response
+    ###
+    query = "SELECT * FROM USERS WHERE USERNAME='#{username}'"
+    to_mod = "UPDATE USERS SET "
+    onSuccess = ((rows) ->
+      onRegistration = (rows) ->
+        console.log("#{username} registered.")
+        return response.send({success: 'true',\
+                              user_id: username,\
+                              email: email,\
+                              address: address,\
+                              message: 'Update succeeded'})
+
+      if rows != undefined and rows.length > 0
+        console.log(username + " exists as a user.")
+
+        # Make sure we're actually changing something
+        if email == undefined && address == undefined
+          return response.send({success: 'false',\
+                                user_id: username,\
+                                message: "Login failed: #{username}: no data changed"})
+
+        # build the query
+        change_email = if email == undefined then "" else "EMAIL='#{email}'"
+        change_addr = if address == undefined then "" else "ADDRESS='#{address}'"
+        if change_email != "" and change_addr != ""
+          change_addr = ","+change_addr
+
+        to_mod = to_mod + change_email + change_addr + " WHERE USERNAME='#{escape(username)}'"
+        console.log to_mod
+
+        @mysql_query to_mod, onRegistration, onFailure
+      else
+        console.log("#{username} is not a current user.")
+        return response.send({success: 'false',\
+                              user_id: username,\
+                              message: "Login failed: #{username} doesn't exist."})
+    ).bind(this)
 
     onFailure = (err) ->
       console.log err
@@ -373,7 +425,7 @@ class HTTPRequestServer
     onSuccess = (rows) ->
       console.log("#{username} has data.")
       # if there are no records, return an error
-      if rows.length < 1
+      if rows == undefined or rows.length < 1
         return response.send({success: 'false',\
                               user_id: username,\
                               message: "Login failed - no entries for #{username}"})
@@ -404,22 +456,41 @@ class HTTPRequestServer
     passport.use(new FacebookStrategy({
         clientID: "121594388000133"
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28"
-        callbackURL: "http://kettle.ubiq.cs.cmu.edu:#{port}"
+        callbackURL: "http://localhost:15237/auth/facebook/callback"
+        passReqToCallback: true
       },
-      (accessToken, refreshToken, profile, done) ->
-        # handwaved away unused
-        User.findOrCreate(unused..., (err, user) ->
-          if (err)
-            return done(err)
-          done(null, user)
-        )
+      (req, accessToken, refreshToken, profile, done) ->
+        console.log profile.username
+        console.log done
+        if (req.user)
+          console.log "logged in"
+          done(req.user)
+        else
+          console.log "not logged in"
+          done(req.user)
     ))
 
     # define methods for facebook authentication
     @app.get('/auth/facebook', passport.authenticate('facebook'))
     @app.get('/auth/facebook/callback',
-      passport.authenticate('facebook', { successRedirect: '/SUCCEED',\
-                                      failureRedirect: '/FAIL' }))
+      passport.authenticate('facebook', { successRedirect: '/',\
+                                      failureRedirect: '/' }),
+      ((req,res) ->
+        console.log "herewoo"
+        res.redirect("/foo")
+      )
+    )
+
+    @app.get('/facebook_register', (
+      (req, accessToken, refreshToken, profile, done) ->
+        console.log req.user
+        if (req.user)
+          console.log "logged in"
+          done(req.user)
+        else
+          console.log "not logged in"
+          return
+    ))
 
     # registration
     @app.post('/register', ((request, response) ->
@@ -444,6 +515,17 @@ class HTTPRequestServer
       args = request.query
       console.log args
       @register_address args, response
+    ).bind(this))
+
+    # user modification
+    @app.post('/modify_user', ((request, response) ->
+      console.log "received /modify_user post"
+      args = request.query
+      console.log args
+      username = args['username']
+      email = args['email']
+      address = args['address']
+      @modify_user username, email, address, response
     ).bind(this))
 
     # address request

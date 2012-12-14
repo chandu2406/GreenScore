@@ -13,7 +13,7 @@
     <link href="./css/jquery.mobile.custom.theme.min.css" rel="stylesheet">
     <!-- jQuery UI CSS: needed for autocomplete widget -->
     <link href="css/jquery-ui-1.9.2.custom.css" rel="stylesheet">
-    
+    <!-- our main stylesheet -->
     <link href="./css/main.css" rel="stylesheet">
       <!-- Mobile Styling -->
       <link href="./css/mobile.css" rel="stylesheet"/>
@@ -255,6 +255,10 @@
       </div>
       <div data-role="content" class="contentBubble">
         <h2>Filters</h2>
+        <div id="msgDiv">
+          <h4 id="filterMsg" class="noMsg">Applying filters...</h4>
+        </div> 
+        
         <h3>Price</h3>
         <div class="rangeSlider">
           <div class="sliderMin">
@@ -290,6 +294,9 @@
           <div class="sliderMax">
             <input type="range"  name="gsMax" id="gsMax" value="1" min="0" max="1" step=".05"/>
           </div>
+        </div>
+        <div id="rtnMapBtn">
+          <h5>Return to Map</h5>
         </div>
       </div>
       <div data-role="footer"></div>

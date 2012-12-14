@@ -383,13 +383,15 @@ $(document).ready(function(e) {
     $("#mapView").find(".mapBtn").append(indicator.clone());
 
 
-    //attach filters
-    $("#priceFilter").on("click", filter.byPrice);
-    $("#bathFilter").on("click", filter.byNumBath);
-    $("#bedFilter").on("click", filter.byNumBed);
-
-    $("#filterOverlay").on("click", function(){
+    //attaching filters and make sure that min doesn't exceed max
+    $("#filterPage").on('pageinit', filter.attachFilters);
+    //add page changes to buttons
+    
+    $("#filterOverlay").on("click", function() {
         $.mobile.changePage($("#filterPage"), {transition: "slideup"});
+    });
+    $("#rtnMapBtn").on("click", function() {
+        $.mobile.changePage($("#mapView"), {transition: "slideup"});
     });
 
     // patch all the things

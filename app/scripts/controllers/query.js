@@ -89,6 +89,7 @@ queryHandler.socket.on("searchResults", function(data) {
     var txt, xmlDoc, xml, zpid, lat, long;
     // parse api return into an XML document
     txt = data.zillowData;
+    
     xmlDoc = $.parseXML(txt);
     $xml = $(xmlDoc);
     newRes = new Residence();
@@ -100,7 +101,7 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.state =  $xml.find("state").text();
     newRes.zipcode = $xml.find("zipcode").text();
     newRes.sqFt = $xml.find("finishedSqFt").text();
-    newRes.priceEst = $(this).find("amount").text();
+    newRes.priceEst = $xml.find("amount").text();
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
 
@@ -219,6 +220,7 @@ queryHandler.socket.on("compResults", function(data){
     errorCode = $(xml).find("code").text();
     */
 
+
     var returned = 0;
     $xml.find("comp").each(function() {
       zpid = $(this).find("zpid").text();
@@ -253,6 +255,7 @@ queryHandler.socket.on("compResults", function(data){
           check_for_completion();
         }).bind(newRes));
       }
+
     });
 
     // checks if all elements have reported back

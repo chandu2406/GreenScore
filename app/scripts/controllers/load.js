@@ -15,7 +15,7 @@
 $(document).ready(function(e) {
     // Click event handler for facebook login
     $("#fb_button").on("click", function() {
-        window.open("/auth/facebook","_self");
+      window.open("/auth/facebook","_self");
     });
 
     $("#profilePage").on("pagebeforeshow", function() {
@@ -192,6 +192,8 @@ $(document).ready(function(e) {
               $.mobile.changePage($("#profilePage"), {transition: "slideup"});
           });
           $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+        } else {
+          window.appAlert(response['message']);
         }
 
         return;
@@ -330,7 +332,8 @@ $(document).ready(function(e) {
           (solar === "" ? "" : "&solar="+escape(solar))
 
         // ignore blank requests
-        if ($('#puf_address').val() === "") {
+        if ($('#puf_address').val() === "" && $('#puf_email').val() === "") {
+          window.appAlert("You need to enter some data to update");
           return;
         }
 
@@ -362,6 +365,8 @@ $(document).ready(function(e) {
           $('#puf_solar').val("");
 
           $.mobile.changePage($("#profilePage"), {transition: 'slideup'});
+        } else {
+          window.appAlert(response['message']);
         }
       }
       SendModifyUser();

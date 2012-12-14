@@ -469,33 +469,29 @@
         callbackURL: "http://localhost:15237/auth/facebook/callback",
         passReqToCallback: true
       }, function(req, accessToken, refreshToken, profile, done) {
-        console.log(profile.username);
-        console.log(done);
-        if (req.user) {
-          console.log("logged in");
-          return done(req.user);
-        } else {
-          console.log("not logged in");
-          return done(req.user);
-        }
+        return process.nextTick(function() {
+          return done(null, profile);
+        });
       }));
+      passport.serializeUser(function(user, done) {
+        return done(null, user);
+      });
+      passport.deserializeUser(function(obj, done) {
+        return done(null, obj);
+      });
       this.app.get('/auth/facebook', passport.authenticate('facebook'));
       this.app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/'
+        failureRedirect: "/"
       }), (function(req, res) {
-        console.log("herewoo");
-        return res.redirect("/foo");
-      }));
-      this.app.get('/facebook_register', (function(req, accessToken, refreshToken, profile, done) {
-        console.log(req.user);
-        if (req.user) {
-          console.log("logged in");
-          return done(req.user);
-        } else {
-          console.log("not logged in");
-        }
-      }));
+        var address, email, pw, uname;
+        uname = req['user']['username'];
+        console.log(uname);
+        email = '';
+        pw = '';
+        address = '';
+        this.register_user(uname, pw, email, address, res);
+        return res.redirect("/");
+      }).bind(this));
       this.app.post('/register', (function(request, response) {
         var address, args, email, pw, uname;
         console.log("received /register post");

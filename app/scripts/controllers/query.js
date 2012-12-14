@@ -206,11 +206,11 @@ queryHandler.socket.on("uniqueResults", function(data) {
     console.log(getGreenscore);
     var greenscore = getGreenscore['result'];
 
+    if(greenscore === undefined) {
+      greenscore = "<p>An undefined greenscore indicates that we don't have enough information to provide you with an accurate greenscore. Fill in some of the data below, and we'll calculate it!</p>";
+    }
 
     $("#profileGreenscore_right").html(greenscore);
-    if(greenscore === undefined) {
-      $("#profileGreenscore").append("<p>An undefined greenscore indicates that we don't have enough information to provide you with an accurate greenscore. Fill in some of the data below, and we'll calculate it!</p>");
-    }
 
 });
 

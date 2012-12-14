@@ -460,37 +460,32 @@ class HTTPRequestServer
         passReqToCallback: true
       },
       (req, accessToken, refreshToken, profile, done) ->
-        console.log profile.username
-        console.log done
-        if (req.user)
-          console.log "logged in"
-          done(req.user)
-        else
-          console.log "not logged in"
-          done(req.user)
+        process.nextTick( ->
+          return done(null, profile))
     ))
+
+    passport.serializeUser((user, done) ->
+      done(null, user))
+
+    passport.deserializeUser((obj, done) ->
+      done(null, obj))
 
     # define methods for facebook authentication
     @app.get('/auth/facebook', passport.authenticate('facebook'))
     @app.get('/auth/facebook/callback',
-      passport.authenticate('facebook', { successRedirect: '/',\
-                                      failureRedirect: '/' }),
+      passport.authenticate('facebook', {failureRedirect: "/"}),
       ((req,res) ->
-        console.log "herewoo"
-        res.redirect("/foo")
-      )
-    )
+        #TODO these are temporary values
+        uname = req['user']['username']
+        console.log uname
+        email = ''
+        pw = ''
+        address = ''
 
-    @app.get('/facebook_register', (
-      (req, accessToken, refreshToken, profile, done) ->
-        console.log req.user
-        if (req.user)
-          console.log "logged in"
-          done(req.user)
-        else
-          console.log "not logged in"
-          return
-    ))
+        # Build facebook profile
+        @register_user uname, pw, email, address, res
+        res.redirect("/")
+      ).bind(this))
 
     # registration
     @app.post('/register', ((request, response) ->

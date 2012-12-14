@@ -70,7 +70,7 @@ html {
 }
 
 // special case login page
-#loginPage .contentBubble {
+#loginPage .contentBubble, #profilePage .contentBubble {
   height: 80%;
   overflow: scroll;
 
@@ -113,6 +113,15 @@ html {
     font-size: 20px;
     padding-bottom: 10px;
     font-weight: bold;
+  }
+
+  table {
+    padding: 10px;
+    margin: 0 auto;
+  }
+  td, th {
+    padding: 10px;
+    margin: 10px;
   }
 }
 

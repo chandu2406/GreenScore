@@ -47,10 +47,10 @@ html {
     .contentBubble h1 span {
       color: #42473d; }
 
-#loginPage .contentBubble {
+#loginPage .contentBubble, #profilePage .contentBubble {
   height: 80%;
   overflow: scroll; }
-  #loginPage .contentBubble #login_button {
+  #loginPage .contentBubble #login_button, #profilePage .contentBubble #login_button {
     background: url("../assets/button_background.jpg");
     color: white;
     font-weight: normal;
@@ -58,7 +58,7 @@ html {
     font: Arial, sans-serif;
     text-shadow: none;
     text-align: center; }
-  #loginPage .contentBubble #register_button {
+  #loginPage .contentBubble #register_button, #profilePage .contentBubble #register_button {
     background: url("../assets/button_background.jpg");
     color: white;
     font-weight: normal;
@@ -66,17 +66,23 @@ html {
     font: Arial, sans-serif;
     text-shadow: none;
     text-align: center; }
-  #loginPage .contentBubble #or_spacer {
+  #loginPage .contentBubble #or_spacer, #profilePage .contentBubble #or_spacer {
     font-style: italic;
     padding-top: 10px;
     padding-bottom: 17px; }
-  #loginPage .contentBubble #login_page_separator {
+  #loginPage .contentBubble #login_page_separator, #profilePage .contentBubble #login_page_separator {
     margin-top: 40px;
     margin-bottom: 40px; }
-  #loginPage .contentBubble #account_create_label {
+  #loginPage .contentBubble #account_create_label, #profilePage .contentBubble #account_create_label {
     font-size: 20px;
     padding-bottom: 10px;
     font-weight: bold; }
+  #loginPage .contentBubble table, #profilePage .contentBubble table {
+    padding: 10px;
+    margin: 0 auto; }
+  #loginPage .contentBubble td, #loginPage .contentBubble th, #profilePage .contentBubble td, #profilePage .contentBubble th {
+    padding: 10px;
+    margin: 10px; }
 
 #searchBar {
   border-radius: 5px;

@@ -71,7 +71,8 @@ html {
 }
 
 // special case login page
-#loginPage .contentBubble, #profilePage .contentBubble {
+#loginPage .contentBubble, #profilePage .contentBubble, 
+#editProfilePage .contentBubble {
   height: 80%;
   overflow: scroll;
 

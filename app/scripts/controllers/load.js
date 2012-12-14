@@ -226,7 +226,7 @@ $(document).ready(function(e) {
           $(".profileBtn").on("click", function() {
               $.mobile.changePage($("#profilePage"), {transition: "slideup"});
           });
-          $.mobile.changePage($("#profilePage"), {transition: "slideup"});
+          $.mobile.changePage($("#editProfilePage"), {transition: "slideup"});
         } else {
           alert ('Sorry, something went wrong with registering your account.');
         }
@@ -343,8 +343,7 @@ $(document).ready(function(e) {
           $('#puf_solar').val("");
 
           // TODO more elegant way to refresh page
-          $.mobile.changePage($("#loginPage"), {transition: 'slidedown'});
-          $.mobile.changePage($("#profilePage"), {transition: 'slideup'});
+          $.mobile.changePage($("#profilePage"), {transition: 'slideleft'});
         }
       }
       SendModifyUser();

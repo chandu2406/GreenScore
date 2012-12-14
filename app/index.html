@@ -164,11 +164,12 @@
         </div>
       </div>
       <div data-role="content" class="contentBubble">
+        <a href="#editProfilePage">Edit Profile</a>
         <h1 id="welcomeMessage">Hi there!</h1>
         <p>This page contains information about you and your current
         residence.</p>
-        <p>You can change this info to your heart's content by using the form
-        below!</p>
+        <p>You can change this info to your heart's content by clicking the
+        "edit profile" button!</p>
         <br>
         <!--<p>Why do we ask for your information? By gathering information about
         your environmental practices, we can more accurately calculate your
@@ -198,6 +199,24 @@
             <td>No</td>
           </tr>
         </table>
+      </div>
+      <div data-role="footer"></div>
+    </div>
+
+    <!-- Edit the profile page -->
+    <div data-role="page" data-fullscreen="true" id="editProfilePage" class="gsPage">
+      <div data-role="header">
+        <div class="navBar">
+          <div class="navBtn filterBtn"><h2>Filter</h2></div>
+          <div class="navBtn mapBtn"><h2>Map</h2></div>
+          <div class="navBtn profileBtn"><h2>Profile</h2></div>
+          <div class="navBtn searchBtn"><h2>Search</h2></div>
+        </div>
+      </div>
+      <div data-role="content" class="contentBubble">
+        <a href="#profilePage">Back to My Profile</a>
+        <h1>Edit your profile</h1>
+        <br>
         <h2>Update your info:</h2>
         <form id="profileUpdateForm">
           <label for="email">New email:</label>
@@ -220,7 +239,6 @@
       </div>
       <div data-role="footer"></div>
     </div>
-
     <!-- Page where the user can view a map with search results -->
     <div data-role="page" data-fullscreen="true" id="mapView" class="gsPage">
       <div data-role="header">

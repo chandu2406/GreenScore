@@ -361,7 +361,7 @@ $(document).ready(function(e) {
           $('#puf_sqft').val("");
           $('#puf_solar').val("");
 
-          $.mobile.changePage($("#profilePage"), {transition: 'slideleft'});
+          $.mobile.changePage($("#profilePage"), {transition: 'slideup'});
         }
       }
       SendModifyUser();

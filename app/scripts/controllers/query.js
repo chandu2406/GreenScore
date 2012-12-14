@@ -89,6 +89,7 @@ queryHandler.socket.on("searchResults", function(data) {
     var txt, xmlDoc, xml, zpid, lat, long;
     // parse api return into an XML document
     txt = data.zillowData;
+    
     xmlDoc = $.parseXML(txt);
     $xml = $(xmlDoc);
     newRes = new Residence();
@@ -100,7 +101,7 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.state =  $xml.find("state").text();
     newRes.zipcode = $xml.find("zipcode").text();
     newRes.sqFt = $xml.find("finishedSqFt").text();
-    newRes.priceEst = $(this).find("amount").text();
+    newRes.priceEst = $xml.find("amount").text();
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
     newRes.greenscore = $.parseJSON(
@@ -212,32 +213,31 @@ queryHandler.socket.on("compResults", function(data){
     errorCode = $(xml).find("code").text();
     */
     $xml.find("comp").each(function() {
-  zpid = $(this).find("zpid").text();
-  if (typeof(Residences.all[zpid]) === 'undefined') {
-      newRes = new Residence();
-      newRes.zpid = zpid;
-      newRes.lat = $(this).find("latitude").text();
-      newRes.long = $(this).find("longitude").text();
-      newRes.street = $(this).find("street").text();
-      newRes.city = $(this).find("city").text();
-      newRes.state =  $(this).find("state").text();
-      newRes.zipcode = $(this).find("zipcode").text();
-      newRes.sqFt = $(this).find("finishedSqFt").text();
-      newRes.priceEst = $(this).find("amount").text();
-      newRes.numBath = $(this).find("bathrooms").text();
-      newRes.numBed = $(this).find("bedrooms").text();
-      newRes.greenscore = $.parseJSON(
-    $.ajax({
-        type: 'GET',
-//        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
-        url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
-        async: false
-    }).responseText)['result'];
-
-      Residences.all[zpid] = newRes;
-      gMap.newMarker(newRes);
-
-  }
+        zpid = $(this).find("zpid").text();
+        if (typeof(Residences.all[zpid]) === 'undefined') {
+            newRes = new Residence();
+            newRes.zpid = zpid;
+            newRes.lat = $(this).find("latitude").text();
+            newRes.long = $(this).find("longitude").text();
+            newRes.street = $(this).find("street").text();
+            newRes.city = $(this).find("city").text();
+            newRes.state =  $(this).find("state").text();
+            newRes.zipcode = $(this).find("zipcode").text();
+            newRes.sqFt = $(this).find("finishedSqFt").text();
+            newRes.priceEst = $(this).find("amount").text();
+            newRes.numBath = $(this).find("bathrooms").text();
+            newRes.numBed = $(this).find("bedrooms").text();
+            newRes.greenscore = $.parseJSON(
+                $.ajax({
+                    type: 'GET',
+                    //        url: 'http://kettle.ubiq.cs.cmu.edu:15237/json/getGreenscore?sqft=' + newRes.sqFt,
+                    url: 'http://'+ipAddr+':15237/json/getGreenscore?sqft=' + newRes.sqFt,
+                    async: false
+                }).responseText)['result'];
+            
+            Residences.all[zpid] = newRes;
+            gMap.newMarker(newRes);
+        }
     });
 
     queryHandler.displayResults();

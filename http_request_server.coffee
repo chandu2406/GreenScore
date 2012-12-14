@@ -456,22 +456,41 @@ class HTTPRequestServer
     passport.use(new FacebookStrategy({
         clientID: "121594388000133"
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28"
-        callbackURL: "http://kettle.ubiq.cs.cmu.edu:#{port}"
+        callbackURL: "http://localhost:15237/auth/facebook/callback"
+        passReqToCallback: true
       },
-      (accessToken, refreshToken, profile, done) ->
-        # handwaved away unused
-        User.findOrCreate(unused..., (err, user) ->
-          if (err)
-            return done(err)
-          done(null, user)
-        )
+      (req, accessToken, refreshToken, profile, done) ->
+        console.log profile.username
+        console.log done
+        if (req.user)
+          console.log "logged in"
+          done(req.user)
+        else
+          console.log "not logged in"
+          done(req.user)
     ))
 
     # define methods for facebook authentication
     @app.get('/auth/facebook', passport.authenticate('facebook'))
     @app.get('/auth/facebook/callback',
-      passport.authenticate('facebook', { successRedirect: '/SUCCEED',\
-                                      failureRedirect: '/FAIL' }))
+      passport.authenticate('facebook', { successRedirect: '/',\
+                                      failureRedirect: '/' }),
+      ((req,res) ->
+        console.log "herewoo"
+        res.redirect("/foo")
+      )
+    )
+
+    @app.get('/facebook_register', (
+      (req, accessToken, refreshToken, profile, done) ->
+        console.log req.user
+        if (req.user)
+          console.log "logged in"
+          done(req.user)
+        else
+          console.log "not logged in"
+          return
+    ))
 
     # registration
     @app.post('/register', ((request, response) ->

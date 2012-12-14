@@ -11,8 +11,7 @@
 
 
 (function() {
-  var FacebookStrategy, HTTPRequestServer, PassportLocalStrategy, express, flash, passport, q,
-    __slice = [].slice;
+  var FacebookStrategy, HTTPRequestServer, PassportLocalStrategy, express, flash, passport, q;
 
   PassportLocalStrategy = require('passport-local').Strategy;
 
@@ -467,19 +466,35 @@
       passport.use(new FacebookStrategy({
         clientID: "121594388000133",
         clientSecret: "0d478582454ff9d8755f2ebb48dccf28",
-        callbackURL: "http://kettle.ubiq.cs.cmu.edu:" + port
-      }, function(accessToken, refreshToken, profile, done) {
-        return User.findOrCreate.apply(User, __slice.call(unused).concat([function(err, user) {
-          if (err) {
-            return done(err);
-          }
-          return done(null, user);
-        }]));
+        callbackURL: "http://localhost:15237/auth/facebook/callback",
+        passReqToCallback: true
+      }, function(req, accessToken, refreshToken, profile, done) {
+        console.log(profile.username);
+        console.log(done);
+        if (req.user) {
+          console.log("logged in");
+          return done(req.user);
+        } else {
+          console.log("not logged in");
+          return done(req.user);
+        }
       }));
       this.app.get('/auth/facebook', passport.authenticate('facebook'));
       this.app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect: '/SUCCEED',
-        failureRedirect: '/FAIL'
+        successRedirect: '/',
+        failureRedirect: '/'
+      }), (function(req, res) {
+        console.log("herewoo");
+        return res.redirect("/foo");
+      }));
+      this.app.get('/facebook_register', (function(req, accessToken, refreshToken, profile, done) {
+        console.log(req.user);
+        if (req.user) {
+          console.log("logged in");
+          return done(req.user);
+        } else {
+          console.log("not logged in");
+        }
       }));
       this.app.post('/register', (function(request, response) {
         var address, args, email, pw, uname;

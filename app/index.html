@@ -18,6 +18,8 @@
       <!-- Mobile Styling -->
       <link href="./css/mobile.css" rel="stylesheet"/>
 
+    <!-- fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Playfair+Display+SC' rel='stylesheet' type='text/css'>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="./assets/greenscore.ico">
@@ -79,9 +81,11 @@
         <h1>Green<span>score</span></h1>
         <label for="searchBar"></label>
         <input id="searchBar" type="text" />
+
         <div class="buttonWrapper">
-          <div id="queryBtn" data-role="button"><h2>Find Greenscore!</h2></div>
+          <div id="queryBtn" data-role="button" class="bordered"><h2>Find Greenscore!</h2></div>
         </div>
+
       </div>
       <div data-role="footer"></div>
     </div>
@@ -103,8 +107,8 @@
           <input id="username" name="username" type="text" />
           <label for="password"></label>
           <input id="password" name="password" type="password" />
-          <div class="buttonWrapper">
-            <input id="login_button" data-role="button" value="login" />
+          <div class="buttonWrapper" id="login_button">
+            <input id="login_button_internal" data-role="button" class="bordered" value="login" />
           </div>
         </form>
         <div id="or_spacer">or</div>
@@ -123,7 +127,7 @@
           <label for="address"></label>
           <input id="new_address" name="address" type="text" />
           <div class="buttonWrapper">
-            <input id="register_button" data-role="button" value="Register" />
+            <input id="register_button" data-role="button" class="bordered" value="Register" />
           </div>
         </form>
       </div>
@@ -164,25 +168,51 @@
         </div>
       </div>
       <div data-role="content" class="contentBubble">
-        <a href="#editProfilePage">Edit Profile</a>
-        <h1 id="welcomeMessage">Hi there!</h1>
-        <p>This page contains information about you and your current
-        residence.</p>
-        <p>You can change this info to your heart's content by clicking the
-        "edit profile" button!</p>
-        <br>
+        <a href="#editProfilePage" id="edit_button" class="bordered">Edit Profile</a>
+        <div id="logout_button" class="bordered">Log Out</div>
+        <h1 id="welcomeMessageWelcome">Welcome <span id="welcomeMessage"></span></h1>
+        <hr />
         <!--<p>Why do we ask for your information? By gathering information about
         your environmental practices, we can more accurately calculate your
         greenscore. This will give other people a better idea of how
         environmentally friendly your home is. We'll also tell you how your
         habits measure up to those of your neighbors!</p>-->
-        <h2>Your info:</h2>
-        <p id="profileName">Name: Nick LaGrow</p>
-        <p id="profileUsername">Username: nickthegreat</p>
-        <p id="profileEmail">Email: nick@foo.com</p>
-        <p id="profileGreenscore">Greenscore: 7</p>
-        <br>
-        <h2>Your home:</h2>
+        <h2 id="info_label">Your info</h2>
+        <br />
+        <div class="info_item" id="profileName">
+          <div class="left_item" id="profileName_left">
+            Full Name
+          </div>
+          <div class="right_item" id="profileName_right">
+            Lucas Ray
+          </div>
+        </div>
+        <div class="info_item" id="profileUsername">
+          <div class="left_item" id="profileUsername_left">
+            Username
+          </div>
+          <div class="right_item" id="profileUsername_right">
+            ltray
+          </div>
+        </div>
+        <div class="info_item" id="profileEmail">
+          <div class="left_item" id="profileEmail_left">
+            Email
+          </div>
+          <div class="right_item" id="profileEmail_right">
+            lucas@lucasray.com
+          </div>
+        </div>
+        <div class="info_item" id="profileGreenscore">
+          <div class="left_item" id="profileGreenscore_left">
+            Greenscore
+          </div>
+          <div class="right_item" id="profileGreenscore_right">
+            unknown
+          </div>
+        </div>
+        <br />
+        <h2 id="home_label">Your home</h2>
         <div id="profileRow"></div>
       </div>
       <div data-role="footer"></div>
@@ -199,27 +229,26 @@
         </div>
       </div>
       <div data-role="content" class="contentBubble">
-        <a href="#profilePage">Back to My Profile</a>
-        <h1>Edit your profile</h1>
-        <br>
-        <h2>Update your info:</h2>
+        <a href="#profilePage" id="back_to_profile_button" class="bordered">Back to Profile</a>
+        <h1 id="editprofile_label">Edit your <span id="editprofile_profile_label">profile</span></h1>
+        <hr />
         <form id="profileUpdateForm">
-          <label for="email">New email:</label>
+          <label for="email">Email:</label>
           <input id="puf_email" name="email" type="email" />
-          <label for="address">New Address:</label>
+          <label for="address">Address:</label>
           <input id="puf_address" name="address" type="text" />
-          <label for="num_beds">Number of beds:</label>
+          <label for="num_beds">Number of bedrooms:</label>
           <input id="puf_num_beds" name="num_beds" type="number" />
           <label for="num_baths">Number of bathrooms:</label>
           <input id="puf_num_baths" name="num_baths" type="number" />
-          <label for="sqft">Total square feet:</label>
+          <label for="sqft">Square footage:</label>
           <input id="puf_sqft" name="sqft" type="number" />
           <br>
-          <input id="puf_solar" name="solar" type="checkbox">My
-          house uses solar power</input>
 
-          <input id="puf_button" data-role="button" type="button"
-          value="Update my data" />
+          <div class="button_wrapper">
+            <input id="puf_button" data-role="button"
+            value="Update" />
+          </div>
         </form>
       </div>
       <div data-role="footer"></div>

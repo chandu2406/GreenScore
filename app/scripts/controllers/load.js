@@ -22,7 +22,7 @@ $(document).ready(function(e) {
       if (typeof(localStorage !== "undefined")) {
         if(window.localStorage["greenscore_username"] !== undefined) {
           var username = window.localStorage["greenscore_username"];
-          $("#welcomeMessage").html("Welcome " + username + "!");
+          $("#welcomeMessage").html(username + "!");
 
           // Get the user's info to populate the profile
           function GetProfileData() {
@@ -48,11 +48,11 @@ $(document).ready(function(e) {
             // If the user successfully logged in:
             if (response['success'] === 'true') {
               // Set the user's full name
-              $("#profileName").html("Name: "+response["user_id"]);
+              $("#profileName_right").html(response['user_id']);
               // Set the user's username
-              $("#profileUsername").html("Username: "+response["user_id"]);
+              $("#profileUsername_right").html(response['user_id']);
               // Set the user's email
-              $("#profileEmail").html("Email: "+response["email"]);
+              $("#profileEmail_right").html(response['email']);
 
               // Get and set the user's greenscore and address
               GetAddressData(response["address"]);
@@ -83,26 +83,42 @@ $(document).ready(function(e) {
 
             // If the user successfully logged in:
             if (response['success'] === 'true') {
-              console.log("great success!");
-              console.log(response['data']);
               window.userData = response['data'];
 
               // Build the user's address table and show it
-              var row = $('#profileRow');
-              var to_append="";
-              to_append += "<div><span>Address: </span><span>"+
-                           response['data']['ADDRESS']+"</span></div>";
-              to_append += "<div><span>Number of Bathrooms: </span><span>"+
-                           response['data']['NUM_BATHS']+"</span></div>";
-              to_append += "<div><span>Number of bedrooms: </span><span>"+
-                           response['data']['NUM_BEDS']+"</span></div>";
-              to_append += "<div><span>Total Square Ft: </span><span>"+
-                           response['data']['SQFT']+"</span></div>";
-              to_append += "<div><span>Solar energy?: </span><span>"+
-                           (response['data']['SOLAR']? "YES" : "NO")+"</span></div>";
-              row.html(to_append);
+              var $row = $('#profileRow');
+              var data = response['data'];
+              var create_item = function(label, datum, id) {
+                return $('<div>', {
+                  'class': 'info_item',
+                  'id': id
+                }).append(
+                  $('<div>', {
+                    'class': 'left_item',
+                    'id': id + "_left"
+                  }).html(label)
+                ).append(
+                  $('<div>', {
+                    'class': 'right_item',
+                    'id': id + "_right"
+                  }).html(datum)
+                );
+              };
 
-              queryHandler.searchHome(response['data']['ADDRESS']);
+              // clear current data and repopulate
+              $row.empty();
+              $row.append(create_item('Address', data['ADDRESS'], 'residenceAddress'));
+              $row.append($("<br>"));
+              $row.append(create_item('Number of Bathrooms', data['NUM_BATHS'], 'residenceNumBath'));
+              $row.append($("<br>"));
+              $row.append(create_item('Number of Bedrooms', data['NUM_BEDS'], 'residenceNumBed'));
+              $row.append($("<br>"));
+              $row.append(create_item('Square Footage', data['SQFT'], 'residenceSqft'));
+              $row.append($("<br>"));
+              $row.append(create_item('Solar', data['SOLAR'] ? "Yes" : "No", 'residenceSolar'));
+              $row.append($("<br>"));
+
+              queryHandler.searchHome(data['ADDRESS']);
             }
           }
 
@@ -232,7 +248,7 @@ $(document).ready(function(e) {
           });
           $.mobile.changePage($("#editProfilePage"), {transition: "slideup"});
         } else {
-          alert ('Sorry, something went wrong with registering your account.');
+          window.appAlert('Sorry, something went wrong with registering your account.');
         }
 
         return;
@@ -250,10 +266,10 @@ $(document).ready(function(e) {
         if(window.localStorage["greenscore_username"] !== undefined) {
           username = window.localStorage["greenscore_username"];
         } else {
-          alert("You need to be logged in to do that.");
+          window.appAlert("You need to be logged in to do that.");
         }
       } else {
-        alert("You need to be logged in to do that.");
+        window.appAlert("You need to be logged in to do that.");
       }
 
       function SendModifyUser() {
@@ -403,4 +419,46 @@ $(document).ready(function(e) {
       $.modal.close();
     });
 
+    // log out button
+    $("#logout_button").on("click", function() {
+      if (typeof(localStorage !== "undefined")) {
+        window.localStorage["greenscore_username"] = undefined;
+      };
+
+      $.mobile.changePage($("#landingPage"), {transition: "slideup"});
+    });
+
+    // universal, good looking alert
+    window.appAlert = function(msg) {
+      var $modal_div = $("<div>", {
+        'id': 'alert_modal_wrapper'
+      }).append($("<div>", {
+        'id': 'alert_modal_text'
+      }).text(msg));
+      $modal_div.modal({
+        onOpen: function(dialog) {
+          dialog.overlay.fadeIn('fast', function() {
+            dialog.data.hide();
+            dialog.container.fadeIn('fast', function() {
+              dialog.data.slideDown('fast');
+            });
+          });
+        },
+        onClose: function(dialog) {
+          dialog.data.fadeOut('fast', function() {
+            dialog.container.slideUp('fast', function() {
+              dialog.overlay.fadeOut('fast', function() {
+                $.modal.close();
+              });
+            });
+          });
+        },
+        opacity: 80,
+        overlayCss: {backgroundColor: "#000"}
+      });
+
+      setTimeout(function() {
+        $.modal.close();
+      }, 3000);
+    };
 });

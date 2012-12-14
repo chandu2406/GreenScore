@@ -6,7 +6,7 @@
 
 var queryHandler = {};
 
-//queryHandler.socket = io.connect('http://kettle.ubiq.cs.cmu.edu:3000/');
+//queryHandler.socket = io.connect('http://kettle.ubiq.cs.cmu.edu:15237/');
 queryHandler.socket = io.connect('http://'+ipAddr+':3000/');
 
 // unique identifier to access Zillow APIs
@@ -123,9 +123,18 @@ queryHandler.socket.on("searchResults", function(data) {
       // initiatize the map if neccessary, otherwise update the coordinates of
       // the center of the map
       if ($("#map_canvas").children().length === 0) {
-        gMap.init(newRes);
+              gMap.init(newRes);
       } else {
         gMap.updateCoors(newRes.lat,newRes.long);
+        //remove old markers
+        if(gMap.markers.length !== 0){
+            console.log("removing old markers");
+            for(var i=0; i<gMap.markers.length; i++){
+                gMap.markers[i].gMarker.setMap(null);
+            }
+            gMap.markers = [];
+        }
+
       }
 
       queryHandler.getComp(newRes.zpid, 25);
@@ -198,7 +207,7 @@ queryHandler.socket.on("uniqueResults", function(data) {
     var greenscore = getGreenscore['result'];
 
 
-    $("#profileGreenscore").html("Greenscore: "+greenscore);
+    $("#profileGreenscore_right").html(greenscore);
     if(greenscore === undefined) {
       $("#profileGreenscore").append("<p>An undefined greenscore indicates that we don't have enough information to provide you with an accurate greenscore. Fill in some of the data below, and we'll calculate it!</p>");
     }
@@ -219,7 +228,7 @@ queryHandler.socket.on("compResults", function(data){
     /*
     errorCode = $(xml).find("code").text();
     */
-
+    
 
     var returned = 0;
     $xml.find("comp").each(function() {
@@ -257,6 +266,7 @@ queryHandler.socket.on("compResults", function(data){
       }
 
     });
+    
 
     // checks if all elements have reported back
     var check_for_completion = function() {

@@ -82,6 +82,12 @@ html {
   position: relative;
 
   // special case these because this css is janky
+  #login_button {
+    display: inline-block;
+    text-align: center;
+    width: 80%;
+    padding-top: 10px;
+  }
   #login_button_internal {
     background: url("../assets/button_background.jpg");
 
@@ -244,7 +250,7 @@ html {
   position: relative;
   width: 70%;
   text-align:right;
-  margin: 20px 0px 30px 15%;
+  margin: 20px 0px 30px 40px;
   .navBtn {
     position: relative;
     display: inline-block;
@@ -324,11 +330,15 @@ html {
         background-color: rgba(120,120,120,.8);
         position:absolute;
         left:-5px;
+        right: -5px;
         text-align: center;
-        width: 100%;
         height: 30px;
         font-size: 150%;
-        overflow: visible;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        overflow: hidden;
         cursor: pointer;
         h5 {
            position: relative;
@@ -502,7 +512,7 @@ $ORANGE: rgb(234, 114, 33);
 // buttons
 .buttonWrapper {
   display: inline-block;
-  text-align: ceneter;
+  text-align: center;
   width: 80%;
   padding-top: 10px;
 }

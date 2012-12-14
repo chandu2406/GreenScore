@@ -205,14 +205,17 @@ html {
 
 .navBar {
   position: relative;
-  width: 70%;
-  text-align: right;
-  margin: 20px 0px 30px 40px; }
+  min-width: 330px;
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 30px; }
   .navBar .navBtn {
     position: relative;
     display: inline-block;
     margin-right: 10%;
-    text-align: center; }
+    text-align: right; }
     .navBar .navBtn h2 {
       font-size: 18px;
       color: #42473d;
@@ -282,7 +285,7 @@ html {
     padding-bottom: 5px;
     margin-top: 15px;
     margin-bottom: 5px;
-    overflow-x: hidden;
+    overflow: hidden;
     cursor: pointer; }
     #filterPage .contentBubble #rtnMapBtn h5 {
       position: relative;

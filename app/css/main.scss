@@ -248,14 +248,18 @@ html {
 
 .navBar {
   position: relative;
-  width: 70%;
-  text-align:right;
-  margin: 20px 0px 30px 40px;
+  min-width: 330px;
+  width: 50%;
+  text-align:center;
+  //margin: 20px 0px 30px 40px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
   .navBtn {
     position: relative;
     display: inline-block;
     margin-right: 10%;
-    text-align: center;
+    text-align: right;
 
     h2 {
       font-size: 18px;

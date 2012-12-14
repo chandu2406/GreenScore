@@ -22,7 +22,7 @@ $(document).ready(function(e) {
       if (typeof(localStorage !== "undefined")) {
         if(window.localStorage["greenscore_username"] !== undefined) {
           var username = window.localStorage["greenscore_username"];
-          $("#welcomeMessage").html("Welcome " + username + "!");
+          $("#welcomeMessage").html(username + "!");
 
           // Get the user's info to populate the profile
           function GetProfileData() {

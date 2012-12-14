@@ -90,11 +90,16 @@ $(document).ready(function(e) {
               // Build the user's address table and show it
               var row = $('#profileRow');
               var to_append="";
-              to_append += "<td>"+response['data']['ADDRESS']+"</td>";
-              to_append += "<td>"+response['data']['NUM_BATHS']+"</td>";
-              to_append += "<td>"+response['data']['NUM_BEDS']+"</td>";
-              to_append += "<td>"+response['data']['SQFT']+"</td>";
-              to_append += "<td>"+(response['data']['SOLAR']? "YES" : "NO") +"</td>";
+              to_append += "<div><span>Address: </span><span>"+
+                           response['data']['ADDRESS']+"</span></div>";
+              to_append += "<div><span>Number of Bathrooms: </span><span>"+
+                           response['data']['NUM_BATHS']+"</span></div>";
+              to_append += "<div><span>Number of bedrooms: </span><span>"+
+                           response['data']['NUM_BEDS']+"</span></div>";
+              to_append += "<div><span>Total Square Ft: </span><span>"+
+                           response['data']['SQFT']+"</span></div>";
+              to_append += "<div><span>Solar energy?: </span><span>"+
+                           (response['data']['SOLAR']? "YES" : "NO")+"</span></div>";
               row.html(to_append);
 
               queryHandler.searchHome(response['data']['ADDRESS']);

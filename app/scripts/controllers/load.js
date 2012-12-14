@@ -106,7 +106,6 @@ $(document).ready(function(e) {
             }
           }
 
-
           GetProfileData();
         }
       }
@@ -288,7 +287,6 @@ $(document).ready(function(e) {
       
       function ProcessModifyUser() {
         if (user_fifo.readyState != 4 || user_fifo.status != 200) {
-          console.log("blank request");
           return;
         }
         var response = JSON.parse(user_fifo.response);
@@ -347,7 +345,6 @@ $(document).ready(function(e) {
           $('#puf_sqft').val("");
           $('#puf_solar').val("");
 
-          // TODO more elegant way to refresh page
           $.mobile.changePage($("#profilePage"), {transition: 'slideleft'});
         }
       }

@@ -44,6 +44,7 @@ class HTTPRequestServer
       @app.use(flash())
       @app.use(@app.router)
     ).bind(this))
+
     @app.all '/json/:cmd', (@processJSONCmd).bind(this)
 
   processJSONCmd: (request, response) ->

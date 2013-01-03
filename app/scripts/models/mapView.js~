@@ -2,7 +2,6 @@
  *  @brief model of the map object
  *
  *  @author Kenneth Murphy (kmmurphy)
- *  @author Lucas Ray (ltray)
  */
 
 var gMap = {};
@@ -127,6 +126,7 @@ gMap.attachData = function(marker, data) {
   header_tags  = ['street', 'zipcode', 'state', 'city'];
   stats_tags   = ['numBed', 'sqFt', 'numBath'];
   results_tags = ['priceEst', 'greenscore'];
+  footer_tags  = ['lat', 'long', 'zpid'];
 
   // add the header
   header = document.createElement('div');
@@ -232,16 +232,36 @@ gMap.attachData = function(marker, data) {
   // add the footer
   footer = document.createElement('div');
   footer.setAttribute('class', 'marker_footer');
-  
-  moreInfo = document.createElement('div');
-  moreInfo.setAttribute('class', 'moreInfoBtn');
-  moreInfo.innerHTML = "More Information";
-  footer.appendChild(moreInfo);
+  for (i = 0; i < footer_tags.length; i++) {
+    prop = footer_tags[i];
+    child = document.createElement('div');
+    child.setAttribute('class', 'marker_child child_' + prop);
+    text = "";
 
-  //attach click handler to pull up propView page with more property information 
-  moreInfo.addEventListener("click", function(){
-      gMap.displayInformation(data);
-  });
+    // prefixes
+    switch(prop) {
+      case 'zpid':
+        text += 'ZPID: ';
+        break;
+      default:
+        break;
+    };
+
+    // content
+    text += data[prop];
+
+    // suffixes
+    switch(prop) {
+      case 'lat':
+        text += ', ';
+        break;
+      default:
+        break;
+    };
+
+    child.innerHTML = text;
+    footer.appendChild(child);
+  };
 
   content.appendChild(header);
   content.appendChild($('<hr>')[0]);
@@ -280,61 +300,4 @@ gMap.attachData = function(marker, data) {
       gMap.open_marker = bubble;
     };
   });
-}
-
-
-
-gMap.displayInformation = function(data){
-    var text, prop, header_tags, stats_tags, domIds, i, child;
-
-
-    address_comp  = ['street','city','state','zipcode'];
-    stats_tags = ['lat','long','numBed','numBath','sqFoot','lotSize','taxAssessment',
-		  'priceEst','greenscore'];
-    stats_titles = ['Longitude: ','Latitude: ','Number of Beds: ', 'Number of Baths: ',
-		    'Square Feet: ','Lot Size: ', 'Tax Assessment: $','Price Estimate: $', 
-		    'Greenscore: '];
-    domIds = ['propLong','propLat','propSqFt','propLotSize','propTaxAssess','propNumBed',
-	      'propNumBath','propPriceEst','propGS'];
-
-    text="";
-    for (i = 0; i < address_comp.length; i++) {
-	prop = address_comp[i];
-	
-	// add the data
-	text += data[prop];
-
-	// suffixes
-	switch(prop) {
-	case 'street':
-            text += ', ';
-            break;
-	case 'city':
-            text += ', ';
-            break;
-	default:
-	    text += " ";
-            break;
-	};
-    }
-    child = $("<h2></h2>");
-    child.html("Address: <span>"+text+"</span>");
-
-    $("#propAddr").append(child);
-    
-    for(i=0; i< stats_tags.length; i++){
-	prop = stats_tags[i];
-	child = $("<h2></h2>");
-
-	text = stats_titles[i];
-	if(typeof data[prop] !== 'undefined'){
-	    text += "<span>"+data[prop]+"</span>";
-	    child.html(text);
-	    $("#"+domIds[i]).append(child);
-	}
-    }
-    
-
-    $.mobile.changePage($("#propView"), { transition: "slideup"} );
-
 }

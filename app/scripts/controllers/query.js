@@ -101,6 +101,8 @@ queryHandler.socket.on("searchResults", function(data) {
     newRes.state =  $xml.find("state").text();
     newRes.zipcode = $xml.find("zipcode").text();
     newRes.sqFt = $xml.find("finishedSqFt").text();
+    newRes.lotSize = $xml.find("lotSizeSqFt").text();
+    newRes.taxAssessment = $xml.find("taxAssessment").text();    
     newRes.priceEst = $xml.find("amount").text();
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
@@ -161,6 +163,8 @@ queryHandler.socket.on("uniqueResults", function(data) {
     newRes.state =  $xml.find("state").text();
     newRes.zipcode = $xml.find("zipcode").text();
     newRes.sqFt = $xml.find("finishedSqFt").text();
+    newRes.lotSize = $xml.find("lotSizeSqFt").text();
+    newRes.taxAssessment = $xml.find("taxAssessment").text();    
     newRes.priceEst = $(this).find("amount").text();
     newRes.numBath = $xml.find("bathrooms").text();
     newRes.numBed = $xml.find("bedrooms").text();
@@ -243,6 +247,8 @@ queryHandler.socket.on("compResults", function(data){
         newRes.state =  $(this).find("state").text();
         newRes.zipcode = $(this).find("zipcode").text();
         newRes.sqFt = $(this).find("finishedSqFt").text();
+	newRes.lotSize = $(this).find("lotSizeSqFt").text();
+	newRes.taxAssessment = $(this).find("taxAssessment").text();
         newRes.priceEst = $(this).find("amount").text();
         newRes.numBath = $(this).find("bathrooms").text();
         newRes.numBed = $(this).find("bedrooms").text();

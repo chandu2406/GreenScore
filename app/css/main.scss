@@ -5,13 +5,6 @@
  *  @author Kenneth Murphy (kmmurphy)
  */
 
-/* imports
-@import "./jquery.mobile.custom.min.css";
-@import "./jquery.mobile.custom.structure.min.css";
-@import "./jquery.mobile.custom.theme.min.css";
-@import "./jquery-ui-1.9.2.custom.css":
-*/
-
 // variables
 $green: #99c76f;
 $darkGreen: #68874B;
@@ -566,3 +559,52 @@ $ORANGE: rgb(234, 114, 33);
   -moz-box-shadow: 0 0 3px #111;
   -webkit-box-shadow: 0 0 3px #111;
 }
+
+//additional information about a property screen
+#propView .contentBubble {
+    height: 80%;
+    overflow: auto;
+    position: relative;
+
+    #closeBtn {
+	float: right;
+	cursor: pointer;
+	margin: 2px;
+	font-size: 150%;
+	color: #575757;
+    }
+    #title {
+	text-align: center;
+	padding: 30px;
+    }
+    ul {
+	text-align: left;
+	padding-left: 30px;
+	h2 {
+	    font-size: 150%;
+	    padding: 6px;
+	    span {
+		color: #575757;
+		font-size: 100%;
+		padding-left: 3px;
+	    }
+	}
+    }
+    #addInfoBtn {
+	position: absolute;
+	bottom: 10px;
+	left: 44%;
+	
+	text-align: center;
+	font-size: 150%;
+
+	color: $gray;
+	cursor: pointer;
+    }
+}
+
+.moreInfoBtn {
+    color: #DCDCDC;
+    cursor: pointer;
+}
+

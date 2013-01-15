@@ -11,11 +11,13 @@
 
 
 (function() {
-  var FacebookStrategy, HTTPRequestServer, PassportLocalStrategy, express, flash, passport, q;
+  var FacebookStrategy, HTTPRequestServer, KettleSQL, PassportLocalStrategy, express, flash, passport, q;
 
   PassportLocalStrategy = require('passport-local').Strategy;
 
   FacebookStrategy = require('passport-facebook').Strategy;
+
+  KettleSQL = require('./kettle_sql');
 
   passport = require('passport');
 
@@ -595,16 +597,9 @@
           @brief Establishes a connection with our sql database.
       */
 
-      var mysql;
-      mysql = require('mysql');
-      this.conn = mysql.createConnection({
-        host: 'kettle.ubiq.cs.cmu.edu',
-        port: 3306,
-        user: 'greenscore',
-        password: 'hf&kdsp1',
-        database: 'greenscore',
-        insecureAuth: true
-      });
+      var conn_factory;
+      conn_factory = new KettleSQL;
+      this.conn = conn_factory.connect();
       return this.conn.connect(function(err) {
         if (err) {
           console.log("Could not connect to mySQL db: ");

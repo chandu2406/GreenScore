@@ -12,6 +12,7 @@
 #################################################################
 PassportLocalStrategy = require('passport-local').Strategy
 FacebookStrategy      = require('passport-facebook').Strategy
+KettleSQL             = require('./kettle_sql')
 passport              = require('passport')
 express               = require('express')
 flash                 = require('connect-flash')
@@ -597,16 +598,8 @@ class HTTPRequestServer
     ###
     @brief Establishes a connection with our sql database.
     ###
-    mysql = require('mysql')
-    @conn = mysql.createConnection({
-#      socketPath: '/var/tmp/mysql.sock' # TODO: once local, use this instead of host/port
-      host: 'kettle.ubiq.cs.cmu.edu'
-      port: 3306
-      user: 'greenscore'
-      password: 'hf&kdsp1'
-      database: 'greenscore'
-      insecureAuth: true          # FIXME: this isn't good :(
-    })
+    conn_factory = new KettleSQL
+    @conn = conn_factory.connect()
     @conn.connect((err) ->
       if err
         console.log "Could not connect to mySQL db: "

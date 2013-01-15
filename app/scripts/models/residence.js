@@ -18,6 +18,8 @@ function Residence(){
   this.state;
   this.zipcode;
   this.sqFoot;
+  this.lotSize;
+  this.taxAssessment;
   this.numBed;
   this.numBath;
   this.priceEst;

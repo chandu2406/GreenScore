@@ -1,9 +1,11 @@
-Members:
+# GreenScore
+
+## Current members:
 - Ken Murphy  (kmmurphy)
 - Lucas Ray   (ltray)
 - Nick LaGrow (nlagrow)
 
-BRIEF
+## Brief
   The main purpose of Greenscore is to help users find real estate that is
   environmentally friendly, or to show other user's that their own home is
   environmentally responsible. By creating a mobile app to easily find homes,
@@ -11,7 +13,7 @@ BRIEF
   around it, we help users quickly and painlessly find affordable and
   environmental new homes.
 
-WHY 'GREENSCORE'?
+## Why 'GreenScore'?
   We provide a 'Green Score' which is a score between 0 and 100 describing the
   relative environmental friendliness of a home. A low score indicates high
   energy usage, a location that requires a lot of fuel for basic livability,
@@ -25,7 +27,7 @@ WHY 'GREENSCORE'?
   to modularize the rest of the code so that the heuristic used for calculating
   the score can be easily updated.
 
-USING GREENSCORE
+## Using GreenScore
   To search for an address, simply enter the address into the search bar on the
   main page. This will bring up a map containing markers for the address you
   searched for and some nearby addresses. For each of these addresses, we give
@@ -44,7 +46,7 @@ USING GREENSCORE
   profile to be able to update the information on our server to correct possible
   mistakes and provide additional metadata.
 
-TECHNOLOGIES USED
+## Technologies used
   Node            used for the servers.
   Express         used for the servers.
   Passport        used for our local login and facebook login.
@@ -58,5 +60,8 @@ TECHNOLOGIES USED
   scss            used to construct our css.
   q               used to resolve serverside synchrony issues.
 
-HOSTING
-  Our server and databases are both hosted on kettle.ubiq.cs.cmu.edu.
+## Hosting
+  Our server and databases are both hosted on `kettle.ubiq.cs.cmu.edu`. The code
+  uses two ports - one to listen to HTTP requests and one to listen to socket
+  server requests. Currently, we use `15237` for HTTP requests and `3000` for
+  socket server requests. These values can be changed in `main.coffee`.

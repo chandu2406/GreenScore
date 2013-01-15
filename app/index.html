@@ -63,7 +63,6 @@
     <script src="./scripts/controllers/load.js" type="text/javascript"></script>
     <script src="./scripts/controllers/app.js" type="text/javascript"></script>
     <script src="./scripts/controllers/query.js" type="text/javascript"></script>
-    <script src="./scripts/controllers/mapController.js" type="text/javascript"></script>
     <script src="./scripts/controllers/filters.js" type="text/javascript"></script>
 
   </head>
@@ -273,6 +272,38 @@
       </div>
       <div data-role="footer"></div>
     </div>
+    <!-- larger window to view additional information about a property  -->
+    <div data-role="page" data-fullscreen="true" id="propView" class="gsPage">
+      <div data-role="header">
+        <div class="navBar">
+          <div class="navBtn filterBtn"><h2>Filter</h2></div>
+          <div class="navBtn mapBtn"><h2>Map</h2></div>
+          <div class="navBtn loginBtn"><h2>Login</h2></div>
+          <div class="navBtn searchBtn"><h2>Search</h2></div>
+        </div>
+      </div>
+
+      <div data-role="content" class="contentBubble">
+        <div id="closeBtn">X</div>
+	<h1 id="title">More Information</h1>
+	<ul>
+	  <li id="propAddr"></li>
+	  <li id="propLong"></li>
+	  <li id="propLat"></li>
+	  <li id="propSqFt"></li>
+	  <li id="propLotSize"></li>
+	  <li id="propTaxAssess"></li>
+	  <li id="propNumBed"></li>
+	  <li id="propNumBath"></li>
+	  <li id="propPriceEst"></li>
+	  <li id="propGS"></li>
+	</ul>
+	<h3 id="addInfoBtn">Edit Information</h3>
+      </div>
+      <div data-role="footer"></div>
+    </div>
+
+
 
     <!-- Page the user can filter results through -->
     <div data-role="page" data-fullscreen="true" id="filterPage" class="gsPage">

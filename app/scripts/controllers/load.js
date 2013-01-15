@@ -423,7 +423,7 @@ $(document).ready(function(e) {
     $(document).on('pageshow', function() {
       $.modal.close();
     });
-
+    
     // log out button
     $("#logout_button").on("click", function() {
       if (typeof(localStorage !== "undefined")) {
@@ -435,6 +435,12 @@ $(document).ready(function(e) {
       location.reload(true);
     });
 
+    //return to map when exiting out of propView page
+    $("#closeBtn").on("click", function(){
+	$.mobile.changePage($("#mapView"), {transition: "slideup"});
+	$("#propView ul li").empty();
+    });
+   
     // universal, good looking alert
     window.appAlert = function(msg) {
       var $modal_div = $("<div>", {
@@ -468,4 +474,10 @@ $(document).ready(function(e) {
         $.modal.close();
       }, 3000);
     };
+
+    
+    //alert that the edit info is a dummy button
+    $("#addInfoBtn").on("click", function(){
+	window.appAlert("Dummy Button");
+    });
 });

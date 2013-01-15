@@ -81,9 +81,7 @@ $(document).ready(function(e) {
     });
 
 
-    /*on enter in the address box, queryAPI. Will have to have this
-     *option as a button for mobile version
-     */
+    // on enter in the address box, queryAPI
     $("#searchBar").bind("keyup", function(event){
         if(event.keyCode == 13){
             var queryAddr, i, component;
@@ -108,7 +106,7 @@ $(document).ready(function(e) {
         }
     });
 
-    $("#queryBtn").on("tap", function(){
+    $("#queryBtn").on("click", function(){
         queryAddr = new userAddress();
         if(typeof(addrComponents) === 'undefined'){
           window.appAlert("Please enter a valid address");
@@ -129,6 +127,7 @@ $(document).ready(function(e) {
         queryHandler.searchAddress(queryAddr);
   });
 
+  
   // show page load
   var show_loading = function() {
     // loading page

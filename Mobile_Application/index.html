@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Green Score</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<link rel="stylesheet" href="css/jquery.mobile.css" />
+	<script type="text/javascript" charset="utf-8" src="cordova-2.7.0.js"></script> 
+	<script src="js/jquery.js"></script>	
+	<script src="js/jquery.mobile-1.2.1.js"></script>
+	<link rel="stylesheet" href="css/structure.css" />
+	<script src="js/myJSON.js"></script>	
+	<link rel="stylesheet" href="css/mystyles.css" />	
+<script src="js/myhomesscript.js"></script>
+		<script src="js/myindihouse.js"></script>	
+	<script src="js/myscript.js"></script>
+	
+	
+	
+</head>
+<body>
+
+  <!-- Sign In Page -->
+  
+   
+<div id="welcome"
+    
+	data-role="page"
+	data-title="Welcome" >
+	<script> $().ready(function(){signincheck();}); </script> 
+	 </div> 	 
+	 
+	
+  <div id="signin"
+	data-role="page"
+	data-title="Sign In" >
+	
+	<div data-role="header"
+	data-position="fixed" >
+	
+	 <h1> Greenscore </h1>
+	 </div> <!--header -->
+	 
+	 <div data-role="content">
+	 
+			<img id="logo"  src="images/safe_image.png" style= " display: block;margin-left:auto; margin-right:auto " alt="View Source Logo" />
+			
+		</div>
+	  
+        <div data-role="content">
+        <form method="post" action="http://128.2.207.3:5000/users/sign_in" name="signin_form">
+    		
+
+    		<label for="username" ><b>Email</b></label>
+			<input type="text" name=user[email]" id="username" value="" placeholder="Enter your Email"/>
+
+            <div data-role="fieldcontain">
+    		    <label for="address"> <b>Password </b> </label>
+			    <input type="password" name="user[password]" id="password" value="" placeholder="Your Password"/>
+				<input type="submit"  data-textonly="false" data-textvisible="true" data-msgtext="Signing in..." class="show-page-loading-msg"data-theme="b" data-mini="true" value="Sign In" />
+				
+				
+            </div>
+        </form>
+		</br><p> <b>New User?</b> </p>
+				<a href="" onclick="move_to_page_false('#tncdialog');" data-theme="b" data-role="button" data-rel="dialog" data-transition="pop" data-mini="true">Sign Up</a>
+			<!--	<a href="#home" data-theme="b" data-role="button"  data-transition="pop" data-mini="true">Home wormhome</a>  -->
+				
+				
+				
+        </div>
+		
+ 
+  
+  
+  
+  </div>
+  
+  
+<div id="camera"  data-role="page">
+        <div data-role="header">
+            <h1>Research Study</h1>
+        </div>
+        <div data-role="content">
+        
+		<button onclick="capturePhoto();">Capture Photo</button> <br>
+    <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
+    <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+    <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+    <img style="display:none;width:100px;height:100px;" id="largeImage" src="" />
+		
+	
+        </div>
+       
+					
+			
+		
+	</div><!-- page -->
+    
+	
+	<!--Terms and Conditons -->
+	
+	<div id="tncdialog"  data-role="dialog">
+        <div data-role="header">
+            <h1>Research Study</h1>
+        </div>
+        <div data-role="content">
+        
+		<p align="justify" > This Study is part of a research  conducted by Jennifer Mankoff at Carnegie Mellon 
+University at Human-Computer Interaction Institute. The purpose of the research is to learn 
+about factors that are important when making housing choices. </p>
+<p align="justify">CMU's Research Regulatory Compliance Office oversees our study. As a result, participation 
+in this study is limited to individuals age 18 and older. There is no risk or cost to you, nor 
+benefit or compensation for participation. To ensure this, we will make sure that any personally
+identifiable information is elided from your data prior to analysis. In addition, your participation
+is voluntary. Read the <a href="#consent" data-rel="dialog" data-transition="pop"> consent here </a>
+ </p>
+		
+		<a href="" onclick="move_to_page_true('#signup');" type="button"data-transition="slide">I am Above 18 & I Agree</a>
+		<a href="#signin" type="button" data-transition="slide">I don't Agree</a>
+        </div>
+        <div data-role="footer">Copyright Greenscore 2013</div>
+    </div>
+					
+			
+		
+	</div><!-- page -->
+	
+	<!--Consent-->
+	
+	<div id="consent"  data-role="page">
+        <div data-role="header">
+            <h1>Consent</h1>
+        </div>
+        <div data-role="content">
+        
+		<p align="justify" > <b>Study Title: Greenscore Field Evaluation</b> <br/><br/>
+
+<b>Principal Investigator: Jennifer Mankoff, HCI Institute, Carnegie Mellon, </b> <br/>
+5000 Forbes Ave, Pittsburgh, PA 15213, 412 268 1295, jmankoff@cs.cmu.edu, http://www.cs.cmu.edu/~jmankoff
+
+<br/><b>Procedures  </b><br/>
+To accomplish our research, we need to monitor how you use the Greenscore interfaces. This includes recording when you log in, what pages you request, what factors you record about apartments, and so on.
+
+Once you are a registered member of Greenscore, we will provide you with a mobile and web interface to find and compare homes available for rent in an area. You will also be asked for providing some personal information like age, gender, number of people in your household etc.  to help provide results tailored to your needs.
+
+The details you provide us about homes you visit will be visible to other people who use the application and will be shown as reviews and calculate metrics related to a household you compare.
+
+When you use the Greenscore system, we administer one or more browser cookies. These help identify you and store your preferences. They are not shared with other sites and are not used for advertisements.
+
+We occasionally conduct interviews or surveys, and/or implement additional features for the purpose of our research. Participation in these "extras" may require us to ask for additional data. This consent statement does not cover such additional activities. A specific consent form will be made clearly available for each activity not covered under this statement, and participation in such activities will be made optional.
+
+Participant Requirements  
+You must be 18 years or older to use Greenscore applications and website.
+
+<br/><b>Risks </b><br/>
+You may find the following risks or discomforts from participating in this study: An important part of Greenscore is the sharing of information amongst users of the site. Information about what data you record may be seen by other users of the site if they know your account name. Additionally, we store your email address. You may opt out of receiving emails from us. You may modify this additional information and review your privacy settings at any time by clicking "Settings" when logged in to Greenscore. 
+
+<br/><b>Benefits </b><br/>
+There may be no personal benefit from your participation, although you may gain knowledge about what matters to you in the apartment search.  In addition, the knowledge received may be of value to humanity.
+
+<br/><b>Compensation & Costs	 </b><br/>
+There will be no cost to you if you participate in this study.   
+
+<br/><b>Confidentiality</b><br/>
+By participating in the study, you understand and agree that Carnegie Mellon may be required to disclose your consent form, data and other personally identifiable information as required by law, regulation, subpoena or court order.  Otherwise, your confidentiality will be maintained in the following manner:
+
+Greenscore mobile application does not release e-mail addresses or names to any third parties. Similar to other social networking sites, some account information may be displayed on your profile page and made accessible to other users, in accordance with your account's settings. Additionally, we may share your demographic data (without your name or e-mail address attached) in research results. Furthermore, we may refer to the actions of individual users (without your name or e-mail address attached) in research results. Aside from the above, information is held as confidential as is practical within our database.
+
+We represent users anonymously as numeric identifiers whenever possible, so that researchers do not know the real identity of the users in the data they are studying. However, we must store a mapping from email addresses to anonymous identifiers for the purpose of authenticating users at login, and resolving account issues such as forgotten passwords.
+
+By participating, you understand and agree that the data and information gathered during this study may be used by Carnegie Mellon and published and/or disclosed by Carnegie Mellon to others outside of Carnegie Mellon.
+
+<br/><b>Rights</b><br/>
+Your participation is voluntary.  You are free to stop your participation at any point.  Refusal to participate or withdrawal of your consent or discontinued participation in the study will not result in any penalty or loss of benefits or rights to which you might otherwise be entitled.  The Principal Investigator may at his/her discretion remove you from the study for any of a number of reasons.  In such an event, you will not suffer any penalty or loss of benefits or rights which you might otherwise be entitled.
+
+<br/><b>Right to Ask Questions & Contact Information </b><br/>
+If you have any questions about this study, you should feel free to ask them now or anytime throughout the study by contacting Professor Jennifer Mankoff at Carnegie Mellon. She can be contacted directly at mailto:jmankoff@cs.cmu.edu, by phone at +1 412 268 1295, or by mail at: Human Computer Interaction Institute, Carnegie Mellon, 5000 Forbes Ave, Pittsburgh, PA 15213. 
+
+If you have questions later, desire additional information, or wish to withdraw your participation please contact the Principle Investigator by mail, phone or e-mail.  
+	
+If you have questions pertaining to your rights as a research participant; or to report objections to this study, you should contact the Research Regulatory Compliance Office at Carnegie Mellon University. <br/> <b>Email: irb-review@andrew.cmu.edu </br>Phone: 412-268-1901 or 412-268-5460.<br/></b>
+
+The Carnegie Mellon University Institutional Review Board (IRB) has approved the use of human participants for this study. 
+
+<br/><b>Voluntary Participation</b><br/>
+Your participation in this research is voluntary.  You may discontinue participation at any time during the research activity.  
+
+
+ </p>
+		
+		<a href="#tncdialog" type="button" >Close</a>
+		
+        </div>
+        
+    </div>
+					
+			
+		
+	</div><!-- page -->
+	
+	
+	
+	
+	
+	<!-- Sign Up Page -->
+	<div id="signup"
+		data-role="page"
+		data-title="Greenscore: Signup">
+
+		<div data-role="header"
+			data-position="fixed">
+			<h1>Sign Up</h1>
+		</div><!-- header -->
+		
+		<div data-role="content">
+			<img src="images/safe_image.png" style= " display: block;margin-left:auto; margin-right:auto " alt="View Source Logo" />
+		</div>
+		
+		
+			<form name="signup_form" method="post" action="http://128.2.207.3:5000/users">
+    		
+
+    		<label for="username" ><b>Email</b></label>
+			<input type="text" name="user[email]" id="username" value="" placeholder="Enter your Email"/>
+
+            <div data-role="fieldcontain">
+    		    <label for="password"> <b>Password [min: 8 characters] </b> </label>
+			    <input type="password" name="user[password]" id="password" value="" placeholder="Your Password"/>
+				<label for="password"> <b>Confirm Password </b> </label>
+			    <input type="password" name="user[password_confirmation]" id="con_password" value="" placeholder="Enter Password Again"/>
+				
+				<input type="submit" data-theme="b" data-mini="true" data-textonly="false" data-textvisible="true" data-msgtext="Signing you up..." class="show-page-loading-msg" value="Sign Up" />
+				<!--<button class="show-page-loading-msg" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading theme b" data-icon="arrow-r" data-iconpos="right">Theme b</button> --> 
+				
+				
+				
+				
+            </div>
+        </form>
+						
+		
+	</div><!-- page -->
+	
+	
+	
+	
+	<!-- Page: home -->
+	<div id="home"
+		data-role="page"
+		data-title="Greenscore: Home">
+
+		<div data-role="header"
+			data-position="fixed">
+			<h1>Greenscore</h1>
+		</div><!-- header -->
+		<!--<p style="text-align:center">Welcome to the Greenscore App. Home searching made easy. You can review, save and compare homes you visit.</p>
+		<div data-role="controlgroup">
+			
+			
+			<a href="#reviewhomes" 
+				data-role="button"
+				data-icon="arrow-r"
+				data-iconpos="right"
+				data-transition = "slide"
+				
+			>Review Home</a>
+			
+			<a onclick="listhomes(true);" 
+				data-role="button"
+				data-icon="arrow-r"
+				data-iconpos="right"
+				data-transition = "slide"
+			>My Homes</a> -->
+
+		</div><!-- links -->
+		
+		
+	</div><!-- page -->
+	
+	
+	
+	
+	<!-- Page: My Homes -->
+	<div id="myhomes"
+		data-role="page"
+		data-title="Greenscore: My Homes">
+		<div data-role="header"
+			data-position="fixed"
+			data-id="vs_header">
+			<h1>My Homes</h1>
+			<a href="#myhomes" data-icon="home" data-iconpos="notext" data-transition = "slide">Home</a>
+		</div><!-- header -->
+		<div data-theme="c"
+		data-role="content"
+		id="#postlist">
+			<div id = "add_labels" data-role="collapsible-set">
+				
+				
+					
+				
+				
+				
+				
+				
+			
+			</div><!-- accordion -->
+		</div><!-- content -->
+		
+		
+	</div><!-- page -->
+	
+
+	<!-- Page: Review Homes Options -->
+	
+	<!-- Page: Review Home -->
+	<div id="reviewhomes"
+		data-role="page"
+		data-title="Greenscore: Home">
+
+		<div data-role="header"
+			data-position="fixed">
+			<h1>Review Homes</h1>
+		</div><!-- header -->
+		
+		<div data-role="controlgroup">
+			
+			
+			<a href="#addnewhomes" 
+				data-role="button"
+				data-icon="arrow-r"
+				data-iconpos="right"
+				data-transition = "slide"
+				
+			>Review New Home</a>
+			
+			<a href="" onclick= "listhomes(true);" 
+				data-role="button"
+				data-icon="arrow-r"
+				data-iconpos="right"
+				data-transition = "slide"
+			>Review Existing Homes</a>
+
+		</div><!-- links -->
+		
+		
+		
+	</div><!-- page -->
+	
+	
+	<!-- Page: Add New Home -->
+	<div id="addnewhomes"
+		data-role="page"
+		data-title="Greenscore: Home">
+
+		<div data-role="header"
+			data-position="fixed">
+			<h1>Add New Home</h1>
+		</div><!-- header -->
+		
+		<div data-role="controlgroup">
+			
+			
+			<form name="address_form" method="post" action="http://128.2.207.3:5000/houses" > 
+			<label> House Label </label>
+			<input type="text" name="house[label]" id="house_label" value="" placeholder="Enter a name for this house to remember"/>
+			<label> Country </label>
+			<input type="text" name="house[country]" id="country" value="" placeholder="Enter the country"/>
+			<label> State </label>
+			<input type="text" name="house[state]" id="state" value="" placeholder="Enter the State"/>
+			<label> City </label>
+			<input type="text" name="house[city]" id="city" value="" placeholder="Enter the City"/>
+			<label> Street </label>
+			<input type="text" name="house[street]" id="street" value="" placeholder="Enter the Street"/>
+			<label> Unit </label>
+			<input type="text" name="house[unit]" id="unit" value="" placeholder="Enter the Unit: Eg Room 405"/>
+			<label> ZipCode </label>
+			<input type="text" name="house[zip]" id="zip" value="" placeholder="Enter the Zipcode if you know"/>
+			<input type="submit"  data-theme="b"   value="Save"/> 
+			
+			</form>
+
+		</div><!-- links -->
+	</div><!-- page -->
+
+	<!-- Page: Review New Homes -->
+	<div id="reviewhomesform"
+		data-role="page"
+		data-title="Greenscore : Review Homes">
+		<div data-role="header"
+			data-position="fixed"
+			data-id="vs_header">
+			<h1>Add Review</h1>
+			<a href="#home" data-icon="home" data-iconpos="notext" data-transition = "slide">Home</a>
+		</div><!-- header -->
+		<form  name="factorform" method="post" action="">
+		 
+			  
+   <label  for="basic"><p style="text-align:center" ><b>Add Review</b></p></label>
+    <input type="text" name="newButtonName" id="newButtonName"  placeholder="Review Title e.g Sunlight, Lead, Mold etc " value="" />
+	<input type="text" name="newFactorValue" id="newFactorValue" placeholder="Review Description e.g Hot, Lead present etc"  />
+   <a href="#" data-role="button"  id="addButtonName">Add</a>
+	
+	</form>
+	
+	<form name="review_form">
+	
+	<div data-role="content" id="addMoreButtons">     </div>
+	<div id="savereview" >  </div>
+	
+    </form>
+
+
+		
+		 
+	<script src="js/reviewhomescript.js"></script>
+		
+	</div><!-- page -->
+	
+	<!-- Page: Individual House -->
+	<div id="indihouse"
+		data-role="page"
+		data-title="Greenscore: Individual House">
+
+		<div data-role="header"
+			data-position="fixed">
+			<h1 id="house_title" ></h1>
+		</div><!-- header -->
+				
+				<div id="review_options"> </div>
+				
+	
+		   
+
+
+	
+				
+		<div data-role="collapsible-set">
+		<div id="collapse" data-theme="c" data-role="collapsible" data-collapsed="false"> 	
+		<h1>Pictures</h1>
+	
+	
+		
+		<!-- /grid-a -->
+	   <div data-role-"content"
+			data-theme="a">
+			<div class="ui-grid-c" id="photolist">
+			</div><!-- grid -->
+		</div><!-- content -->	
+		
+		</div>
+		
+		<div data-role-"content"
+			data-theme="a">
+			<div id="factor_list">
+</div>			
+		</div><!-- content -->	
+   </div>
+   
+   
+	</div><!-- page -->
+	
+	<div data-role="dialog" 
+		id="showphoto">
+		<div data-role="header"
+			data-position="fixed"
+			data-theme="a">
+			<a href="#indihouse"
+				data-transition="fade"
+				data-icon="back"
+				data-iconpos="notext"
+				></a>
+			<h1 id="photo_label"></h1>
+		</div><!-- header -->
+		<div data-role="content">
+			<div id="myphoto"></div>
+		</div><!-- content -->
+	</div><!-- page -->
+
+	<div data-role="dialog" id="notes">
+	<div data-role="content">
+	<form name="notes_form" action="" method="post">
+	<textarea id="textareabox" placeholder= "Add your notes here"></textarea> </div>
+	<div id="savenotes" >  </div> 
+	</form>
+</div>
+
+
+<div data-role="dialog" id="updateadd_page">
+	<div data-role="content">
+	<form name="update_address_form" action="" method="post">
+	
+			<label> House Label </label>
+			<input type="text" name="house[label]" id="house_label_up" value="" placeholder="Enter a name for this house to remember"/>
+			<label> Country </label>
+			<input type="text" name="house[country]" id="country_up" value="" placeholder="Enter the country"/>
+			<label> State </label>
+			<input type="text" name="house[state]" id="state_up" value="" placeholder="Enter the State"/>
+			<label> City </label>
+			<input type="text" name="house[city]" id="city_up" value="" placeholder="Enter the City"/>
+			<label> Street </label>
+			<input type="text" name="house[street]" id="street_up" value="" placeholder="Enter the Street"/>
+			<label> Unit </label>
+			<input type="text" name="house[unit]" id="unit_up" value="" placeholder="Enter the Unit: Eg Room 405"/>
+			<label> ZipCode </label>
+			<input type="text" name="house[zip]" id="zip_up" value="" placeholder="Enter the Zipcode if you know"/>
+						
+			</form>
+	<div id="saveaddress" >  </div> 
+	</form>
+</div>
+</div>
+<div data-role="dialog" id="updatecontact_page">
+	<div data-role="content">
+	<form name="update_contact_form" action="" method="post">
+	<label> <b>Email </b></label>
+			<input type="text" name="email" id="email" value="" placeholder="Enter Email"/>
+			<label> <b>Phone Number </b></label>
+			<input type="text" name="phone" id="phone" value="" placeholder="Enter Phone number"/>
+	<div id="savecontact" >  </div> 
+	</form>
+</div>
+</div>
+</body>
+</html>

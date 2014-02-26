@@ -1,0 +1,6 @@
+1. This website use “devise” plug in to control authentication.
+2. It use bootstrap to stylize the pages. Currently, it is not fully stylized. Some of the pages still need to be modified.
+3. Currently, the website is working on sqlite3 not mysql. It can be migrate easily to mysql in the future.
+4. There are one rake file in lib/tasks, it works to pre insert some factors into the database.
+5. At this time, the website cannot review more than one factors at one time and cannot add factors on the new review pages. But the adding factors webpage is working, maybe just call it in the review page.
+6. The display of the houses and reviews may need to be adjust, like not display house/review number instead display user or house address.

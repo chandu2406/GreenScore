@@ -1,0 +1,13 @@
+<div class="center">
+	<div class="row">	
+			<h1>Comparison</h1>
+			<%= form_tag do%>
+			  <%= collection_select :house_one, :id, House.all, :id,:house_information, options ={:prompt => "-Select a house"}%>
+			</br>
+			  <%= collection_select :house_two, :id, House.all, :id,:house_information, options ={:prompt => "-Select a house"}%>
+			</br>
+			  <%= submit_tag("submit", class: "btn btn-primary")%>
+			<% end %>
+	</div>
+</div>
+<%= link_to 'Home Page', "home_page" %>

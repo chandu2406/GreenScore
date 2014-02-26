@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>House:</strong>
+  <%= House.find(@review.house_id).house_information %>
+</p>
+
+<p>
+  <strong>Factor:</strong>
+  <%= Factor.find(@review.factor_id).name %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @review.user_id %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @review.note %>
+</p>
+
+<p>
+  <strong>textual rate:</strong>
+  <%= Rate.find_by(review_id: @review.id).text_input %>
+</p>
+<p>
+  <strong>numerical rate:</strong>
+  <%= Rate.find_by(review_id: @review.id).integer_input %>
+</p>
+<p>
+  <strong>numerical rate range:</strong>
+  <%= Rate.find_by(review_id: @review.id).start_range %>~<%= Rate.find_by(review_id: @review.id).end_range %>
+</p>
+
+
+<%= link_to 'Edit', edit_review_path(@review) %> |
+<%= link_to 'Back', reviews_path %>

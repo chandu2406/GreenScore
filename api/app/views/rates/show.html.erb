@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Text input:</strong>
+  <%= @rate.text_input %>
+</p>
+
+<p>
+  <strong>Integer input:</strong>
+  <%= @rate.integer_input %>
+</p>
+
+<p>
+  <strong>Start range:</strong>
+  <%= @rate.start_range %>
+</p>
+
+<p>
+  <strong>End range:</strong>
+  <%= @rate.end_range %>
+</p>
+
+<p>
+  <strong>Float input:</strong>
+  <%= @rate.float_input %>
+</p>
+
+<%= link_to 'Edit', edit_rate_path(@rate) %> |
+<%= link_to 'Back', rates_path %>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  text_input: MyText
+  integer_input: 1
+  start_range: 1
+  end_range: 1
+  float_input: 1.5
+
+two:
+  text_input: MyText
+  integer_input: 1
+  start_range: 1
+  end_range: 1
+  float_input: 1.5

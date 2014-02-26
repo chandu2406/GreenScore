@@ -1,0 +1,35 @@
+<h1>Comparison</h1>
+<table class="table table-striped table-bordered table-condensed">
+	<tr>
+		<td>Factors</td>
+		<td>House 1</td>
+		<td>House 2</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><%=@house_one.house_information%></td>
+		<td><%=@house_two.house_information%></td>
+	</tr>
+<% @factors.each do |factor| %>
+	<tr>
+	<td><%= factor.name %></td>
+	<% @tmp_review = Review.where("factor_id = ? AND house_id = ?", factor.id, @house_one[:id]) %>
+	<% if !@tmp_review.empty? %>
+		<% @tmp_rate = Rate.where("review_id = ?", @tmp_review[0][:id])%>
+		<td><%= @tmp_rate[0][:integer_input] %></td>
+	<% else %>
+		<td>None</td>
+	<% end %>
+	<% @tmp_review = Review.where("factor_id = ? AND house_id = ?", factor.id, @house_two[:id]) %>
+	<% if !@tmp_review.empty? %>
+		<% @tmp_rate = Rate.where("review_id = ?", @tmp_review[0][:id])%>
+		<td><%= @tmp_rate[0][:integer_input] %></td>
+	<% else %>
+		<td>None</td>
+	<% end %>
+	</tr>
+<% end %>
+
+</table>
+<%= link_to 'Compare other Houses', "comparison" %><br>
+<%= link_to 'Back to Home page', "home_page" %>

@@ -1,0 +1,39 @@
+
+<h1>Houses</h1>
+<p>
+  <strong>Country:</strong>
+  <%= @house.country %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @house.state %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @house.city %>
+</p>
+
+<p>
+  <strong>Addl1:</strong>
+  <%= @house.addl1 %>
+</p>
+
+<p>
+  <strong>Addl2:</strong>
+  <%= @house.addl2 %>
+</p>
+
+<p>
+  <strong>Unit:</strong>
+  <%= @house.unit %>
+</p>
+
+<p>
+  <strong>Zip:</strong>
+  <%= @house.zip %>
+</p>
+
+<%= link_to 'Edit', edit_house_path(@house) %> |
+<%= link_to 'Back', houses_path %>

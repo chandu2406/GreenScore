@@ -1,0 +1,26 @@
+<h1>Comparison</h1>
+<%= form_tag do%>
+  <%= collection_select :house_one, :id, House.all, :id,:house_information, options ={:prompt => "-Select a house"}%>
+</br>
+  <%= collection_select :house_two, :id, House.all, :id,:house_information, options ={:prompt => "-Select a house"}%>
+</br>
+  <%= submit_tag("submit")%>
+<% end %>
+	<table>
+	<% @factors.each do |factor| %>
+		<tr>
+		<td><%= factor.name %></td>
+		<% if Review.where("factor_id = ? AND house_id = ?", factor.id, @house_one[:id]).nil? %>
+			<td><%= Rate.find_by(review_id: Review.where("factor_id = ? AND house_id = ?", factor.id, @house_one[:id]).id).integer_input %></td>
+		<% else %>
+			<td>None</td>
+		<% end %>
+		<% if Review.where("factor_id = ? AND house_id = ?", factor.id, @house_two[:id]).nil? %>
+			<td><%= Rate.find_by(review_id: Review.where("factor_id = ? AND house_id = ?", factor.id, @house_two[:id]).id).integer_input %></td>
+		<% else %>
+			<td>None</td>
+		<% end %>
+		</tr>
+	<% end %>
+
+	</table>

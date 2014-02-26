@@ -1,0 +1,66 @@
+<%= form_for(@review) do |f| %>
+  <% if @review.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
+      <ul>
+      <% @review.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :house_id %>
+    <%= f.collection_select :house_id, House.all, :id,:house_information, options ={:prompt => "-Select a house"}%>
+  </div>
+  <div class="field">
+    <%= f.label :factor_id %>
+    <%= f.collection_select :factor_id, Factor.all, :id,:name, options ={:prompt => "-Select a factor"}%>
+  </div>
+  <div class="field">
+    <%= f.label :note %>
+    <%= f.text_area :note %>
+  </div>
+  <% if @review.house_id.nil? %>
+
+    <div class="field">
+      <%= label :rate, :text_input, "textual rate"%>
+      <%= text_field :rate, :text_input%>
+    </div>
+    <div class="field">
+      <%= label :rate, :integer_input, "numerical rate"%>
+      <%= number_field :rate, :integer_input%>
+    </div>
+    <div class="field">
+      <%= label :rate, :start_range, "numerical rate range start"%>
+      <%= number_field :rate, :start_range, :value => 0%>
+    </div>
+    <div class="field">
+      <%= label :rate, :end_range, "numerical rate range end"%>
+      <%= number_field :rate, :end_range, :value => 5%>
+    </div>
+  <%else%>
+    <%@rate = Rate.find_by review_id: @review_id %>
+    <div class="field">
+      <%= label :rate, :text_input, "textual rate"%>
+      <%= text_field :rate, :text_input, :value => @rate.text_input%>
+    </div>
+    <div class="field">
+      <%= label :rate, :integer_input, "numerical rate"%>
+      <%= number_field :rate, :integer_input, :value => @rate.integer_input%>
+    </div>
+    <div class="field">
+      <%= label :rate, :start_range, "numerical rate range start"%>
+      <%= number_field :rate, :start_range, :value => @rate.start_range%>
+    </div>
+    <div class="field">
+      <%= label :rate, :end_range, "numerical rate range end"%>
+      <%= number_field :rate, :end_range, :value => @rate.end_range%>
+    </div>
+  <%end%>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
